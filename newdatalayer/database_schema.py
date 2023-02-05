@@ -130,6 +130,66 @@ def create_associate():
     conn.commit()
 
 
+def create_item(): 
+    table_name = "Item"
+    cursor = conn.cursor()
+
+    table = """CREATE TABLE Item (
+            itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(255),
+            branch VARCHAR(255),
+            JSON BLOB
+        ); """
+
+    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+    cursor.execute(table)
+
+
+    print("Created the table '{}'".format(table_name))
+
+    conn.commit()
+
+def create_stock(): 
+    table_name = "stock"
+    cursor = conn.cursor()
+
+    table = """CREATE TABLE stock (
+            stockId INTEGER PRIMARY KEY AUTOINCREMENT,
+            itemId_fk INTEGER,
+            vendingId_fk INTEGER,
+            row INTEGER(2),
+            col INTEGER(2),
+            quantity INTEGER(2)
+        ); """
+
+    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+    cursor.execute(table)
+
+
+    print("Created the table '{}'".format(table_name))
+
+    conn.commit()
+
+def create_vendingMachine(): 
+    table_name = "vendingMachine"
+    cursor = conn.cursor()
+
+    table = """CREATE TABLE vendingMachine (
+            vendingId INTEGER PRIMARY KEY AUTOINCREMENT,
+            storeId_fk INTEGER,
+            merchantId_fk INTEGER,
+            version VARCHAR(10),
+            averageMark REAL
+        ); """
+
+    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+    cursor.execute(table)
+
+
+    print("Created the table '{}'".format(table_name))
+
+    conn.commit()
+
 
 if __name__ == "__main__":
     create_orders()
@@ -139,4 +199,8 @@ if __name__ == "__main__":
     create_store()
     create_merchant()
     create_associate()
+    create_item()
+    # insert into Item(name, branch, JSON) values ("foo","bar", '{"HELLO":"WORLD"}'); 
+    create_stock()
+    create_vendingMachine()
     conn.close()
