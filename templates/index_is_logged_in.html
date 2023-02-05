@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dispense</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    {% include "headers/isLoggedinHeader.html" %}
+    <br />
+    Merchant: {{merchantName}}
+    <div id="stores"> </div>
+    <br />
+    Store Vending Machines:
+    <div id="vending_machines"></div>
+    <br />
+    Vending Flowers: 
+    <div id="vending_flowers"></div>
+    <br />
+    Vending Prerolls:
+    <div id="vending_prerolls"></div>
+    <br />
+<style>
+    label {
+    display: inline-block;
+    background: #ddd;
+    border: 1px outset #ccc;
+    border-radius: .3em;
+    padding: .3em 1em;
+    margin: .5em;
+}
+
+label:active {
+  border-style: inset;
+}
+</style>
+    <label>
+        Upload
+        <input type="file" >
+      </label>
+    <script>
+
+        function makeStoresTable() {
+            try {
+                // JSON of store info from DB for this merchant
+                const merchantName = '{{merchantName}}'
+                const stores = JSON.parse('{{ stores | tojson }}')
+                // // The column names from the table 'stores'
+                const store_keys = {
+                    storeId: 0,
+                    merchantId: 1,
+                    name: 2,
+                    street: 3,
+                    city: 4,
+                    state: 5,
+                    zip: 6,
+                    url: 7,
+                    img: 8,
+                    phone: 9,
+                    lat: 10,
+                    long: 11
+                }
+                let t = "<table border='1'>"
+                t += "<tr><th>store</th><th>merchantId</th><th>merchant</th><th>name</th></tr>"
+                stores.forEach((store, i) => {
+                    t += "<tr>"
+                    t += "<td class='num'>" + store[store_keys["storeId"]] + "</td>"
+                    t += "<td class='num'>" + store[store_keys["merchantId"]] + "</td>"
+                    t += "<td>" + merchantName + "</td>"
+                    t += "<td>" + store[store_keys["name"]] + "</td>"
+                    t += "</tr>"
+                })
+                t += "</table>"
+                document.getElementById("stores").innerHTML = t
+            } catch (boom) {
+                alert(boom)
+            }
+        }
+
+
+
+        function makeVendingMachineTable() {
+            try {
+                const vending_machines = JSON.parse('{{ vending_machines | tojson }}')
+                const vending_machine_keys = {
+                    vendingId: 0,
+                    merchantId: 1,
+                    storeId: 2,
+                    version: 3
+                }
+                let t = "<table border='1'>"
+                t += "<tr><th>vendingId</th><th>merchantId</th><th>storeId</th><th>version</th></tr>"
+                vending_machines.forEach((vending, i) => {
+                    t += "<tr>"
+                    t += "<td class='num'>" + vending[vending_machine_keys["vendingId"]] + "</td>"
+                    t += "<td class='num'>" + vending[vending_machine_keys["merchantId"]] + "</td>"
+                    t += "<td class='num'>" + vending[vending_machine_keys["storeId"]] + "</td>"
+                    t += "<td>" + vending[vending_machine_keys["version"]] + "</td>"
+                    t += "</tr>"
+                })
+                t += "</table>"
+                document.getElementById("vending_machines").innerHTML = t
+            } catch (boom) {
+                alert(boom)
+            }
+
+        }
+
+        function makeFlowerTables() { 
+            try {
+                const vending_flowers = JSON.parse('{{ vending_flowers | tojson }}')
+                const vending_flowers_keys = {
+                    "vendingId":0,
+                    "merchantId":1,
+                    "storeId": 2,
+                    "strain": 3,
+                    "type": 4,
+                    "farm": 5,
+                    "weight_in_grams": 6,
+                    "thc_percent": 7,
+                    "cbd_percent": 8,
+                    "harvest": 9,
+                    "description": 10,
+                    "price": 11,
+                    "count":12
+                }
+                let t = "<table border='1'>"
+                t += "<tr><th>vendingId</th><th>strain</th><th>type</th><th>farm</th><th>grams</th><th>thc</th><th>cbd</th><th>harvest</th><th>description</th><th>price</th><th>count</th></tr>"
+                vending_flowers.forEach((vf, i) => {
+                    t += "<tr>"
+                        t += "<td class='num'>" + vf[vending_flowers_keys["vendingId"]] + "</td>"
+                    t += "<td>" + vf[vending_flowers_keys["strain"]] + "</td>"
+                    t += "<td>" + vf[vending_flowers_keys["type"]] + "</td>"
+                    t += "<td>" + vf[vending_flowers_keys["farm"]] + "</td>"
+                    t += "<td class='num'>" + vf[vending_flowers_keys["weight_in_grams"]] + "</td>"
+                    t += "<td class='num'>" + vf[vending_flowers_keys["thc_percent"]] + "</td>"
+                    t += "<td class='num'>" + vf[vending_flowers_keys["cbd_percent"]] + "</td>"
+                    t += "<td>" + vf[vending_flowers_keys["harvest"]] + "</td>"
+                    t += "<td>" + vf[vending_flowers_keys["description"]] + "</td>"
+                    t += "<td class='num'>" + vf[vending_flowers_keys["price"]] + "</td>"
+                    const count = vf[vending_flowers_keys["count"]]
+                    t += `<td > <input class='num2' type="number" step="1" value='${count}' /></td>`
+                    
+                    t += "</tr>"
+                })
+                t += "</table>"
+                document.getElementById("vending_flowers").innerHTML = t
+            } catch (boom) {
+                alert(boom)
+            }
+        }
+
+        
+        function makePrerollTable() { 
+            try {
+                const vending_prerolls = JSON.parse('{{ vending_prerolls | tojson }}')
+                const vending_preroll_keys = {
+                    "vendingId":0,
+                    "merchantId":1,
+                    "storeId": 2,
+                    "brand": 3,
+                    "type": 4,
+                    "strain": 5,
+                    "number_of_joints": 6,
+                    "thc_percent": 7,
+                    "cbd_percent": 8,
+                    "harvest": 9,
+                    "description": 10,
+                    "price": 11,
+                    "count":12,
+                    "product":13
+                }
+                let t = "<table border='1'>"
+                t += "<tr><th>vendingId</th><th>strain</th><th>type</th><th>joints</th><th>thc</th><th>cbd</th><th>harvest</th><th>description</th><th>price</th><th>count</th></tr>"
+                vending_prerolls.forEach((vp, i) => {
+                    t += "<tr>"
+                    t += "<td class='num'>" + vp[vending_preroll_keys["vendingId"]] + "</td>"
+                    t += "<td>" + vp[vending_preroll_keys["strain"]] + "</td>"
+                    t += "<td>" + vp[vending_preroll_keys["type"]] + "</td>"
+                    t += "<td class='num'>" + vp[vending_preroll_keys["number_of_joints"]] + "</td>"
+                    // t += "<td class='num'>" + vp[vending_preroll_keys["weight_in_grams"]] + "</td>"
+                    t += "<td class='num'>" + vp[vending_preroll_keys["thc_percent"]] + "</td>"
+                    t += "<td class='num'>" + vp[vending_preroll_keys["cbd_percent"]] + "</td>"
+                    t += "<td>" + vp[vending_preroll_keys["harvest"]] + "</td>"
+                    t += "<td>" + vp[vending_preroll_keys["description"]] + "</td>"
+                    t += "<td class='num'>" + vp[vending_preroll_keys["price"]] + "</td>"
+                    const count = vp[vending_preroll_keys["count"]]
+                    t += `<td > <input class='num2' type="number" step="1" value='${count}' /></td>`
+                    t += "</tr>"
+                })
+                t += "</table>"
+                document.getElementById("vending_prerolls").innerHTML = t
+            } catch (boom) {
+                alert(boom)
+            }
+        }
+
+
+    </script>
+
+
+    <script>
+        makeStoresTable()
+        makeVendingMachineTable() 
+        makeFlowerTables() 
+        makePrerollTable()
+
+
+        function deleteEntry(id) {
+            alert( id )
+        }
+    </script>
+</body>
+
+</html>

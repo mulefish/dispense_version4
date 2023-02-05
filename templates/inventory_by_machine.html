@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dispense</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        /* The Modal (background) */
+    </style>
+
+</head>
+
+<body>
+    {% include "headers/isLoggedinHeader.html" %}
+    <br />
+    <div id="machine">
+
+    </div>
+
+    <style>
+        label {
+            display: inline-block;
+            background: #ddd;
+            border: 1px outset #ccc;
+            border-radius: .3em;
+            padding: .3em 1em;
+            margin: .5em;
+        }
+
+        label:active {
+            border-style: inset;
+        }
+    </style>
+
+
+    <!-- START HTML for MODALS -->
+    <div id="vendingModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onClick="closeTheModals()">&times;</span>
+            <p>ADD A VENDING MACHINE</p>
+            <table border="1">
+                <tr>
+                    <td>vendingId</td>
+                    <td><input type="text" value="" id="newVendingId"></td>
+                </tr>
+                <tr>
+                    <td>merchant</td>
+                    <td><input type="text" value="{{merchant}}" disabled=true id="newVendingMerchantId"></td>
+                </tr>
+
+                <tr>
+                    <td>storeId</td>
+                    <td><input type="text" value="" id="newVendingStoreId"></td>
+                </tr>
+                <tr>
+                    <td>version</td>
+                    <td><input type="text" value="" id="newVendingVersion"></td>
+                </tr>
+
+
+            </table>
+            <button onClick="discardNewVendingMachine()">Discard</button>
+            <button onClick="saveNewVendingMachine()">Save</button>
+            <script>
+                function saveNewVendingMachine() {
+                    const newVendingId = document.getElementById("newVendingId").value
+                    const newVendingMerchantId = document.getElementById("newVendingMerchantId").value
+                    const newVendingStoreId = document.getElementById("newVendingStoreId").value
+                    const newVendingVersion = document.getElementById("newVendingVersion").value
+
+                    const newInfo = {
+                        table: "vending_machines",
+                        newVendingId,
+                        newVendingMerchantId,
+                        newVendingStoreId,
+                        newVendingVersion
+                    }
+                    insertInformation(newInfo)
+                    discardNewVendingMachine()
+                    closeTheModals()
+                }
+
+            </script>
+
+
+        </div>
+
+    </div>
+
+    <div id="flowerModal" class="modal">
+        <!-- data["flowers_columns"]=["strain", "type", "farm", "weight_in_grams", "thc_percent", "cbd_percent","harvest",
+        "description", "price", "count", "product"] -->
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <p>ADD A FLOWER</p>
+            <table border="1">
+
+                <tr>
+                    <td>vendingId</td>
+                    <td><input type="text" value="" id="newFVendingId"></td>
+                </tr>
+                <tr>
+                    <td>merchantId</td>
+                    <td><input type="text" value="{{merchant}}" disabled=true id="newFVendingMerchantId"></td>
+                </tr>
+
+                <tr>
+                    <td>storeId</td>
+                    <td><input type="text" value="" id="newFVendingStoreId"></td>
+                </tr>
+
+                <tr>
+                    <td>strain</td>
+                    <td><input type="text" value="" id="newFStrain"></td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td><input type="text" id="newFType"></td>
+                </tr>
+
+                <tr>
+                    <td>farm</td>
+                    <td><input type="text" value="" id="newFFarm"></td>
+                </tr>
+                <tr>
+                    <td>weight_in_grams</td>
+                    <td><input type="text" value="" id="newFGrams"></td>
+                </tr>
+                <tr>
+                    <td>thc_percent</td>
+                    <td><input type="text" value="" id="newFTHC"></td>
+                </tr>
+                <tr>
+                    <td>cbd_percent</td>
+                    <td><input type="text" value="" id="newFCBD"></td>
+                </tr>
+                <tr>
+                    <td>harvest</td>
+                    <td><input type="text" value="" id="newFHarvest"></td>
+                </tr>
+                <tr>
+                    <td>description</td>
+                    <td><input type="text" value="" id="newFDesc"></td>
+                </tr>
+
+                <tr>
+                    <td>price</td>
+                    <td><input type="text" value="" id="newFPrice"></td>
+                </tr>
+
+                
+
+                <tr>
+                    <td>count</td>
+                    <td><input type="text" value="" id="newFCount"></td>
+                </tr>
+                <tr>
+                    <td>product</td>
+                    <td><input type="text" disabled=true value="flower" id="newFProduct"></td>
+                </tr>
+
+
+
+
+            </table>
+            <button onClick="discardNewFlower()">Discard</button>
+            <button onClick="saveNewFlower()">Save</button>
+            <script>
+                function saveNewFlower() {
+                    try {
+                        const vendingId = document.getElementById("newFVendingId").value
+                        const merchantId = document.getElementById("newFVendingMerchantId").value
+                        const storeId = document.getElementById("newFVendingStoreId").value
+                        const strain = document.getElementById("newFStrain").value
+                        const type = document.getElementById("newFType").value
+                        const farm = document.getElementById("newFFarm").value
+                        const weight_in_grams = document.getElementById("newFGrams").value
+                        const thc_percent = document.getElementById("newFTHC").value
+                        const cbd_percent = document.getElementById("newFCBD").value
+                        const harvest = document.getElementById("newFHarvest").value
+                        const description = document.getElementById("newFDesc").value
+                        const price = document.getElementById("newFPrice").value
+                        
+                        const count = document.getElementById("newFCount").value
+                        const product = document.getElementById("newFProduct").value
+
+                        const newInfo = {
+                            table: "vending_flowers",
+                            vendingId,
+                            merchantId,
+                            storeId,
+                            strain,
+                            type,
+                            farm,
+                            weight_in_grams,
+                            thc_percent,
+                            cbd_percent,
+                            harvest,
+                            description,
+                            price,
+                            count,
+                            product
+                        }
+                        insertInformation(newInfo)
+                        discardNewFlower()
+                        closeTheModals()
+                    } catch (boom) {
+                        alert(boom)
+                    }
+                }
+
+                function discardNewFlower() {
+                    document.getElementById("newFVendingId").value
+                    document.getElementById("newFVendingMerchantId").value
+                    document.getElementById("newFVendingStoreId").value
+                    document.getElementById("newFStrain").value
+                    document.getElementById("newFType").value
+                    document.getElementById("newFFarm").value
+                    document.getElementById("newFGrams").value
+                    document.getElementById("newFTHC").value
+                    document.getElementById("newFCBD").value
+                    document.getElementById("newFHarvest").value
+                    document.getElementById("newFDesc").value
+                    document.getElementById("newFPrice").value
+                    document.getElementById("newFCount").value
+                    document.getElementById("newFProduct").value
+                }
+            </script>
+        </div>
+
+    </div>
+
+
+    <div id="prerollModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onClick="closeTheModals()">&times;</span>
+            <p>PREROLL</p>
+        </div>
+
+    </div>
+
+
+    <!-- END HTML for MODALS -->
+    <script>
+        const username = "{{username}}"
+        const merchant = "{{merchant}}"
+    </script>
+    <button onClick="showModal('vendingModal')">Add vending machine</button>
+    <div id="machines">
+    </div>
+
+
+
+
+    <hr>
+    <button onClick="showModal('flowerModal')">Add flower</button>
+
+    <div id="flowers" </div>
+    </div>
+    <hr />
+    <button onClick="showModal('prerollModal')">Add preroll</button>
+
+    <div id="prerolls" </div>
+    </div>
+    <hr />
+
+
+
+    <script>
+        const numbers = ["vendingId", "merchantId", "storeId", "weight_in_grams", "thc_percent", "cbd_percent", "price", "count", "number_of_joints"]
+        function createTable(rows, columns, htmlId) {
+            let v = "<table border='1'>"
+            v += "<tr>"
+            columns.forEach((colname) => {
+                v += "<th>" + colname + "</th>"
+            })
+            v += "<th>Zap</th>"
+            v += "</tr>"
+
+            rows.forEach((row) => {
+                v += "<tr>"
+                row.forEach((x, i) => {
+                    if (numbers.includes(columns[i])) {
+                        v += "<td class='num'>" + x + "</td>"
+                    } else {
+                        v += "<td>" + x + "</td>"
+                    }
+                })
+                v += "<td><button>Delete</button></td>"
+
+                v += "</tr>"
+            })
+
+
+            v += "</table>"
+            document.getElementById(htmlId).innerHTML = v
+
+
+        }
+
+
+        // const flower_table = "strain", "type", "farm", "weight_in_grams", "thc_percent", "cbd_percent","harvest", "description", "price", "count", "product"
+
+
+        function insertInformation(mapOfInfo) {
+            try {
+                // alert("insertInformation!!! \n" + JSON.stringify(mapOfInfo, null, 2))
+                const myHeaders = { "Content-Type": "application/json" }
+                const raw = JSON.stringify(mapOfInfo);
+                const requestOptions = {
+                    method: 'PUT',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+                console.log(raw)
+                let url = undefined 
+                if ( mapOfInfo['table'] === "vending_machines") {
+                    url = "http://localhost:8080/insert_vending"
+                } else if ( mapOfInfo['table'] === "vending_flowers") {
+                    url = "http://localhost:8080/insert_flowers"
+                }
+                fetch(url, requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        // alert( JSON.stringify(data) )
+                        populatePage()
+                    })
+                    .catch(error => {
+                        console.log("%c This was an error because: " + error.message, "background:lightred;")
+                    })
+
+            } catch (boom) {
+                console.log("%c This was an error because: " + boom.message, "background:lightred;")
+            }
+
+        }
+
+
+
+        function populatePage() {
+
+            const myHeaders = { "Content-Type": "application/json" }
+            const raw = JSON.stringify({ "merchantId": merchant });
+            const requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch("http://localhost:8080/get_inventory_by_merchant", requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    createTable(data["vending_machines"], data["vending_machines_columns"], "machines")
+                    createTable(data["flowers"], data["flowers_columns"], "flowers")
+                    createTable(data["prerolls"], data["prerolls_columns"], "prerolls")
+                })
+                .catch(error => {
+                    console.log("%c This was an error because: " + error.message, "background:lightred;")
+                })
+        }
+        populatePage()
+
+
+        // const modal = document.getElementById("myModal");
+        //const span = document.getElementsByClassName("close")[0];
+
+
+
+
+        function showModal(type_of_thing_to_add) {
+
+
+
+            if (type_of_thing_to_add === "flowerModal") {
+                document.getElementById("flowerModal").style.display = "block"
+            } else if (type_of_thing_to_add === "prerollModal") {
+                document.getElementById("prerollModal").style.display = "block"
+
+            } else if (type_of_thing_to_add === "vendingModal") {
+                document.getElementById("vendingModal").style.display = "block"
+
+            } else {
+                console.log("%c This was an error because " + type_of_thing_to_add + " is not a possible modal.", "background:lightred;")
+
+            }
+
+            modal.style.display = "block";
+        }
+        function closeTheModals() {
+
+            document.getElementById("flowerModal").style.display = "none"
+            document.getElementById("prerollModal").style.display = "none"
+            document.getElementById("vendingModal").style.display = "none"
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+
+            const id = event.target.id
+            if (id !== undefined) {
+                if (id === "flowerModal" || id === "prerollModal" || id === "vendingModal") {
+                    closeTheModals()
+                }
+            }
+        }
+
+        function discardNewVendingMachine() {
+            document.getElementById("newVendingId").value = ""
+            document.getElementById("newVendingMerchantId").value = ""
+            document.getElementById("newVendingStoreId").value = ""
+            document.getElementById("newVendingVersion").value = ""
+        }
+
+
+    </script>
+
+</body>
+
+</html>
