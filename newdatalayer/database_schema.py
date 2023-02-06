@@ -137,7 +137,7 @@ def create_item():
     table = """CREATE TABLE Item (
             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
             name VARCHAR(255),
-            branch VARCHAR(255),
+            brand VARCHAR(255),
             JSON BLOB
         ); """
 
@@ -200,7 +200,7 @@ if __name__ == "__main__":
     create_merchant()
     create_associate()
     create_item()
-    # insert into Item(name, branch, JSON) values ("foo","bar", '{"HELLO":"WORLD"}'); 
+    # insert into Item(name, brand, JSON) values ("foo","bar", '{"HELLO":"WORLD"}'); 
     create_stock()
     create_vendingMachine()
     conn.close()
