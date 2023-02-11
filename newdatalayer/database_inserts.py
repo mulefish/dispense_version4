@@ -2,18 +2,24 @@ import sqlite3
 
 conn = sqlite3.connect("new_dispense.db")
 cursor = conn.cursor()
+tables = ["Item","Merchant", "Store"]
+def count_the_rows():
+    print("count_the_rows")
+    for table in tables:
+      sql = "select count(*) from {}".format(table)
+      cursor.execute(sql)
+      row = cursor.fetchall()
+      count = row[-1][-1]
+      print("\t\t{} rows in '{}'".format(count, table))
 
 
 def truncate_tables():
-    sql = "delete from Item"
-    cursor.execute(sql)
-    sql = "delete from Merchant"
-    cursor.execute(sql)
-
     print("truncate_tables()")
+    for table in tables:   
+      sql = "delete from {}".format(table)
+      cursor.execute(sql)
 
     conn.commit()
-
 
 def insert_flowers_into_Item_table():
     flower_names = [
@@ -151,10 +157,67 @@ def insert_merchants():
 
     conn.commit()
 
+def insert_stores():
+    print("insert_stores()")
+    merchants = {}
+
+    sqlfetch = "select merchantId, name from merchant"; 
+    cursor.execute(sqlfetch)
+    row = cursor.fetchall()
+    for x in row:
+        merchantId = x[0]
+        username = x[1]
+        merchants[username] = merchantId
+
+    stores = [
+      {
+        "name":"Kitty Buds",
+        "address":"232 Alameda, Portland, OR",
+        "lat":45.553,
+        "lon":-122.636,
+        "phone":"5032492584",
+        "merchantId_fk": merchants["kermitt"]
+      }, 
+      {
+        "name":"Bright Flower",
+        "address":"3000 NE Alberta, Portland, OR",
+        "lat":45.558,
+        "lon":-122.635,
+        "phone":"5032492999",
+        "merchantId_fk": merchants["kermitt"]
+      }, 
+      {
+        "name":"House of Johnson",
+        "address":"223 SW 18th ave, Portland, OR",
+        "lat":45.522,
+        "lon":-122.689,
+        "phone":"9714342669",
+        "merchantId_fk": merchants["admin"]
+      }
+    ]
+
+    for store in stores:
+        name = store['name']
+        address = store['address']
+        lat = store['lat']
+        lon = store['lon']
+        phone = store['phone']
+        merchantId_fk = store['merchantId_fk']
+        sql = "insert into Store(name, address, lat, lon, phone, merchantId_fk) values ('{}','{}','{}','{}','{}','{}');".format(
+          name, address, lat, lon, phone, merchantId_fk
+        )
+        
+        cursor.execute(sql)
+    conn.commit()
+
 
 truncate_tables()
 insert_flowers_into_Item_table()
 insert_prerolls_into_Item_table()
 insert_merchants()
+insert_stores()
 
+
+
+count_the_rows()
 conn.close()

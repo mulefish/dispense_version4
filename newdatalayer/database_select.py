@@ -11,7 +11,22 @@ def select_Item_table():
 
     conn.commit()
 
+def select_Mercant():
+    cursor = conn.cursor()
+    sqlfetch = "select merchantId, name, password from merchant"; 
+    cursor.execute(sqlfetch)
+    row = cursor.fetchall()
+    for x in row:
+        merchantId = x[0]
+        username = x[1]
+        password = x[2]
+        msg = f"{merchantId} {username} {password}"
+        print(msg)
+    conn.close()
+
+
 if __name__ == "__main__":
     
-    select_Item_table()
+    # select_Item_table()
+    select_Mercant()
     conn.close()

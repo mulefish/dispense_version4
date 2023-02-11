@@ -209,10 +209,10 @@ def load_user(user_id):
     return users.get(user_id)
 
 def setUsers():
-    green("setUsers")
-    conn = sqlite3.connect('datalayer/dispense.db')
+    green("setUsers using new_dispense.db")
+    conn = sqlite3.connect('newdatalayer/new_dispense.db')
     cursor = conn.cursor()
-    sqlfetch = "select id, name, password  from merchants"; 
+    sqlfetch = "select merchantId, name, password from Merchant"; 
     cursor.execute(sqlfetch)
     row = cursor.fetchall()
     for x in row:
