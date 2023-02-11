@@ -95,7 +95,8 @@ def create_merchant():
 
     table = """CREATE TABLE Merchant (
             merchantId  INTEGER PRIMARY KEY AUTOINCREMENT,
-            name VARCHAR(255),
+            name VARCHAR(100),
+            password VARCHAR(100),
             billing_address VARCHAR(255),
             phone VARCHAR(11),
             bank_account_info VARCH(255),

@@ -4,10 +4,13 @@ conn = sqlite3.connect("new_dispense.db")
 cursor = conn.cursor()
 
 
-def truncate_Items_table():
+def truncate_tables():
     sql = "delete from Item"
     cursor.execute(sql)
-    print("truncate_Items_table()")
+    sql = "delete from Merchant"
+    cursor.execute(sql)
+
+    print("truncate_tables()")
 
     conn.commit()
 
@@ -111,7 +114,47 @@ def insert_prerolls_into_Item_table():
     conn.commit()
 
 
-truncate_Items_table()
+def insert_merchants():
+    print("insert_merchants()")
+    merchants = [
+        {
+            "name": "kermitt",
+            "password": "Happy$100",
+            "billing_address": "308 E. Florida, Urbana Il, 61801",
+            "phone": "217-367.3196",
+            "bank_account_info": "TBD",
+            "logo_location": "TBD",
+        },
+        {
+            "name": "admin",
+            "password": "topsecret",
+            "billing_address": "1017 Lynn St., Urbana Il, 61801",
+            "phone": "217-367.4449",
+            "bank_account_info": "TBD",
+            "logo_location": "TBD",
+        },
+    ]
+    for i in range(len(merchants)):
+        name = merchants[i]["name"]
+        password = merchants[i]["password"]
+        billing_address = merchants[i]["billing_address"]
+        phone = merchants[i]["phone"]
+        bank_account_info = merchants[i]["bank_account_info"]
+        logo_location = merchants[i]["logo_location"]
+
+        sql = "insert into Merchant(name, password,billing_address,phone,bank_account_info,logo_location) values ('{}','{}','{}','{}','{}','{}');".format(
+          name, password,billing_address,phone,bank_account_info,logo_location
+        )
+        
+        cursor.execute(sql)
+        # print( sql )
+
+    conn.commit()
+
+
+truncate_tables()
 insert_flowers_into_Item_table()
 insert_prerolls_into_Item_table()
+insert_merchants()
+
 conn.close()
