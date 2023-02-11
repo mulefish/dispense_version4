@@ -2,7 +2,7 @@ import sqlite3
 
 conn = sqlite3.connect("new_dispense.db")
 cursor = conn.cursor()
-tables = ["Item","Merchant", "Store"]
+tables = ["Item","Merchant", "Store", "vendingMachine"]
 def count_the_rows():
     print("count_the_rows")
     for table in tables:
@@ -211,11 +211,77 @@ def insert_stores():
     conn.commit()
 
 
+def insert_vending_machines(): 
+    print("insert_vending_machines()")
+    machines = []
+    sqlfetch = "select storeId, merchantId_fk from Store;"; 
+    cursor.execute(sqlfetch)
+    row = cursor.fetchall()
+    for x in row:
+        storeId_fk = x[0]
+        merchantId_fk = x[1]
+        fk = {
+          "storeId_fk":storeId_fk,
+          "merchantId_fk":merchantId_fk
+        }
+        machines.append(fk)
+
+
+
+    vendingMachines = [
+      # two machine to store 0 
+      {
+        "storeId_fk":machines[0]["storeId_fk"],
+        "merchantId_fk":machines[0]["merchantId_fk"],
+        "version":"v1_1",
+        "averageMark":1
+      }, 
+      {
+        "storeId_fk":machines[0]["storeId_fk"],
+        "merchantId_fk":machines[0]["merchantId_fk"],
+        "version":"v1_2",
+        "averageMark":1
+      }, 
+      # one machine to store 1 
+      {
+        "storeId_fk":machines[1]["storeId_fk"],
+        "merchantId_fk":machines[1]["merchantId_fk"],
+        "version":"v1_3",
+        "averageMark":1
+      }, 
+      # one machine to store 2 
+      {
+        "storeId_fk":machines[2]["storeId_fk"],
+        "merchantId_fk":machines[2]["merchantId_fk"],
+        "version":"v1_1",
+        "averageMark":1
+      }, 
+
+    ]
+
+    for vm in vendingMachines:
+        storeId_fk = vm['storeId_fk']
+        merchantId_fk = vm['merchantId_fk']
+        version = vm['version']
+        averageMark = vm['averageMark']
+        sql = "insert into vendingMachine(storeId_fk,merchantId_fk,version,averageMark) values ({},{},'{}',{});".format(
+          storeId_fk, merchantId_fk, version, averageMark
+        )
+        
+        cursor.execute(sql)
+    conn.commit()
+
+
+
+
+
+
 truncate_tables()
 insert_flowers_into_Item_table()
 insert_prerolls_into_Item_table()
 insert_merchants()
 insert_stores()
+insert_vending_machines()
 
 
 

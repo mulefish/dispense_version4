@@ -11,7 +11,7 @@ def create_orders():
             storeId_fk INTEGER,
             vendingId_fk INTEGER,
             customerId_fk VARCHAR(255),
-            orderTime INTEGer,
+            orderTime INTEGER,
             qrCode VARCHAR(255)
         ); """
 
@@ -186,7 +186,7 @@ def create_vendingMachine():
     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
     cursor.execute(table)
 
-
+ 
     print("Created the table '{}'".format(table_name))
 
     conn.commit()
