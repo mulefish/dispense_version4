@@ -50,6 +50,15 @@ def select_vendingMachines():
         print(x)
     conn.commit()
 
+def select_Associate():
+    print("\tselect_Associate()")
+    cursor = conn.cursor()
+    sqlfetch = "select * from Associate limit 2;"
+    cursor.execute(sqlfetch)
+    row = cursor.fetchall()
+    for x in row:
+        print(x)
+    conn.commit()
 
 if __name__ == "__main__":
 

@@ -2,7 +2,7 @@ import sqlite3
 
 conn = sqlite3.connect("new_dispense.db")
 cursor = conn.cursor()
-tables = ["Item","Merchant", "Store", "vendingMachine"]
+tables = ["Item","Merchant", "Store", "vendingMachine", "Associate"]
 def count_the_rows():
     print("count_the_rows")
     for table in tables:
@@ -273,6 +273,65 @@ def insert_vending_machines():
 
 
 
+def insert_associates():
+    print("insert_associates()")
+    merchants = []
+    sqlfetch = "select merchantId from merchant"; 
+    cursor.execute(sqlfetch)
+    row = cursor.fetchall()
+    for x in row:
+        merchantId = x[0]
+        merchants.append(x[0])
+    print("merchants")
+    print( merchants)
+
+    associates = [
+      {
+        "merchantId_fk":merchants[0],
+        "name":"Adam"      
+      }, 
+      {
+        "merchantId_fk":merchants[0],
+        "name":"Becky"      
+      }, 
+      {
+        "merchantId_fk":merchants[0],
+        "name":"Charlie"      
+      }, 
+      {
+        "merchantId_fk":merchants[1],
+        "name":"Donna"      
+      }, 
+      {
+        "merchantId_fk":merchants[1],
+        "name":"Eric"      
+      }, 
+      {
+        "merchantId_fk":merchants[1],
+        "name":"Fredricka"      
+      }, 
+      {
+        "merchantId_fk":merchants[1],
+        "name":"Gage"      
+      }, 
+      {
+        "merchantId_fk":merchants[1],
+        "name":"Hillary"      
+      }
+
+    ]
+
+    for associate in associates:
+        merchantId_fk = associate["merchantId_fk"]
+        name = associate["name"]
+        sql = "insert into Associate(merchantId_fk, name) values ({},'{}');".format(merchantId_fk, name)
+        
+        cursor.execute(sql)
+    conn.commit()
+
+
+
+
 
 
 
@@ -282,7 +341,7 @@ insert_prerolls_into_Item_table()
 insert_merchants()
 insert_stores()
 insert_vending_machines()
-
+insert_associates()
 
 
 count_the_rows()
