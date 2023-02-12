@@ -14,11 +14,13 @@
 <body>
     {% include "headers/isLoggedinHeader.html" %}
     <div id="stores"></div>
+    <hr/>
+    <div id="vendingMachine"></div>
     <br />
 
     <script>
         function showVendingMachine(vendingMachineId) {
-            alert( "vendingMachineId: " + vendingMachineId)
+            console.log( "vendingMachineId: " + vendingMachineId)
 
             const headers = { "Content-Type": "application/json" }
                 const body = JSON.stringify({"vendingId":vendingMachineId});
@@ -30,20 +32,24 @@
                 };
                 fetch("/get_vending_machine", requestOptions)
                     .then(response => response.json())
-                    .then(data => {
-                        alert( JSON.stringify(data ) )
-                        // alert( JSON.stringify(data) )
-                        // populatePage()
+                    .then(obj => {
+                        const data = obj["data"][0]
+                        let table = "<table border='1'><tr><th>vendingId</th><th>storeId</th><th>merchantId</th><th>version</th><th>averageMark</th></tr>"
+                        table += "<tr>"
+                        table += "<td>" + data[0] + "</td>"                                  
+                        table += "<td>" + data[1] + "</td>"       
+                        table += "<td>" + data[2] + "</td>"       
+                        table += "<td>" + data[3] + "</td>"       
+                        table += "<td>" + data[4] + "</td>"       
+                        table += "</tr>"
+                        table += "<tr><td colspan='5'>" + data[5] + "</td></tr>"
+                        table += "</table>"
+
+                        document.getElementById("vendingMachine").innerHTML = table; 
                     })
                     .catch(error => {
                         console.log("%c This was an error because: " + error.message, "background:lightred;")
                     })
-
-
-        
-
-
-
         }
 
         try { 
