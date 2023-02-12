@@ -20,6 +20,24 @@ if __name__ == "__main__":
     print(rows)
     
 
+def get_vending_machines_of_stores_for_a_merchant(nameOfTheMerchant): 
+    sqlfetch = f'select b.merchantId, a.vendingId, a.storeId_fk from vendingMachine a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{nameOfTheMerchant}"'
+    data = do_select(sqlfetch)
+    machines_by_store = {}
+    for row in data:
+        merchantId = row[0]
+        vendingId = row[1]
+        storeId = row[2]
+
+        if storeId in machines_by_store:
+            machines_by_store[storeId].append(vendingId)
+        else:
+            machines_by_store[storeId] = []
+            machines_by_store[storeId].append(vendingId)
+
+    # return something like {58: [19, 20], 59: [21]} where '58' and '59' are storeIds and the [19, 20] and [21] are vendingId
+    return machines_by_store
+
 
 
 

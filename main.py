@@ -6,7 +6,8 @@ import sqlite3
 import json
 # from datalayer.do_selects import do_select
 from datalayer.do_inserts import do_insert
-from newdatalayer.database_middle_layer import do_select
+from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant
+
 from flask import jsonify
 # from datalayer.b import goat
 
@@ -47,13 +48,14 @@ def merchant():
     merchantId = user_ids[username]
     green("username {} and merchantId {} " . format( username, merchantId ))
 
-    #sqlfetch = f"select * from stores where merchantId = {merchantId};"; 
-    #sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName,  b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.merchantId = {merchantId}'
     sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
-
     stores = do_select(sqlfetch)
-    print(stores)
-    return render_template('index_is_logged_in.html', stores=stores)
+    vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
+
+
+
+
+    return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines)
 
     """
     sqlfetch = f"select * from vending_machines where merchantId = {merchantId};"; 
