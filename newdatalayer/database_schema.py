@@ -195,15 +195,15 @@ def create_vendingMachine():
 
 
 if __name__ == "__main__":
-    # create_orders()
-    # # INSERT INTO Orders (storeId_fk, vendingId_fk, customerId_fk, orderTime, qrCode) VALUES (1,2,3, 1675637122776, "hello")
-    # create_order_item()
-    # create_customer()
-    # create_store()
-    # create_merchant()
-    # create_associate()
-    # create_item()
-    # # insert into Item(name, brand, JSON) values ("foo","bar", '{"HELLO":"WORLD"}'); 
-    # create_stock()
+    create_orders()
+    # INSERT INTO Orders (storeId_fk, vendingId_fk, customerId_fk, orderTime, qrCode) VALUES (1,2,3, 1675637122776, "hello")
+    create_order_item()
+    create_customer()
+    create_store()
+    create_merchant()
+    create_associate()
+    create_item()
+    # insert into Item(name, brand, JSON) values ("foo","bar", '{"HELLO":"WORLD"}'); 
+    create_stock()
     create_vendingMachine()
     conn.close()

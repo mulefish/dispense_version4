@@ -43,7 +43,7 @@ def select_Store():
 def select_vendingMachines():
     print("\tselect_vendingMachines()")
     cursor = conn.cursor()
-    sqlfetch = "select * from vendingMachine limit 2;"
+    sqlfetch = "select * from vendingMachine limit 20;"
     cursor.execute(sqlfetch)
     row = cursor.fetchall()
     for x in row:
@@ -62,8 +62,8 @@ def select_Associate():
 
 if __name__ == "__main__":
 
-    select_Item_table()
-    select_Mercant()
-    select_Store()
+    # select_Item_table()
+    # select_Mercant()
+    # select_Store()
     select_vendingMachines()
     conn.close()

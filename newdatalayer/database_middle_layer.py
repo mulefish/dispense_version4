@@ -3,7 +3,6 @@ import sqlite3
 import json
 
 def do_select(sqlfetch):
-    # print("do_select !! |{}".format( sqlfetch))
     conn = sqlite3.connect('./newdatalayer/new_dispense.db')
     cursor = conn.cursor()
     cursor.execute(sqlfetch)

@@ -4,7 +4,6 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from datalayer.do_inserts import do_insert
 from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant
 
 from flask import jsonify
@@ -61,25 +60,25 @@ def lulu():
 
 
 
-@app.route('/insert_vending', methods=['PUT'])
-def insert_vending():
-    cyan("insert_vending")
-    x = request.get_json()
-    green(x)
-    TABLE_NAME= x['table']
-    vendingId = x['newVendingId']
-    merchantId = x['newVendingMerchantId']
-    storeId = x['newVendingStoreId']
-    version = x['newVendingVersion']
+# @app.route('/insert_vending', methods=['PUT'])
+# def insert_vending():
+#     cyan("insert_vending")
+#     x = request.get_json()
+#     green(x)
+#     TABLE_NAME= x['table']
+#     vendingId = x['newVendingId']
+#     merchantId = x['newVendingMerchantId']
+#     storeId = x['newVendingStoreId']
+#     version = x['newVendingVersion']
 
-    if 'newVendingId' in x and 'newVendingMerchantId' in x and 'newVendingStoreId' in x and 'newVendingVersion' in x:
-        insert = "INSERT INTO {} VALUES ({},{},{},'{}')".format(TABLE_NAME, vendingId, merchantId, storeId, version)
-        do_insert(insert)
-        obj = {"status":"ok"}
-        return jsonify(obj)
-    else:
-        obj = {"status":"Missing parameters"}
-        return jsonify( obj )
+#     if 'newVendingId' in x and 'newVendingMerchantId' in x and 'newVendingStoreId' in x and 'newVendingVersion' in x:
+#         insert = "INSERT INTO {} VALUES ({},{},{},'{}')".format(TABLE_NAME, vendingId, merchantId, storeId, version)
+#         do_insert(insert)
+#         obj = {"status":"ok"}
+#         return jsonify(obj)
+#     else:
+#         obj = {"status":"Missing parameters"}
+#         return jsonify( obj )
 
 # @app.route('/insert_flowers', methods=['PUT'])
 # def insert_flowers():
@@ -164,19 +163,26 @@ def insert_vending():
 # getVendingMachine
 @app.route('/get_vending_machine', methods=['POST'])
 def get_vending_machine():
-    cyan("get_vending_machine")
     obj = {
         "status":"Missing information"
     }
     x = request.get_json()
     if "vendingId" in x:
+
+
         vendingId = x["vendingId"]
+        cyan("get_vending_machine for vendingId {}".format( vendingId))
         query = "select * from vendingMachine where vendingId = {}".format(vendingId)
+        cyan(query)
         result = do_select(query)
+        print(result)
         obj["status"] = "OK"
         obj["data"] = result
+
     else: 
+        cyan("get_vending_machine is missing a parameter")
         obj["status"] = "Missing parameter"
+
 
     return jsonify(obj)
     
