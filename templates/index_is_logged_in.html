@@ -25,7 +25,9 @@
 
             alert( storeId + "   |" + vendingMachines[storeId] + " |" + vendingMachines[storeId].length  )
         }
-
+        function showVendingMachine(vendingMachineId) {
+            alert( "vendingMachineId: " + vendingMachineId)
+        }
 
         try { 
             const data = JSON.parse('{{ stores | tojson }}')
@@ -54,10 +56,22 @@
                 table += "<tr>"
                 keys.forEach((key)=> { 
                     if ( key === "vending") {
+                        let buttons = "" 
+                        const storeId = store["storeId"]
+                        // console.log(vendingMachines[storeId] + "  sotred " + storeId + " len " + vendingMachines[storeId].length + " type " + typeof vendingMachines[storeId]  )
+                        // console.log(" .... ")
+                        vendingMachines[storeId].forEach((vendingId)=> { 
+                            // console.log( vendingId  + "  storeId ! " + storeId )
+                            buttons += `<button onClick='showVendingMachine(${vendingId})'>${vendingId}</button>`
+                        }) 
+                        // console.log( buttons)
+                        // vendingMachines[storeId].forEach((vendingId)=> { 
+                        //     buttons += `<button onClick='showVendingMachine(${vendingId})>${vendingId}</button>`
+                        // });
 
-
+                        table += "<td>" + buttons + "</td>"
                         // console.log( vendingMachines )
-                        table += "<td><button onClick='showVendingMachines(" + store['storeId'] + ")'>" + store['storeId'] + "</button</td>"                        
+                        // table += "<td><button onClick='showVendingMachines(" + store['storeId'] + ")'>" + store['storeId'] + "</button</td>"                        
                     } else {
                         const value = store[key]
                         table += "<td>" + value + "</td>"
