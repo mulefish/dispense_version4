@@ -51,8 +51,9 @@ def insert_flowers_into_Item_table():
         sql = "insert into Item(name, brand, JSON) values ('{}','{}','{}');".format(
             name, brand, json
         )
+        
         cursor.execute(sql)
-        # print( sql )
+        print( sql )
 
     conn.commit()
 
@@ -227,34 +228,37 @@ def insert_vending_machines():
         machines.append(fk)
 
 
-
     vendingMachines = [
       # two machine to store 0 
       {
         "storeId_fk":machines[0]["storeId_fk"],
         "merchantId_fk":machines[0]["merchantId_fk"],
         "version":"v1_1",
-        "averageMark":1
+        "averageMark":1,
       }, 
       {
         "storeId_fk":machines[0]["storeId_fk"],
         "merchantId_fk":machines[0]["merchantId_fk"],
         "version":"v1_2",
-        "averageMark":1
+        "averageMark":1,
+
+
       }, 
       # one machine to store 1 
       {
         "storeId_fk":machines[1]["storeId_fk"],
         "merchantId_fk":machines[1]["merchantId_fk"],
         "version":"v1_3",
-        "averageMark":1
+        "averageMark":1,
+
       }, 
       # one machine to store 2 
       {
         "storeId_fk":machines[2]["storeId_fk"],
         "merchantId_fk":machines[2]["merchantId_fk"],
         "version":"v1_1",
-        "averageMark":1
+        "averageMark":1,
+
       }, 
 
     ]
@@ -264,7 +268,7 @@ def insert_vending_machines():
         merchantId_fk = vm['merchantId_fk']
         version = vm['version']
         averageMark = vm['averageMark']
-        sql = "insert into vendingMachine(storeId_fk,merchantId_fk,version,averageMark) values ({},{},'{}',{});".format(
+        sql = "insert into vendingMachine(storeId_fk,merchantId_fk,version,averageMark) values ({},{},'{}',{} );".format(
           storeId_fk, merchantId_fk, version, averageMark
         )
         

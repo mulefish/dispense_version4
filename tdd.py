@@ -26,6 +26,7 @@ def get_vending_machine_test():
     # Step 2: Use the vendingId to get the info of that machine.
     query = "select * from vendingMachine where vendingId = {}".format(vendingId)
     result = do_select(query)
+    print(result)
     n = len(result)
     isOk = n > 0
     verdict(isOk, True, "get_vending_machine_test got results of len {} back".format(n))
