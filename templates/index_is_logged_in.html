@@ -16,17 +16,34 @@
     <div id="stores"></div>
     <br />
 
-
-    {{vendingMachines}}
-
     <script>
-
-        function showVendingMachines( storeId) { 
-
-            alert( storeId + "   |" + vendingMachines[storeId] + " |" + vendingMachines[storeId].length  )
-        }
         function showVendingMachine(vendingMachineId) {
             alert( "vendingMachineId: " + vendingMachineId)
+
+            const headers = { "Content-Type": "application/json" }
+                const body = JSON.stringify({"vendingId":vendingMachineId});
+                const requestOptions = {
+                    method: 'POST',
+                    headers,
+                    body,
+                    redirect: 'follow'
+                };
+                fetch("/get_vending_machine", requestOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        alert( JSON.stringify(data ) )
+                        // alert( JSON.stringify(data) )
+                        // populatePage()
+                    })
+                    .catch(error => {
+                        console.log("%c This was an error because: " + error.message, "background:lightred;")
+                    })
+
+
+        
+
+
+
         }
 
         try { 
@@ -56,22 +73,16 @@
                 table += "<tr>"
                 keys.forEach((key)=> { 
                     if ( key === "vending") {
+                        // Create buttons for EACH vending machine in this store. 
+                        // If a store has zero machines...   ...no buttons. 
+                        // If a store has 20 machines...  20 buttons. 
+                        // We might want to think of a machine naming convension.
                         let buttons = "" 
                         const storeId = store["storeId"]
-                        // console.log(vendingMachines[storeId] + "  sotred " + storeId + " len " + vendingMachines[storeId].length + " type " + typeof vendingMachines[storeId]  )
-                        // console.log(" .... ")
                         vendingMachines[storeId].forEach((vendingId)=> { 
-                            // console.log( vendingId  + "  storeId ! " + storeId )
                             buttons += `<button onClick='showVendingMachine(${vendingId})'>${vendingId}</button>`
                         }) 
-                        // console.log( buttons)
-                        // vendingMachines[storeId].forEach((vendingId)=> { 
-                        //     buttons += `<button onClick='showVendingMachine(${vendingId})>${vendingId}</button>`
-                        // });
-
                         table += "<td>" + buttons + "</td>"
-                        // console.log( vendingMachines )
-                        // table += "<td><button onClick='showVendingMachines(" + store['storeId'] + ")'>" + store['storeId'] + "</button</td>"                        
                     } else {
                         const value = store[key]
                         table += "<td>" + value + "</td>"
@@ -79,11 +90,8 @@
                 })
                 table += "</tr>"
             })
-
-
             table += "</table>"
             document.getElementById("stores").innerHTML = table
-
         } catch( error) { 
             console.log( error )
             alert( error)
