@@ -235,12 +235,17 @@ def insert_vending_machines():
         "merchantId_fk":machines[0]["merchantId_fk"],
         "version":"v1_1",
         "averageMark":1,
+                "PAYLOAD":'{"strain":"Silky","type":"Sativa","number_of_joints":5,"thc_percent":38.04,"cbd_percent":33.96,"harvest":"12/10/20","description":"Hungry,Happy,Tingly,Uplifted,Creative","price":38.18,"store":1,"stock":10,"product":"prerolls"}',
+
+
       }, 
       {
         "storeId_fk":machines[0]["storeId_fk"],
         "merchantId_fk":machines[0]["merchantId_fk"],
         "version":"v1_2",
         "averageMark":1,
+                "PAYLOAD":'{"strain":"Silky","type":"Sativa","number_of_joints":5,"thc_percent":38.04,"cbd_percent":33.96,"harvest":"12/10/20","description":"Hungry,Happy,Tingly,Uplifted,Creative","price":38.18,"store":1,"stock":10,"product":"prerolls"}',
+
 
 
       }, 
@@ -250,6 +255,8 @@ def insert_vending_machines():
         "merchantId_fk":machines[1]["merchantId_fk"],
         "version":"v1_3",
         "averageMark":1,
+                "PAYLOAD":'{"strain":"Silky","type":"Sativa","number_of_joints":5,"thc_percent":38.04,"cbd_percent":33.96,"harvest":"12/10/20","description":"Hungry,Happy,Tingly,Uplifted,Creative","price":38.18,"store":1,"stock":10,"product":"prerolls"}',
+
 
       }, 
       # one machine to store 2 
@@ -258,6 +265,8 @@ def insert_vending_machines():
         "merchantId_fk":machines[2]["merchantId_fk"],
         "version":"v1_1",
         "averageMark":1,
+                "PAYLOAD":'{"strain":"Silky","type":"Sativa","number_of_joints":5,"thc_percent":38.04,"cbd_percent":33.96,"harvest":"12/10/20","description":"Hungry,Happy,Tingly,Uplifted,Creative","price":38.18,"store":1,"stock":10,"product":"prerolls"}',
+
 
       }, 
 
@@ -268,8 +277,9 @@ def insert_vending_machines():
         merchantId_fk = vm['merchantId_fk']
         version = vm['version']
         averageMark = vm['averageMark']
-        sql = "insert into vendingMachine(storeId_fk,merchantId_fk,version,averageMark) values ({},{},'{}',{} );".format(
-          storeId_fk, merchantId_fk, version, averageMark
+        payload = vm['PAYLOAD']
+        sql = "insert into vendingMachine(storeId_fk,merchantId_fk,version,averageMark, JSON) values ({},{},'{}',{}, '{}' );".format(
+          storeId_fk, merchantId_fk, version, averageMark, payload
         )
         
         cursor.execute(sql)
