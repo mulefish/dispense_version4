@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant
+from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant
 
 from flask import jsonify
 
@@ -46,11 +46,18 @@ def merchant():
     merchantId = user_ids[username]
     green("username {} and merchantId {} " . format( username, merchantId ))
 
-    sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
-    stores = do_select(sqlfetch)
+    # store info
+    storeInfoFetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
+    stores = do_select(storeInfoFetch)
+    # vending machines this merchant has 
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
+    # inventory this fmerchant has 
 
-    return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines)
+    inventoryFetch = f'SELECT * FROM Item where merchantId_fk = {merchantId}'
+    inventory = do_select(inventoryFetch)
+    cyan("inventory count {} for merchantId {}".format(len(inventory), merchantId))
+
+    return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
 
 @app.route('/')
@@ -175,7 +182,7 @@ def get_vending_machine():
         query = "select * from vendingMachine where vendingId = {}".format(vendingId)
         cyan(query)
         result = do_select(query)
-        print(result)
+        # print(result)
         obj["status"] = "OK"
         obj["data"] = result
 

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/style.css">
     <script>
         const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')
+
     </script>
 </head>
 
@@ -15,7 +16,24 @@
     {% include "headers/isLoggedinHeader.html" %}
     <div id="stores"></div>
     <hr/>
-    <div id="vendingMachine"></div>
+    <table border='1'>
+        <tr>
+            <th>Vending Machine</th>
+            <th>Inventory</th>
+        </tr>
+        <tr>
+
+            <td valign='top'>
+            <div id="vendingMachine"></div> 
+            </td>
+            <td valign='top'>
+                {{ inventory}}
+
+
+            </td>
+
+
+        </tr>
     <br />
 
     <script>

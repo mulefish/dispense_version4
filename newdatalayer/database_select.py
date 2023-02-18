@@ -6,7 +6,7 @@ cursor = conn.cursor()
 
 def select_Item_table():
     print("\tselect_Item_table()")
-    cursor.execute("""SELECT * FROM Item limit 2""")
+    cursor.execute("""SELECT * FROM Item where merchantId_fk = 1 limit 2""")
     list_of_objs = cursor.fetchall()
     for item in list_of_objs:
         print(item)
@@ -63,7 +63,7 @@ def select_Associate():
 if __name__ == "__main__":
 
     select_Item_table()
-    select_Mercant()
-    select_Store()
-    select_vendingMachines()
+    # select_Mercant()
+    # select_Store()
+    # select_vendingMachines()
     conn.close()

@@ -1,5 +1,5 @@
 from common import yellow, cyan, log, green, verdict, getUsers
-from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant
+from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant
 
 def get_stores_test():
     name = "kermitt"
@@ -34,7 +34,8 @@ def get_vending_machine_test():
     # isOk = n > 0
     # verdict(isOk, True, "get_vending_machine_test got results of len {} back".format(n))
 
+
+
 if __name__ == "__main__":
-    # get_stores_test()
-    # get_vending_machines_of_stores_for_a_merchant_test()
-    get_vending_machine_test()
+    get_stores_test()
+    get_vending_machines_of_stores_for_a_merchant_test()
