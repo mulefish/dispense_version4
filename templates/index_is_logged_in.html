@@ -9,7 +9,7 @@
     <script>
         const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')
         const inventory = JSON.parse('{{ inventory | tojson }}')
-        console.log( inventory )
+        console.log(JSON.stringify(inventory)  )
     </script>
 </head>
 
