@@ -235,16 +235,14 @@ def insert_vending_machines():
         "merchantId_fk":machines[0]["merchantId_fk"],
         "version":"v1_1",
         "averageMark":1,
-                "PAYLOAD":'{"strain":"Silky","type":"Sativa","number_of_joints":5,"thc_percent":38.04,"cbd_percent":33.96,"harvest":"12/10/20","description":"Hungry,Happy,Tingly,Uplifted,Creative","price":38.18,"store":1,"stock":10,"product":"prerolls"}',
-
-
+        "PAYLOAD":'{  A0: {},  A1: {},A2: {},  A3: {},  A4: {},  A5: {},  A6: {},  A7: {},  B0: {},  B1: {},  B2: {},  B3: {},  B4: {},  B5: {},  B6: {},  B7: {},  C0: {},  C1: {},  C2: {},  C3: {},  C4: {},  C5: {},  C6: {},  C7: {},  D0: {},  D1: {},  D2: {},  D3: {},  D4: {},  D5: {},  D6: {},  D7: {},  E0: {},  E1: {},  E2: {},  E3: {},  E4: {},  E5: {},  E6: {},  E7: {}}',
       }, 
       {
         "storeId_fk":machines[0]["storeId_fk"],
         "merchantId_fk":machines[0]["merchantId_fk"],
         "version":"v1_2",
         "averageMark":1,
-                "PAYLOAD":'{"strain":"Silky","type":"Sativa","number_of_joints":5,"thc_percent":38.04,"cbd_percent":33.96,"harvest":"12/10/20","description":"Hungry,Happy,Tingly,Uplifted,Creative","price":38.18,"store":1,"stock":10,"product":"prerolls"}',
+        "PAYLOAD":'{  A0: {},  A1: {},A2: {},  A3: {},  A4: {},  A5: {},  A6: {},  A7: {},  B0: {},  B1: {},  B2: {},  B3: {},  B4: {},  B5: {},  B6: {},  B7: {},  C0: {},  C1: {},  C2: {},  C3: {},  C4: {},  C5: {},  C6: {},  C7: {},  D0: {},  D1: {},  D2: {},  D3: {},  D4: {},  D5: {},  D6: {},  D7: {},  E0: {},  E1: {},  E2: {},  E3: {},  E4: {},  E5: {},  E6: {},  E7: {}}',
 
 
 
@@ -255,7 +253,7 @@ def insert_vending_machines():
         "merchantId_fk":machines[1]["merchantId_fk"],
         "version":"v1_3",
         "averageMark":1,
-                "PAYLOAD":'{"strain":"Silky","type":"Sativa","number_of_joints":5,"thc_percent":38.04,"cbd_percent":33.96,"harvest":"12/10/20","description":"Hungry,Happy,Tingly,Uplifted,Creative","price":38.18,"store":1,"stock":10,"product":"prerolls"}',
+        "PAYLOAD":'{  A0: {},  A1: {},A2: {},  A3: {},  A4: {},  A5: {},  A6: {},  A7: {},  B0: {},  B1: {},  B2: {},  B3: {},  B4: {},  B5: {},  B6: {},  B7: {},  C0: {},  C1: {},  C2: {},  C3: {},  C4: {},  C5: {},  C6: {},  C7: {},  D0: {},  D1: {},  D2: {},  D3: {},  D4: {},  D5: {},  D6: {},  D7: {},  E0: {},  E1: {},  E2: {},  E3: {},  E4: {},  E5: {},  E6: {},  E7: {}}',
 
 
       }, 
@@ -265,7 +263,7 @@ def insert_vending_machines():
         "merchantId_fk":machines[2]["merchantId_fk"],
         "version":"v1_1",
         "averageMark":1,
-                "PAYLOAD":'{"strain":"Silky","type":"Sativa","number_of_joints":5,"thc_percent":38.04,"cbd_percent":33.96,"harvest":"12/10/20","description":"Hungry,Happy,Tingly,Uplifted,Creative","price":38.18,"store":1,"stock":10,"product":"prerolls"}',
+        "PAYLOAD":'{  A0: {},  A1: {},A2: {},  A3: {},  A4: {},  A5: {},  A6: {},  A7: {},  B0: {},  B1: {},  B2: {},  B3: {},  B4: {},  B5: {},  B6: {},  B7: {},  C0: {},  C1: {},  C2: {},  C3: {},  C4: {},  C5: {},  C6: {},  C7: {},  D0: {},  D1: {},  D2: {},  D3: {},  D4: {},  D5: {},  D6: {},  D7: {},  E0: {},  E1: {},  E2: {},  E3: {},  E4: {},  E5: {},  E6: {},  E7: {}}',
 
 
       }, 
