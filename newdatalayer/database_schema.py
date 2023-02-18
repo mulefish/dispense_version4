@@ -137,6 +137,7 @@ def create_item():
 
     table = """CREATE TABLE Item (
             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+            merchantId_fk INTEGER,
             name VARCHAR(255),
             brand VARCHAR(255),
             JSON BLOB

@@ -23,13 +23,13 @@ def truncate_tables():
 
 def insert_flowers_into_Item_table():
     flower_names = [
-        ["Peanut", "Kellog"],
-        ["Sunset", "Kellog"],
-        ["Headdog", "Kellog"],
-        ["OG", "Kellog"],
-        ["LostCause", "Kellog"],
-        ["AB", "Kellog"],
-        ["LostLake", "Kellog"],
+        [1,"Peanut", "Kellog"],
+        [1,"Sunset", "Kellog"],
+        [1,"Headdog", "Kellog"],
+        [2,"OG", "Kellog"],
+        [2,"LostCause", "Kellog"],
+        [2,"AB", "Kellog"],
+        [2,"LostLake", "Kellog"],
     ]
     flowers = [
         '{"strain":"Peanut Butter Pie","type":"Indica","farm":"Noble","weight_in_grams":1.09,"thc_percent":27.3,"cbd_percent":0.09,"harvest":"10/22/19","description":"Indoor/outdoor terpenes","price":12,"count":10,"product":"flower"}',
@@ -45,11 +45,12 @@ def insert_flowers_into_Item_table():
 
     for i in range(len(flowers)):
         json = flowers[i]
-        name = flower_names[i][0]
-        brand = flower_names[i][1]
+        merchantId_fk = flower_names[i][0]
+        name = flower_names[i][1]
+        brand = flower_names[i][2]
 
-        sql = "insert into Item(name, brand, JSON) values ('{}','{}','{}');".format(
-            name, brand, json
+        sql = "insert into Item(merchantId_fk, name, brand, JSON) values ({}, '{}','{}','{}');".format(
+            merchantId_fk, name, brand, json
         )
         
         cursor.execute(sql)
@@ -61,26 +62,26 @@ def insert_flowers_into_Item_table():
 def insert_prerolls_into_Item_table():
 
     preroll_names = [
-        ["Estraweeda", "Indica_5"],
-        ["Estraweeda", "Hybrid_15"],
-        ["Red Flight", "Hybrid_5"],
-        ["Estraweeda", "Hybrid_5"],
-        ["Estraweeda", "Hybrid_15"],
-        ["Silky", "Indica_10"],
-        ["Silky", "Indica_10"],
-        ["Red Flight", "Sativa_15"],
-        ["Silky", "Indica_15"],
-        ["Estraweeda", "Indica_10"],
-        ["Silky", "Sativa_15"],
-        ["Red Flight", "Sativa_20"],
-        ["Estraweeda", "Sativa_20"],
-        ["Red Flight", "Indica_10"],
-        ["Estraweeda", "Sativa_5"],
-        ["Silky", "Hybrid_15"],
-        ["Silky", "Hybrid_15"],
-        ["Silky", "Sativa_20"],
-        ["Estraweeda", "Indica_5"],
-        ["Silky", "Sativa_5"],
+        [1,"Estraweeda", "Indica_5"],
+        [1,"Estraweeda", "Hybrid_15"],
+        [1,"Red Flight", "Hybrid_5"],
+        [1,"Estraweeda", "Hybrid_5"],
+        [1,"Estraweeda", "Hybrid_15"],
+        [1,"Silky", "Indica_10"],
+        [1,"Silky", "Indica_10"],
+        [1,"Red Flight", "Sativa_15"],
+        [1,"Silky", "Indica_15"],
+        [2,"Estraweeda", "Indica_10"],
+        [2,"Silky", "Sativa_15"],
+        [2,"Red Flight", "Sativa_20"],
+        [2,"Estraweeda", "Sativa_20"],
+        [2,"Red Flight", "Indica_10"],
+        [2,"Estraweeda", "Sativa_5"],
+        [2,"Silky", "Hybrid_15"],
+        [2,"Silky", "Hybrid_15"],
+        [2,"Silky", "Sativa_20"],
+        [2,"Estraweeda", "Indica_5"],
+        [2,"Silky", "Sativa_5"],
     ]
 
     prerolls = [
@@ -109,11 +110,12 @@ def insert_prerolls_into_Item_table():
     print("insert_prerolls_into_Item_table()")
     for i in range(len(prerolls)):
         json = prerolls[i]
-        name = preroll_names[i][0]
-        brand = preroll_names[i][1]
+        merchantId_fk = preroll_names[i][0]
+        name = preroll_names[i][1]
+        brand = preroll_names[i][2]
 
-        sql = "insert into Item(name, brand, JSON) values ('{}','{}','{}');".format(
-            name, brand, json
+        sql = "insert into Item(merchantId_fk, name, brand, JSON) values ({}, '{}','{}','{}');".format(
+            merchantId_fk, name, brand, json
         )
         cursor.execute(sql)
         # print( sql )
