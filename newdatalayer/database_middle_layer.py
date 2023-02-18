@@ -38,7 +38,7 @@ def get_vending_machines_of_stores_for_a_merchant(nameOfTheMerchant):
     return machines_by_store
 
 
-def get_inventory_for_a_merchant(merchantId): 
+def get_inventory_for_a_merchant_as_json(merchantId): 
     # Mixed JSON + SQLite is a pain.
     # Convert everything into JSON and send that. 
     # Downside? On the over 'ingestion' side of the house I will need to remember this goof-around

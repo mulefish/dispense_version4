@@ -1,12 +1,11 @@
 from common import yellow, cyan, log, green, verdict, getUsers
-from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant
+from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
 
 def get_stores_test():
     name = "kermitt"
     # sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{name}"'
     sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{name}"'
     stores = do_select(sqlfetch)
-    print(stores)
     actualLength = len(stores)
     isOk = actualLength > 0
     verdict(isOk, True, "get_users_test got {} results ".format(len(stores)))
@@ -36,15 +35,17 @@ def get_vending_machine_test():
 
 
 
-def get_inventory_test():
-    x = get_inventory_for_a_merchant(1)
-    print(type(x))
-    print(type(x[0]))
-    print(x[0])
+def get_inventory_for_a_merchant_as_json_test():
 
-
+    # The table has rows of ints and strings with a ball of json. 
+    # Looking for a result set that is entirely JSONifiable for the client side of the house
+    x = get_inventory_for_a_merchant_as_json(1)
+    isJsonified = isinstance(x, list)
+    isPopulated = len(x) > 0
+    isOk = True and isPopulated == True
+    verdict(isOk, True, "get_inventory_for_a_merchant_as_json_test got type {} and a count of {} ".format(type(x), len(x)))
 
 if __name__ == "__main__":
-    # get_stores_test()
-    # get_vending_machines_of_stores_for_a_merchant_test()
-    get_inventory_test()
+    get_stores_test()
+    get_vending_machines_of_stores_for_a_merchant_test()
+    get_inventory_for_a_merchant_as_json_test()

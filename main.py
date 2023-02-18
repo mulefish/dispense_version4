@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant
+from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
 
 from flask import jsonify
 
@@ -51,12 +51,8 @@ def merchant():
     stores = do_select(storeInfoFetch)
     # vending machines this merchant has 
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
-    # inventory this fmerchant has 
-    # inventoryFetch = f'SELECT * FROM Item where merchantId_fk = {merchantId}'
-    # raw_inventory = do_select(inventoryFetch)
-    # inventory = json.dumps(raw_inventory)
-    # cyan("inventory count {} for merchantId {}".format(len(inventory), merchantId))
-    inventory = get_inventory_for_a_merchant(1)
+    # inventory
+    inventory = get_inventory_for_a_merchant_as_json(merchantId)
     print( inventory )
     return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
