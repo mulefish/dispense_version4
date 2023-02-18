@@ -53,7 +53,7 @@ def merchant():
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
     # inventory
     inventory = get_inventory_for_a_merchant_as_json(merchantId)
-    print( inventory )
+
     return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
 

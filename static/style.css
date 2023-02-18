@@ -1,6 +1,25 @@
 
 * {box-sizing: border-box;}
 
+.number {
+  width:80px;
+  text-align: right;
+  padding-right:10px;
+  background-color:lightgreen;
+}
+.string {
+  background-color:lightyellow;
+  width:40px;
+}
+
+.needed {
+  background-color:orange;
+}
+
+.date {
+  background-color:lightblue;
+}
+
 .num2 {
   width:80px;
   text-align: right;

@@ -5,7 +5,6 @@ function makeInventoryTable() {
     function getType(candidate) {
         let t = typeof candidate
         if ( t === "string") {
-            console.log(" string length is " + t.length + " for " + candidate) 
             if ( candidate.length === 8 && candidate.includes("/")) {
                 t = "date"
             } 
@@ -22,13 +21,19 @@ function makeInventoryTable() {
 
         let tr = `<tr><td>${itemId}<td>${brand}</td><td>${name}<td>`
 
-
         for ( let k in row ) {
-            if ( ! special.has(k )) {
-//                tr +=                 
+            if ( ! special.has(k)) {
+                const v = row[k]
+                const clazz = getType(v)
+               
+                tr += `<td class='${clazz}'>${v}</td>`                
             }
         }
+        tr += "</tr>"
+        table += tr 
     })
+    return table += "</table>"
 } 
 
-makeInventoryTable() 
+const result = makeInventoryTable() 
+console.log( result )
