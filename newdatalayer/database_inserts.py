@@ -268,7 +268,7 @@ def insert_vending_machines():
 
       }, 
 
-    ]
+    ] 
 
     for vm in vendingMachines:
         storeId_fk = vm['storeId_fk']
