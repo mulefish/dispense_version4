@@ -39,22 +39,23 @@ def get_vending_machines_of_stores_for_a_merchant(nameOfTheMerchant):
 
 
 def get_inventory_for_a_merchant(merchantId): 
+    # Mixed JSON + SQLite is a pain.
+    # Convert everything into JSON and send that. 
+    # Downside? On the over 'ingestion' side of the house I will need to remember this goof-around
+    ary = [] 
     sqlfetch = f'select itemId, name, brand, json from Item where merchantId_fk == {merchantId}'
-    print("get_inventory_for_a_merchant: {}".format(sqlfetch))
+    rows = do_select(sqlfetch)
+    for row in rows:
+        itemId = row[0]
+        name = row[1]
+        brand = row[2]
+        j = json.loads(row[3])
+        j['itemId'] = itemId
+        j['name'] = name
+        j['brand'] = brand
 
-    data = do_select(sqlfetch)
-    data = []
-    for row in data:
-        results = {} 
-        results['itemId'] = row[0]
-        results['name'] = row[1]
-        results['brand'] = row[2]
-        results['json'] = row[3]
-        data.append(results)
-
-    # return something like {58: [19, 20], 59: [21]} where '58' and '59' are storeIds and the [19, 20] and [21] are vendingId
-    print(" I got this many {}".format( len(data )))
-    return data
+        ary.append(j)
+    return ary
 
 
 

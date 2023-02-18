@@ -36,6 +36,15 @@ def get_vending_machine_test():
 
 
 
+def get_inventory_test():
+    x = get_inventory_for_a_merchant(1)
+    print(type(x))
+    print(type(x[0]))
+    print(x[0])
+
+
+
 if __name__ == "__main__":
-    get_stores_test()
-    get_vending_machines_of_stores_for_a_merchant_test()
+    # get_stores_test()
+    # get_vending_machines_of_stores_for_a_merchant_test()
+    get_inventory_test()

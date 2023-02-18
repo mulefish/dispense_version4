@@ -52,11 +52,12 @@ def merchant():
     # vending machines this merchant has 
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
     # inventory this fmerchant has 
-
-    inventoryFetch = f'SELECT * FROM Item where merchantId_fk = {merchantId}'
-    inventory = do_select(inventoryFetch)
-    cyan("inventory count {} for merchantId {}".format(len(inventory), merchantId))
-
+    # inventoryFetch = f'SELECT * FROM Item where merchantId_fk = {merchantId}'
+    # raw_inventory = do_select(inventoryFetch)
+    # inventory = json.dumps(raw_inventory)
+    # cyan("inventory count {} for merchantId {}".format(len(inventory), merchantId))
+    inventory = get_inventory_for_a_merchant(1)
+    print( inventory )
     return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
 
@@ -64,107 +65,6 @@ def merchant():
 def lulu():
     cyan("index")
     return render_template('index_not_logged_in.html')
-
-
-
-# @app.route('/insert_vending', methods=['PUT'])
-# def insert_vending():
-#     cyan("insert_vending")
-#     x = request.get_json()
-#     green(x)
-#     TABLE_NAME= x['table']
-#     vendingId = x['newVendingId']
-#     merchantId = x['newVendingMerchantId']
-#     storeId = x['newVendingStoreId']
-#     version = x['newVendingVersion']
-
-#     if 'newVendingId' in x and 'newVendingMerchantId' in x and 'newVendingStoreId' in x and 'newVendingVersion' in x:
-#         insert = "INSERT INTO {} VALUES ({},{},{},'{}')".format(TABLE_NAME, vendingId, merchantId, storeId, version)
-#         do_insert(insert)
-#         obj = {"status":"ok"}
-#         return jsonify(obj)
-#     else:
-#         obj = {"status":"Missing parameters"}
-#         return jsonify( obj )
-
-# @app.route('/insert_flowers', methods=['PUT'])
-# def insert_flowers():
-#     cyan("insert_flower")
-#     x = request.get_json()
-#     green(x)
-#     TABLE_NAME= x['table']
-#     vendingId = x['vendingId']
-#     merchantId = x['merchantId']
-#     storeId = x['storeId']
-
-#     strain = x["strain"]
-#     type = x["type"]
-#     farm = x["farm"]
-#     weight_in_grams = x["weight_in_grams"]
-#     thc_percent = x["thc_percent"]
-#     cbd_percent = x["cbd_percent"]
-#     harvest = x["harvest"]
-#     description = x["description"]
-#     price = x["price"]
-#     count = x["count"]
-#     product = x["product"]
-
-#     if 'strain' in x and 'product' in x and 'type' in x:
-#         # insert = "INSERT INTO {} (strain, type, farm, weight_in_grams, thc_percent, cbd_percent,harvest,description,count, product) VALUES( {},{},{},'{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(TABLE_NAME, strain, type, farm, weight_in_grams, thc_percent, cbd_percent, harvest, description,count, product )
-#         insert = "INSERT INTO {} VALUES( {}, {}, {}, {},{},{},'{}', '{}', '{}', '{}', '{}', {}, '{}', '{}')".format(TABLE_NAME, vendingId,     merchantId    , storeId , strain, type, farm, weight_in_grams, thc_percent, cbd_percent, harvest, description,price, count, product )
-
-#         do_insert(insert)
-
-#         do_insert(insert)
-#         obj = {"status":"ok"}
-#         return jsonify(obj)
-#     else:
-#         obj = {"status":"Missing parameters"}
-#         return jsonify( obj )
-
-
-
-# @app.route('/get_inventory_by_merchant', methods=['POST'])
-# def get_inventory_by_merchant():
-#     cyan("get_inventory_by_merchant")
-#     x = request.get_json()
-#     if ("merchantId" in x ):
-#         merchantId = x["merchantId"]
-#         #
-#         sqlfetch = "select strain, type, farm, weight_in_grams, thc_percent, cbd_percent,harvest, description, price, count, product from vending_flowers  where merchantId={}".format(merchantId)
-#         flowers = do_select(sqlfetch)
-#         #
-#         sqlfetch = "select brand, type, strain, number_of_joints, thc_percent, cbd_percent, harvest, description, price, count, product from vending_prerolls where merchantId={}".format(merchantId)
-#         prerolls = do_select(sqlfetch)
-#         #
-#         sqlfetch = "select vendingId, merchantId, storeId, version from vending_machines where merchantId={}".format(merchantId)
-#         vending_machines = do_select(sqlfetch)
-#         #
-#         data = {} 
-#         data["flowers_columns"]=["strain", "type", "farm", "weight_in_grams", "thc_percent", "cbd_percent","harvest", "description", "price", "count", "product"]
-#         data["flowers"] = flowers 
-#         #
-#         data["prerolls_columns"]=["brand", "type", "strain", "number_of_joints", "thc_percent", "cbd_percent","harvest", "description", "price", "count", "product"]
-#         data["prerolls"] = prerolls
-#         #
-#         data["vending_machines_columns"] = ["vendingId", "merchantId", "storeId", "version"]
-#         data["vending_machines"] = vending_machines
-
-#         return jsonify(data)
-
-#     else:
-#         return "Missing parameter"
-
-
-# @app.route('/inventory_by_machine')
-# @login_required
-# def inventory_by_machine():
-#     username = current_user.name 
-#     merchantId= user_ids[username]
-#     cyan("inventory_by_machine username={} merchantId={}".format(username, merchantId))    
-
-#     return render_template('inventory_by_machine.html', username=username, merchant=merchantId )
-
 
 
 # getVendingMachine
