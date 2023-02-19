@@ -46,7 +46,7 @@
                 let table = "<table border='1'>"
                 table += "<tr>"
                 cols.forEach((c)=> { 
-                    table += "<th>RC</th><th>Count</th><th>Item Id</th>"
+                    table += "<th>RowCol</th><th>Count</th><th>Item Id</th>"
                 }) 
                 table += "</tr>"
                 
@@ -54,7 +54,9 @@
                     table += "<tr>"
                     cols.forEach((c)=> { 
                         const rowcol = r + c 
-                        table += `<td class='rc'>${rowcol}</td><td class='rc_number' id='${rowcol}'>0</td><td class='rc_number' id='${rowcol}_item'>-</td>` 
+                        table += `<td class='rc'>${rowcol}</td>`
+                        table += `<td><input type='number' min='0' value='0' class='rc_number' id='${rowcol}'></input></td>`
+                        table += `<td><input type='number' min='0' value='0' class='rc_number' id='${rowcol}_item'></input></td>` 
                     })
                     table += "</tr>"
                 })
