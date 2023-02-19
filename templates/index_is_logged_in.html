@@ -17,8 +17,52 @@
 
 <body>
     {% include "headers/isLoggedinHeader.html" %}
+
+
+
     <div id="stores"></div>
+    <table border="1">
+        <tr>
+            <td>
    <button onClick='addNewProduct()'>Add a product</button>
+            </td>
+            <td>Selected ItemId</td>
+            <td><h4 id="theSelectedItem"  class='selected'  /></td>
+            <td>Selected VendingMachine</td>
+            <td><h4 id="theSelectedVendingMachine" class='selected' /></td>
+            <td>Selected RowCol</td>
+            <td><h4 id="theSelectedRowCol" class='selected'  /></td>
+            <script>
+                let theSelectedItem = -1 
+                let theSelectedVendingMachine = -1 
+                let theSelectedRowCol = "NILL"
+        
+                function setSelectedItem(itemId) { 
+                    theSelectedItem = itemId
+                    document.getElementById("theSelectedItem").innerHTML = theSelectedItem
+                }
+                function setSelectedVendingMachine(vendingMachineId) { 
+                    theSelectedVendingMachine = vendingMachineId
+                    document.getElementById("theSelectedVendingMachine").innerHTML = vendingMachineId
+                }
+                function setSelectedRowCol(rowcol) { 
+                    if (theSelectedItem > 0 && theSelectedVendingMachine > 0 ) {  
+                        theSelectedRowCol = rowcol
+                        document.getElementById("theSelectedRowCol").innerHTML = theSelectedRowCol
+                    }
+                }
+                function unselectEverything() { 
+                    theSelectedItem = -1 
+                    theSelectedVendingMachine = -1 
+                    theSelectedRowCol = "NILL"
+                    document.getElementById("theSelectedItem").innerHTML =""
+                    document.getElementById("theSelectedVendingMachine").innerHTML = ""
+                    document.getElementById("theSelectedRowCol").innerHTML = ""
+                }
+                </script>
+
+        </tr>
+    </table> 
 
     {% include "headers/new_product_modal.html" %}
 
@@ -32,7 +76,8 @@
 
     <script>
     function showVendingMachine(vendingMachineId) {
-        alert(vendingMachineId)
+        setSelectedVendingMachine(vendingMachineId)
+        // FINCH 
     } 
     let merchantId = 0 
 
@@ -54,9 +99,10 @@
                     table += "<tr>"
                     cols.forEach((c)=> { 
                         const rowcol = r + c 
-                        table += `<td class='rc'>${rowcol}</td>`
-                        table += `<td><input type='number' min='0' value='0' class='rc_number' id='${rowcol}'></input></td>`
-                        table += `<td><input type='number' min='0' value='0' class='rc_number' id='${rowcol}_item'></input></td>` 
+                        table += `<td class='rc' onmouseenter='setSelectedRowCol("${rowcol}")'>${rowcol}</td>`
+                        //WREN
+                        table += `<td onmouseenter='setSelectedRowCol("${rowcol}")'><input type='number' min='0' value='0' class='rc_number' id='${rowcol}' ></input></td>`
+                        table += `<td onmouseenter='setSelectedRowCol("${rowcol}")' id='rowcol_item_${rowcol}'></td>` 
                     })
                     table += "</tr>"
                 })

@@ -27,16 +27,24 @@ function makeInventoryTable(inventory, domNodeToPopulate) {
             if ( k === "deploy") {
                 tr += `<td><button onClick="makeThisRowActive_inventoryTable(${row['itemId']}, ${i})">Select ${row['itemId']} </button></td>`      
             } else if ( k === "save") {
-                tr += `<td><button onClick="saveChanges_toProduct(${row['itemId']}, ${i})">Save ${row['itemId']} </button></td>`      
+                tr += `<td><button onClic   k="saveChanges_toProduct(${row['itemId']}, ${i})">Save ${row['itemId']} </button></td>`      
             } else {
                 const v = row[k]
                 // const clazz = getType(v)   
                 // tr += `<td class='${clazz}'>${v}</td>`                    
                 const t = getType(v) 
                 if ( t === "string" || t === "date") {
-                    tr += `<td><input type='text' value='${v}' class='rc_string' ></input></td>`
+                    //tr += `<td><input type='text' value='${v}' class='rc_string' ></input></td>`
+                    tr += `<td>${v}</td>`
                 } else { 
-                    tr += `<td><input type='number' min='0' value='${v}' class='rc_number'  ></input></td>`
+                    if ( k === "deployed") {
+                        tr += `<td id="deployed_${row['itemId']}">${v}</td>`                
+                    } else if ( k === "instock") {
+                        tr += `<td id="instock_${row['itemId']}">${v}</td>`                
+                    } else {
+                        // tr += `<td><input type='number' min='0' value='${v}' class='rc_number'  ></input></td>`
+                        tr += `<td>${k}</td>`                
+                    }
                 }
             }
         })
@@ -55,6 +63,8 @@ function saveChanges_toProduct(itemId, i) {
 
 function makeThisRowActive_inventoryTable(itemId, i) { 
 
+
+    setSelectedItem(itemId)
 
     const table = document.getElementById('inventoryTable');
     const cells = table.getElementsByTagName('td');

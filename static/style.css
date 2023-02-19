@@ -24,6 +24,10 @@
   /* background-color:lightgreen; */
 }
 
+.selected {
+  margin-right:5px;
+  margin-left:5px;
+}
 
 
 .number {
