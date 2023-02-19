@@ -22,12 +22,22 @@
     <!-- <button id="myBtn">Open Modal</button> -->
 
 <!-- The Modal -->
-<div id="myModal" class="modal">
+<div id="addNewProductModal" class="modal">
 
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
+        <table border='1'>
+            <tr>
+                <th>Add New Product</th><th>Value</th>
+            </tr>
+            <tr>
+                <td>MerchantId</td>
+                <td id='merchantId'></td>
+            </rd>
+        </table>
+
+
   </div>
 
 </div>
@@ -45,7 +55,7 @@
 
 
     <!-- The Modal -->
-<div id="myModal" class="modal">
+<div id="addNewProductModal" class="modal">
 
     <!-- Modal content -->
     <div class="modal-content">
@@ -155,7 +165,7 @@ alert(vendingMachineId)
 
 
 <!-- The Modal -->
-<div id="myModal" class="modal">
+<div id="addNewProductModal" class="modal">
 
   <!-- Modal content -->
   <div class="modal-content">
@@ -166,30 +176,18 @@ alert(vendingMachineId)
 </div>
 
 <script>
-// Get the modal
-var modal = document.getElementById("myModal");
-
-// Get the button that opens the modal
-//var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// // When the user clicks the button, open the modal 
-// btn.onclick = function() {
-//   modal.style.display = "block";
-// }
-
-
+// The modal
+const modal = document.getElementById("addNewProductModal");
+const span = document.getElementsByClassName("close")[0];
 function addNewProduct() { 
-try { 
-    alert( merchantId )
-    modal.style.display = "block";
-                  } 
-                  catch( boom ) {
-                    alert( boom )
-                  }                  // alert( "merchantId " + merchantId)
-                }
+    try { 
+        document.getElementById("merchantId").innerHTML = merchantId
+        modal.style.display = "block";
+    } 
+    catch( boom ) {
+        alert( boom )
+    }
+}
 
 
 // When the user clicks on <span> (x), close the modal
