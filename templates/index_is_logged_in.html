@@ -34,7 +34,68 @@
             <tr>
                 <td>MerchantId</td>
                 <td id='merchantId'></td>
-            </rd>
+            </tr>
+
+            <tr>
+                <td>price</td>
+                <td><input type='text' id='new_price' value="" size='20'></td>
+            </tr>
+            <tr>
+                <td>instock</td>
+                <td><input type='text' id='new_instock' value="" size='20'></td>
+            </tr>
+            <tr>
+                <td>brand</td>
+                <td><input type='text' id='new_instock' value="" size='20'></td>
+            </tr>
+            <tr>
+                <td>cbd</td>
+                <td><input type='text' id='new_cbd' value="" size='20'></td>
+            </tr>
+            <tr>
+                <td>description</td>
+                <td><input type='text' id='new_description' value="" size='100'></td>
+            </tr>
+            <tr>
+                <td>farm</td>
+                <td><input type='text' id='new_farm' value="" size='100'></td>
+            </tr>
+            <tr>
+                <td>harvest</td>
+                <td><input type='text' id='new_harvest' value="" size='100'></td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td><input type='text' id='new_name' value="" size='100'></td>
+            </tr>
+            <tr>
+                <td>product</td>
+                <td><input type='text' id='new_product' value="" size='100'></td>
+            </tr>
+            <tr>
+                <td>strain</td>
+                <td><input type='text' id='new_strain' value="" size='100'></td>
+            </tr>
+            <tr>
+                <td>thc</td>
+                <td><input type='text' id='new_thc' value="" size='100'></td>
+            </tr>
+            <tr>
+                <td>type</td>
+                <td><input type='text' id='new_type' value="" size='100'></td>
+            </tr>
+
+            <tr>
+                <td>Weight ( gram ) or number</td>
+                <td><input type='text' id='new_Wt_Num' value="" size='100'></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button onClick="saveAddThing()">Save New Product</button></td>
+            </tr>
+
+
+
         </table>
 
 
@@ -54,23 +115,12 @@
     <br />
 
 
-    <!-- The Modal -->
-<div id="addNewProductModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <p>Some text in the Modal..</p>
-    </div>
-  
-  </div>
-
 
     <script>
-                function showVendingMachine(vendingMachineId) {
-alert(vendingMachineId)
-                } 
-                let merchantId = 0 
+    function showVendingMachine(vendingMachineId) {
+        alert(vendingMachineId)
+    } 
+    let merchantId = 0 
 
 
 
@@ -164,19 +214,8 @@ alert(vendingMachineId)
 
 
 
-<!-- The Modal -->
-<div id="addNewProductModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
-  </div>
-
-</div>
 
 <script>
-// The modal
 const modal = document.getElementById("addNewProductModal");
 const span = document.getElementsByClassName("close")[0];
 function addNewProduct() { 
