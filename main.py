@@ -65,14 +65,26 @@ def lulu():
 
 
 @app.route('/add_new_product_for_a_merchant', methods=['POST'])
+@login_required
 def add_new_product_for_a_merchant():
     cyan("add_new_product_for_a_merchant")
     obj = {
         "status":"Missing information"
     }
     obj = request.get_json()
-    cyan(obj)
-    # if "vendingId" in x:
+    username = current_user.name 
+    merchantId = user_ids[username]
+    obj["username"] = username
+    obj["merchantId"] = merchantId
+    for k in obj: 
+        print( " key={} and value={}".format(k, obj[k]))
+ 
+    cyan("username {} ".format( username ))
+    cyan("merchantId {} ".format( merchantId ))
+    
+
+
+     # if "vendingId" in x:
 
 
     #     vendingId = x["vendingId"]
