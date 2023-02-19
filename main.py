@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
 
 from flask import jsonify
 
@@ -53,7 +53,7 @@ def merchant():
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
     # inventory
     inventory = get_inventory_for_a_merchant_as_json(username)
-    # print(inventory )
+
     return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
 
@@ -71,42 +71,35 @@ def add_new_product_for_a_merchant():
     obj = {
         "status":"Missing information"
     }
+
+    # insert into Item(merchantId_fk, price, instock, deployed, JSON) values (-1, 99,88,77, '{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}');
+
     obj = request.get_json()
     username = current_user.name 
     merchantId = user_ids[username]
     obj["username"] = username
     obj["merchantId"] = merchantId
-    for k in obj: 
-        print( " key={} and value={}".format(k, obj[k]))
- 
+    # print( obj )
+
+    collection = obj["json"]
+    price = obj["price"]
+    deployed = obj["deployed"]
+    instock = obj["instock"]
+
     cyan("username {} ".format( username ))
     cyan("merchantId {} ".format( merchantId ))
+    json_as_string = json.dumps(collection)
+    objectToInsert = [merchantId,price,instock,0,json_as_string]
+
+    test_product = [-1,"99","33",77,'{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}']
+
+    cyan( objectToInsert)
+    green(test_product)
+
+    result = insert_new_product(objectToInsert)
+
+    return jsonify(result)
     
-
-
-     # if "vendingId" in x:
-
-
-    #     vendingId = x["vendingId"]
-    #     cyan("get_vending_machine for vendingId {}".format( vendingId))
-    #     query = "select * from vendingMachine where vendingId = {}".format(vendingId)
-    #     cyan(query)
-    #     result = do_select(query)
-    #     # print(result)
-    #     obj["status"] = "OK"
-    #     obj["data"] = result
-
-    # else: 
-    #     cyan("get_vending_machine is missing a parameter")
-    #     obj["status"] = "Missing parameter"
-
-
-    return jsonify(obj)
-    
-
-
-
-# getVendingMachine
 @app.route('/get_vending_machine', methods=['POST'])
 def get_vending_machine():
     obj = {

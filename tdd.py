@@ -71,9 +71,9 @@ def insert_new_product_test():
 
 
 if __name__ == "__main__":
-    get_stores_test()
-    get_vending_machines_of_stores_for_a_merchant_test()
-    get_inventory_for_a_merchant_as_json_test()
-    get_merchantId_from_merchantName_test()
+    # get_stores_test()
+    # get_vending_machines_of_stores_for_a_merchant_test()
+    # get_inventory_for_a_merchant_as_json_test()
+    # get_merchantId_from_merchantName_test()
     insert_new_product_test() 
     

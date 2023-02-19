@@ -97,12 +97,28 @@ function saveAddThing() {
     const headers = { "Content-Type": "application/json" }
 
     let the_new_product_to_add = {}
-
+    let price = 0 
+    let instock = 0 
+    let deployed = 0
+    let json = {} 
+    // Need to pop off a few values from the JSON to satisfy that DB's schema
     ids_of_the_inputs_for_new_product.forEach((key)=>{
         const value = document.getElementById(key).value
         const realKey = key.replace("new_", "")
-        the_new_product_to_add[realKey] = value
+        if ( realKey === "price") {
+            price = value
+        } else if ( realKey === "instock") {
+            instock = value
+        } else if ( realKey === "deployed") {
+            deployed = value 
+        } else {
+            json[realKey] = value
+        }
     })
+    the_new_product_to_add["json"] = json
+    the_new_product_to_add["price"] = price
+    the_new_product_to_add["instock"] = instock
+    the_new_product_to_add["deployed"] = deployed
 
     const body = JSON.stringify(the_new_product_to_add )
     const requestOptions = {
@@ -114,7 +130,7 @@ function saveAddThing() {
     fetch("/add_new_product_for_a_merchant", requestOptions)
         .then(response => response.json())
         .then(obj => {
-            alert( JSON.stringify( obj ) )
+            alert( JSON.stringify( obj , null, 2 ) )
         })
         .catch(error => {
             console.log("%c This was an error because: " + error.message, "background:lightred;")

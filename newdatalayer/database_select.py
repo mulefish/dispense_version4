@@ -13,6 +13,15 @@ def select_Item_table():
 
     conn.commit()
 
+def select_Item_table_count():
+    print("\tselect_Item_table()")
+    cursor.execute("""SELECT * FROM Item""")
+    list_of_objs = cursor.fetchall()
+    print("Items count {}".format( len(list_of_objs)))
+    conn.commit()
+
+
+
 
 def select_Mercant():
     print("\tselect_Mercant()")
@@ -62,7 +71,8 @@ def select_Associate():
 
 if __name__ == "__main__":
 
-    select_Item_table()
+    # select_Item_table()
+    select_Item_table_count()
     # select_Mercant()
     # select_Store()
     # select_vendingMachines()
