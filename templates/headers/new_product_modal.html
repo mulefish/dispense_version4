@@ -8,7 +8,7 @@
               </tr>
               <tr>
                   <td>MerchantId</td>
-                  <td id='merchantId'></td>
+                  <td><h4 id='merchantId'> </h4></td>
               </tr>
   
               <tr>
@@ -21,7 +21,7 @@
               </tr>
               <tr>
                   <td>brand</td>
-                  <td><input type='text' id='new_instock' value="" size='20'></td>
+                  <td><input type='text' id='new_brand' value="" size='20'></td>
               </tr>
               <tr>
                   <td>cbd</td>
@@ -74,3 +74,59 @@
     </div>
   
   </div>
+
+
+  <script>
+    const modal = document.getElementById("addNewProductModal");
+    const span = document.getElementsByClassName("close")[0];
+    function addNewProduct() { 
+        try { 
+            document.getElementById("merchantId").innerHTML = merchantId
+            modal.style.display = "block";
+        } 
+        catch( boom ) {
+            alert( boom )
+        }
+    }
+    
+
+    function clearOutTheForm() { 
+
+        const ids_to_clear = ["new_price", 
+        "new_instock",
+        "new_cbd",
+        "new_brand",
+        "new_description",
+        "new_farm",
+        "new_harvest",
+        "new_name",
+        "new_product",
+        "new_strain",
+        "new_thc",
+        "new_type",
+        "new_Wt_Num"] 
+        ids_to_clear.forEach((id)=> { 
+            document.getElementById(id).value = ""
+        })
+  
+  
+
+
+    }
+
+
+    
+    // When the user clicks on <span> (x), close the modal and do NOT save
+    span.onclick = function() {
+        clearOutTheForm()
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it and do NOT save 
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        clearOutTheForm()
+        modal.style.display = "none";
+      }
+    }
+    </script>
