@@ -91,10 +91,8 @@ def add_new_product_for_a_merchant():
     json_as_string = json.dumps(collection)
     objectToInsert = [merchantId,price,instock,0,json_as_string]
 
-    test_product = [-1,"99","33",77,'{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}']
 
     cyan( objectToInsert)
-    green(test_product)
 
     result = insert_new_product(objectToInsert)
 

@@ -115,7 +115,13 @@ function saveAddThing() {
             if ( realKey == "description") {
                 realKey = "desc"
             }
-            json[realKey] = value
+
+            console.log( realKey )
+            if ( realKey === "cbd" || realKey === "thc" || realKey === "Wt_Num") {
+                json[realKey] = parseFloat(value)
+            } else {
+                json[realKey] = value
+            }
         }
     })
     the_new_product_to_add["json"] = json
@@ -133,7 +139,11 @@ function saveAddThing() {
     fetch("/add_new_product_for_a_merchant", requestOptions)
         .then(response => response.json())
         .then(obj => {
-            alert( JSON.stringify( obj , null, 2 ) )
+            if ( obj === "OK") {
+                clearOutTheForm_andCloseIt()
+            } else {
+                alert("Something wrong happened")
+            }
         })
         .catch(error => {
             console.log("%c This was an error because: " + error.message, "background:lightred;")
@@ -154,23 +164,22 @@ function saveAddThing() {
         }
     }
     
-    function clearOutTheForm() { 
+    function clearOutTheForm_andCloseIt() { 
         ids_of_the_inputs_for_new_product.forEach((id)=> { 
             document.getElementById(id).value = ""
         })
+        modal.style.display = "none";
     }
 
     // When the user clicks on <span> (x), close the modal and do NOT save
     span.onclick = function() {
-        clearOutTheForm()
-        modal.style.display = "none";
+        clearOutTheForm_andCloseIt()
     }
     
     // When the user clicks anywhere outside of the modal, close it and do NOT save 
     window.onclick = function(event) {
         if (event.target == modal) {
-            clearOutTheForm()
-            modal.style.display = "none";
+            clearOutTheForm_andCloseIt()
         }
     }
     </script>
