@@ -15,7 +15,7 @@
   width:40px;
   text-align: right;
   padding-right:2px;
-  background-color:lightgreen;
+  /* background-color:lightgreen; */
 }
 
 
@@ -24,10 +24,10 @@
   width:40px;
   text-align: right;
   padding-right:2px;
-  background-color:lightgreen;
+  /* background-color:lightgreen; */
 }
 .string {
-  background-color:lightyellow;
+  /* background-color:lightyellow; */
   width:40px;
   white-space: nowrap;
   overflow: hidden;
