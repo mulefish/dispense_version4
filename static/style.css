@@ -10,6 +10,12 @@
   text-overflow: ellipsis;
 
 } 
+.rc_string {
+  width:100px;
+  text-align: right;
+  margin:5px;
+
+} 
 
 .rc_number {
   width:40px;
