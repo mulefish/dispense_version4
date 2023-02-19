@@ -104,7 +104,7 @@ function saveAddThing() {
     // Need to pop off a few values from the JSON to satisfy that DB's schema
     ids_of_the_inputs_for_new_product.forEach((key)=>{
         const value = document.getElementById(key).value
-        const realKey = key.replace("new_", "")
+        let realKey = key.replace("new_", "")
         if ( realKey === "price") {
             price = value
         } else if ( realKey === "instock") {
@@ -112,6 +112,9 @@ function saveAddThing() {
         } else if ( realKey === "deployed") {
             deployed = value 
         } else {
+            if ( realKey == "description") {
+                realKey = "desc"
+            }
             json[realKey] = value
         }
     })
