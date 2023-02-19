@@ -73,6 +73,53 @@ def get_inventory_for_a_merchant_as_json(merchantName):
     return ary
 
 
+def insert_new_product(row_to_insert): 
+    conn = sqlite3.connect('./newdatalayer/new_dispense.db')
+    cursor = conn.cursor()
+    result = "NILL"
+    try: 
+        # row_to_insert = [-1,99,88,77,'{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}']
+        merchantId_fk = row_to_insert[0]
+        price = row_to_insert[1]
+        instock = row_to_insert[2]
+        deployed = row_to_insert[3]
+        json = row_to_insert[4]
+        sql = "insert into Item(merchantId_fk, price, instock, deployed, JSON) values ({}, {},{},{}, '{}');".format(
+             merchantId_fk, price, instock, deployed, json
+        )
+        print(sql)
+        cursor.execute(sql)
+        conn.commit() 
+        result = "OK"
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        print("Exception class is: ", er.__class__)
+        print('SQLite traceback: ')
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        print(traceback.format_exception(exc_type, exc_value, exc_tb))
+        result = er
+    conn.close()   
+    return result     
+
+def delete_Items_for_given_merchantId_fk(merchantId_fk): 
+    # This is to clean up a test from the tdd.py
+    conn = sqlite3.connect('./newdatalayer/new_dispense.db')
+    cursor = conn.cursor()
+    try: 
+        sql = "delete from Item where merchantId_fk = {}".format(merchantId_fk)
+        print(sql)
+        cursor.execute(sql)
+        conn.commit() 
+        result = "OK"
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        print("Exception class is: ", er.__class__)
+        print('SQLite traceback: ')
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        print(traceback.format_exception(exc_type, exc_value, exc_tb))
+        result = er
+    conn.close()   
+    return result     
 
 
 

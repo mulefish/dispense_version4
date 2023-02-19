@@ -1,5 +1,5 @@
 from common import yellow, cyan, log, green, verdict, getUsers
-from newdatalayer.database_middle_layer import get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
 
 def get_stores_test():
     name = "kermitt"
@@ -54,22 +54,19 @@ def get_merchantId_from_merchantName_test():
         isOk = True 
     verdict(isOk, True, "get_merchantId_from_merchantName_test got merchantId {} from merchantName {} ".format(merchantId, name))
 
-def insert_new_product_test(): 
-    try: 
-        test_product = [1000,99,88,77,'{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}']
-        merchantId_fk = test_product[0]
-        price = test_product[1]
-        instock = test_product[2]
-        deployed = test_product[3]
-        json = test_product[4]
-        sql = "insert into Item(merchantId_fk, price, instock, deployed, JSON) values ({}, {},{},{}, '{}');".format(
-             merchantId_fk, price, instock, deployed, json
-        )
-        cursor.execute(sql)
-        conn.commit() 
-    except:
-        print("An exception occurred")
 
+def cleanup():
+    merchantId_fk = -1
+    result = delete_Items_for_given_merchantId_fk(merchantId_fk)
+    isOk = result == "OK"
+    verdict(isOk, True, "cleanup for merchantId_fk {}".format(merchantId_fk))
+
+def insert_new_product_test(): 
+    test_product = [-1,99,88,77,'{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}']
+    result = insert_new_product(test_product)
+    isOk = result == "OK"
+    verdict(isOk, True, "insert_new_product_test")
+    cleanup()
 
 
 
@@ -78,4 +75,5 @@ if __name__ == "__main__":
     get_vending_machines_of_stores_for_a_merchant_test()
     get_inventory_for_a_merchant_as_json_test()
     get_merchantId_from_merchantName_test()
-    # insert_new_product_test() 
+    insert_new_product_test() 
+    
