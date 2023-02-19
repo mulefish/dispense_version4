@@ -131,6 +131,27 @@ def create_associate():
     conn.commit()
 
 
+# def create_item(): 
+#     table_name = "Item"
+#     cursor = conn.cursor()
+
+#     table = """CREATE TABLE Item (
+#             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+#             merchantId_fk INTEGER,
+#             name VARCHAR(255),
+#             brand VARCHAR(255),
+#             JSON BLOB
+#         ); """
+
+#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+#     cursor.execute(table)
+
+
+#     print("Created the table '{}'".format(table_name))
+
+#     conn.commit()
+
+
 def create_item(): 
     table_name = "Item"
     cursor = conn.cursor()
@@ -138,8 +159,9 @@ def create_item():
     table = """CREATE TABLE Item (
             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
             merchantId_fk INTEGER,
-            name VARCHAR(255),
-            brand VARCHAR(255),
+            price REAL, 
+            instock INTEGER,
+            deployed INTEGER,
             JSON BLOB
         ); """
 
@@ -197,14 +219,12 @@ def create_vendingMachine():
 
 if __name__ == "__main__":
     create_orders()
-    # INSERT INTO Orders (storeId_fk, vendingId_fk, customerId_fk, orderTime, qrCode) VALUES (1,2,3, 1675637122776, "hello")
     create_order_item()
     create_customer()
     create_store()
     create_merchant()
     create_associate()
     create_item()
-    # insert into Item(name, brand, JSON) values ("foo","bar", '{"HELLO":"WORLD"}'); 
     create_stock()
     create_vendingMachine()
     conn.close()
