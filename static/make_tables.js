@@ -11,23 +11,17 @@ function makeInventoryTable(inventory, domNodeToPopulate) {
 
     // const special = new Set(["brand", "name", "itemId"])
     let table = "<table border='1'><tr>"
-    const keys = ['itemId','price','instock','deployed','brand','cbd','desc','farm','harvest','name','product','strain','thc','type','Wt_Num']
+    // const keys = ['itemId','price','instock','deployed','brand','cbd','desc','farm','harvest','name','product','strain','thc','type','Wt_Num']
+
+    const lookup = {'itemId':'id','price':'$','instock':'in','deployed':'out','brand':'brand','cbd':'cbd %','desc':'description','farm':'farm','harvest':'harvest','name':'name','product':'product','strain':'strain','thc':'thc%','type':'type','Wt_Num':'wt or #'}
+    const keys = Object.keys(lookup)
     let headers = "<tr>"
     keys.forEach((k)=>{
-        headers += "<th>" + k + "</th>"
+        headers += "<th>" + lookup[k] + "</th>"
     })
     headers += "</tr>"
     table += headers
-
-
-
-
     inventory.forEach((row, i ) => { 
-        // const brand = row["brand"]
-        // const name = row["name"]
-        // const itemId = row["itemId"]
-console.log(row)
-        // let tr = `<tr><td class='needed'>${itemId}<td class='needed'>${brand}</td><td class='needed'>${name}<td>`
         let tr = "<tr>"
         keys.forEach((k)=>{
             const v = row[k]
