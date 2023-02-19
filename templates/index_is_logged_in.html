@@ -100,7 +100,6 @@
                     cols.forEach((c)=> { 
                         const rowcol = r + c 
                         table += `<td class='rc' onmouseenter='setSelectedRowCol("${rowcol}")'>${rowcol}</td>`
-                        //WREN
                         table += `<td onmouseenter='setSelectedRowCol("${rowcol}")'><input type='number' min='0' value='0' class='rc_number' id='${rowcol}' ></input></td>`
                         table += `<td onmouseenter='setSelectedRowCol("${rowcol}")' id='rowcol_item_${rowcol}'></td>` 
                     })

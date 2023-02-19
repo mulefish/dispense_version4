@@ -13,7 +13,7 @@ function makeInventoryTable(inventory, domNodeToPopulate) {
     let table = "<table border='1' id='inventoryTable'><tr>"
     // const keys = ['itemId','price','instock','deployed','brand','cbd','desc','farm','harvest','name','product','strain','thc','type','Wt_Num']
 
-    const lookup = {'itemId':'id','price':'$','instock':'in','deployed':'out','brand':'brand','cbd':'cbd %','desc':'description','farm':'farm','harvest':'harvest','name':'name','product':'product','strain':'strain','thc':'thc%','type':'type','Wt_Num':'wt or #', "deploy":"deploy", "save":"save"}
+    const lookup = {'itemId':'id','price':'$','instock':'in','deployed':'out','brand':'brand','cbd':'cbd %','desc':'description','farm':'farm','harvest':'harvest','name':'name','product':'product','strain':'strain','thc':'thc%','type':'type','Wt_Num':'wt or #', "deploy":"deploy"} // , "save":"save"}
     const keys = Object.keys(lookup)
     let headers = "<tr>"
     keys.forEach((k)=>{
@@ -26,8 +26,8 @@ function makeInventoryTable(inventory, domNodeToPopulate) {
         keys.forEach((k)=>{
             if ( k === "deploy") {
                 tr += `<td><button onClick="makeThisRowActive_inventoryTable(${row['itemId']}, ${i})">Select ${row['itemId']} </button></td>`      
-            } else if ( k === "save") {
-                tr += `<td><button onClic   k="saveChanges_toProduct(${row['itemId']}, ${i})">Save ${row['itemId']} </button></td>`      
+            // } else if ( k === "save") {
+            //     tr += `<td><button onClic   k="saveChanges_toProduct(${row['itemId']}, ${i})">Save ${row['itemId']} </button></td>`      
             } else {
                 const v = row[k]
                 // const clazz = getType(v)   
@@ -38,12 +38,12 @@ function makeInventoryTable(inventory, domNodeToPopulate) {
                     tr += `<td>${v}</td>`
                 } else { 
                     if ( k === "deployed") {
-                        tr += `<td id="deployed_${row['itemId']}">${v}</td>`                
+                        tr += `<td id="deployed_${row['itemId']}" class='rc_number'>${v}</td>`                
                     } else if ( k === "instock") {
-                        tr += `<td id="instock_${row['itemId']}">${v}</td>`                
+                        tr += `<td id="instock_${row['itemId']}" class='rc_number'>${v}</td>`                
                     } else {
                         // tr += `<td><input type='number' min='0' value='${v}' class='rc_number'  ></input></td>`
-                        tr += `<td>${k}</td>`                
+                        tr += `<td class='rc_number'>${v}</td>`                
                     }
                 }
             }
