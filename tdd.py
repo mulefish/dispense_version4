@@ -1,5 +1,5 @@
 from common import yellow, cyan, log, green, verdict, getUsers
-from newdatalayer.database_middle_layer import do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
 
 def get_stores_test():
     name = "kermitt"
@@ -45,7 +45,18 @@ def get_inventory_for_a_merchant_as_json_test():
     isOk = True and isPopulated == True
     verdict(isOk, True, "get_inventory_for_a_merchant_as_json_test got type {} and a count of {} ".format(type(x), len(x)))
 
+
+def get_merchantId_from_merchantName_test():
+    name = "admin"
+    merchantId = get_merchantId_from_merchantName(name)
+    isOk = False 
+    if merchantId > 0: 
+        isOk = True 
+    verdict(isOk, True, "get_merchantId_from_merchantName_test got merchantId {} from merchantName {} ".format(merchantId, name))
+
+
 if __name__ == "__main__":
     get_stores_test()
     get_vending_machines_of_stores_for_a_merchant_test()
     get_inventory_for_a_merchant_as_json_test()
+    get_merchantId_from_merchantName_test()

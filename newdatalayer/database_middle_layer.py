@@ -38,12 +38,29 @@ def get_vending_machines_of_stores_for_a_merchant(nameOfTheMerchant):
     return machines_by_store
 
 
-def get_inventory_for_a_merchant_as_json(merchantId): 
+def get_merchantId_from_merchantName(merchantName): 
+    id = 0 
+    sqlfetch = "select merchantId from Merchant where name == '{}'".format(merchantName)
+    rows = do_select(sqlfetch)
+    for row in rows:
+        id = row[0]
+    return id
+
+
+
+def get_inventory_for_a_merchant_as_json(merchantName): 
+
+    merchantId = get_merchantId_from_merchantName(merchantName)
+
+
     # Mixed JSON + SQLite is a pain.
     # Convert everything into JSON and send that. 
     # Downside? On the over 'ingestion' side of the house I will need to remember this goof-around
+
+
     ary = [] 
     sqlfetch = f'select itemId, name, brand, json from Item where merchantId_fk == {merchantId}'
+    print(sqlfetch)
     rows = do_select(sqlfetch)
     for row in rows:
         itemId = row[0]
