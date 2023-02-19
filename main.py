@@ -63,6 +63,37 @@ def lulu():
     return render_template('index_not_logged_in.html')
 
 
+
+@app.route('/add_new_product_for_a_merchant', methods=['POST'])
+def add_new_product_for_a_merchant():
+    cyan("add_new_product_for_a_merchant")
+    obj = {
+        "status":"Missing information"
+    }
+    obj = request.get_json()
+    cyan(obj)
+    # if "vendingId" in x:
+
+
+    #     vendingId = x["vendingId"]
+    #     cyan("get_vending_machine for vendingId {}".format( vendingId))
+    #     query = "select * from vendingMachine where vendingId = {}".format(vendingId)
+    #     cyan(query)
+    #     result = do_select(query)
+    #     # print(result)
+    #     obj["status"] = "OK"
+    #     obj["data"] = result
+
+    # else: 
+    #     cyan("get_vending_machine is missing a parameter")
+    #     obj["status"] = "Missing parameter"
+
+
+    return jsonify(obj)
+    
+
+
+
 # getVendingMachine
 @app.route('/get_vending_machine', methods=['POST'])
 def get_vending_machine():
