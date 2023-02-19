@@ -7,6 +7,7 @@
     <title>Dispense</title>
     <link rel="stylesheet" href="/static/style.css">
     <script src="/static/make_tables.js"></script>
+    
     <script>
         const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')
         const inventory = JSON.parse('{{ inventory | tojson }}')
@@ -17,6 +18,20 @@
 <body>
     {% include "headers/isLoggedinHeader.html" %}
     <div id="stores"></div>
+   <button onClick='addNewProduct()'>Add a product</button>
+    <!-- <button id="myBtn">Open Modal</button> -->
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+
+</div>
+
     <hr/>
 
                 <div id="merchantInventory"></div>
@@ -28,43 +43,27 @@
 
     <br />
 
+
+    <!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Some text in the Modal..</p>
+    </div>
+  
+  </div>
+
+
     <script>
                 function showVendingMachine(vendingMachineId) {
 alert(vendingMachineId)
                 } 
-        /* 
-        function showVendingMachine(vendingMachineId) {
+                let merchantId = 0 
 
-            const headers = { "Content-Type": "application/json" }
-                const body = JSON.stringify({"vendingId":vendingMachineId});
-                const requestOptions = {
-                    method: 'POST',
-                    headers,
-                    body,
-                    redirect: 'follow'
-                };
-                fetch("/get_vending_machine", requestOptions)
-                    .then(response => response.json())
-                    .then(obj => {
-                        const data = obj["data"][0]
-                        let table = "<table border='1'><tr><th>vendingId</th><th>storeId</th><th>merchantId</th><th>version</th><th>averageMark</th></tr>"
-                        table += "<tr>"
-                        table += "<td>" + data[0] + "</td>"                                  
-                        table += "<td>" + data[1] + "</td>"       
-                        table += "<td>" + data[2] + "</td>"       
-                        table += "<td>" + data[3] + "</td>"       
-                        table += "<td>" + data[4] + "</td>"       
-                        table += "</tr>"
-                        table += "<tr><td colspan='5'>" + data[5] + "</td></tr>"
-                        table += "</table>"
 
-                        document.getElementById("vendingMachine").innerHTML = table; 
-                    })
-                    .catch(error => {
-                        console.log("%c This was an error because: " + error.message, "background:lightred;")
-                    })
-        }
-        */ 
+
 
         function create_vending_machine_matrix() { 
         const rows = ['a', 'b', 'c', 'd', 'e', 'f'] 
@@ -73,7 +72,7 @@ alert(vendingMachineId)
                 let table = "<table border='1'>"
                 table += "<tr>"
                 cols.forEach((c)=> { 
-                    table += "<th>RC</th><th>Count</th><th>ItemId</th>"
+                    table += "<th>RC</th><th>Count</th><th>Item Id</th>"
                 }) 
                 table += "</tr>"
                 
@@ -81,8 +80,7 @@ alert(vendingMachineId)
                     table += "<tr>"
                     cols.forEach((c)=> { 
                         const rowcol = r + c 
-                        table += `<td class='rc'>${rowcol}</td><td class='rc_number' id='${rowcol}'>0</td>` 
-                        table += `<td class='rc'>${rowcol}</td><td class='rc_number' id='${rowcol}_item'>tbd</td>` 
+                        table += `<td class='rc'>${rowcol}</td><td class='rc_number' id='${rowcol}'>0</td><td class='rc_number' id='${rowcol}_item'>-</td>` 
                     })
                     table += "</tr>"
                 })
@@ -93,6 +91,7 @@ alert(vendingMachineId)
 
         try { 
             const data = JSON.parse('{{ stores | tojson }}')
+            merchantId = data[0][0]
             const stores = [] 
             data.forEach((datum)=> { 
                 const obj = {
@@ -151,6 +150,61 @@ alert(vendingMachineId)
     create_vending_machine_matrix()
 
     </script>
+
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+//var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// // When the user clicks the button, open the modal 
+// btn.onclick = function() {
+//   modal.style.display = "block";
+// }
+
+
+function addNewProduct() { 
+try { 
+    alert( merchantId )
+    modal.style.display = "block";
+                  } 
+                  catch( boom ) {
+                    alert( boom )
+                  }                  // alert( "merchantId " + merchantId)
+                }
+
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+
 </body>
 
 </html>
