@@ -55,6 +55,7 @@ def get_inventory_for_a_merchant_as_json(merchantName):
     # Downside? On the over 'ingestion' side of the house I will need to remember this goof-around
     ary = [] 
     sqlfetch = f'select itemId, price, instock, deployed, json from Item where merchantId_fk == {merchantId}'
+
     rows = do_select(sqlfetch)
     for row in rows:
         itemId = row[0]
