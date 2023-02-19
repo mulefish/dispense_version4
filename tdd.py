@@ -54,19 +54,19 @@ def get_merchantId_from_merchantName_test():
         isOk = True 
     verdict(isOk, True, "get_merchantId_from_merchantName_test got merchantId {} from merchantName {} ".format(merchantId, name))
 
-
-def cleanup():
-    merchantId_fk = -1
+DUMMY_MERCHANT_ID_FK = -1
+def cleanup_dummy_insert():
+    merchantId_fk = DUMMY_MERCHANT_ID_FK
     result = delete_Items_for_given_merchantId_fk(merchantId_fk)
     isOk = result == "OK"
-    verdict(isOk, True, "cleanup for merchantId_fk {}".format(merchantId_fk))
+    verdict(isOk, True, "cleanup_dummy_insert for merchantId_fk {}".format(merchantId_fk))
 
 def insert_new_product_test(): 
-    test_product = [-1,99,88,77,'{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}']
+    test_product = [DUMMY_MERCHANT_ID_FK,99,88,77,'{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}']
     result = insert_new_product(test_product)
     isOk = result == "OK"
     verdict(isOk, True, "insert_new_product_test")
-    cleanup()
+    cleanup_dummy_insert()
 
 
 
