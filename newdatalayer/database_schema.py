@@ -24,6 +24,9 @@ def create_orders():
     conn.commit()
 
 
+
+
+
 def create_order_item():
     table_name = "OrderItem"
     cursor = conn.cursor()
@@ -152,6 +155,42 @@ def create_associate():
 #     conn.commit()
 
 
+
+def create_item2(): 
+    table_name = "Item2"
+    cursor = conn.cursor()
+
+    table = """CREATE TABLE Item2 (
+            itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+            merchantId_fk INTEGER,
+            price REAL, 
+            instock INTEGER,
+            deployed INTEGER,
+            brand VARCHAR(20),
+            cbd REAL, 
+            desc VARCHAR(40),
+            farm VARCHAR(20),
+            harvest VARCHAR(9),
+            name VARCHAR(20),
+            strain VARCHAR(20),
+            thc REAL,
+            type VARCHAR(20),
+            weight REAL, 
+            count INTEGER,
+            product VARCHAR(20)
+        ); """
+
+
+    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+    cursor.execute(table)
+
+
+    print("Created the table '{}'".format(table_name))
+
+    conn.commit()
+
+
+
 def create_item(): 
     table_name = "Item"
     cursor = conn.cursor()
@@ -227,4 +266,5 @@ if __name__ == "__main__":
     create_item()
     create_stock()
     create_vendingMachine()
+    create_item2()
     conn.close()
