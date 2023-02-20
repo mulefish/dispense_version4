@@ -8,63 +8,18 @@
     <link rel="stylesheet" href="/static/style.css">
 
     <style>
-body
-{
- text-align:center;
- width:100%;
- margin:0 auto;
- padding:0px;
- font-family:helvetica;
- background-color:#FA8258;
-}
-#wrapper
-{
- text-align:center;
- margin:0 auto;
- padding:0px;
- width:995px;
-}
-#checkbox_div
-{
- width:375px;
- margin-left:309px;
-}
-#checkbox_div p
-{
- margin:5px;
- color:white;
- font-weight:bold;
- font-size:17px;
-}
-#checkbox_div li
-{
- color:white;
- display:inline-block;
- margin:5px;
- font-size:17px;
- font-weight:bold;
-}
 #checkbox_div input[type="checkbox"]
 {
  width:20px;
  height:20px;
 }
-#employee_table
-{
- color:#FE642E;
- background-color:white;
- text-align:center;
-}
-#employee_table th
-{
- border:1px dashed #FE642E;
-}
-#employee_table td
-{
- min-width:70px;
- border:1px dashed #FE642E;
-}
 
+#age_col_head {
+    display:none
+}
+.age_col {
+    display:none
+}
 
     </style>
 
@@ -96,47 +51,6 @@ body
 
 <!-- begin snippet: js hide: false console: true babel: null -->
 
-<!-- language: lang-js -->
-<!-- language: lang-html -->
-    <div class='goat'>hello</div>
-  <table id='id_of_table' border=1>
-       <col class="col1"/>
-       <col class="col2"/>
-       <col class="col3"/>
-       <col class="col4"/>
-       <tr><td>  1</td><td>   a</td><td>   b</td><td>     c</td><td>d</td></tr>
-       <tr><td>  3</td><td> a</td><td>  b</td><td>     c</td><td>d</td></tr>
-       <tr><td>  4</td><td>  a</td><td> b</td><td>     c</td><td>d</td></tr>
-       <tr><td>  5</td><td>  a</td><td>   b</td><td>c</td><td>d</td></tr>
-       <tr><td>  6</td><td>   a</td><td>    b</td><td>    c</td><td>d</td></tr>
-     </table>
-     <button id="btnHide">hide French</button>
-     <button id="btnShow">show French</button>
-
-
-
-
-
-
-<script>
-
-
-
-    function show_hide_column( col_no, do_show ){
-        
-        const table  = document.getElementById( 'id_of_table' )
-        const column = table.getElementsByTagName( 'col' )[col_no]
-        if ( column ){
-            column.style.visibility = do_show?"":"collapse";
-        }
-     }
-    
-     const btnHide = document.getElementById( 'btnHide' )
-     btnHide.addEventListener( "click", () => show_hide_column( 2, false ))
-    
-     const btnShow = document.getElementById( 'btnShow' )
-     btnShow.addEventListener( "click", () => show_hide_column( 2, true ))
-    </script>
 
 
 
@@ -171,12 +85,9 @@ body
     <body>
     <div id="wrapper">
     
-    <div id="checkbox_div">
-     <p>Show Hide Column</p>
-     <li><input type="checkbox" value="hide" id="name_col" onchange="hide_show_table(this.id);">Name</li>
-     <li><input type="checkbox" value="hide" id="age_col" onchange="hide_show_table(this.id);">Age</li>
-     <li><input type="checkbox" value="hide" id="city_col" onchange="hide_show_table(this.id);">City</li>
-    </div>
+<input type="checkbox" value="hide" id="name_col" onchange="hide_show_table(this.id);">Name
+<input type="checkbox" value="hide" id="age_col" onchange="hide_show_table(this.id);">Age
+<input type="checkbox" value="hide" id="city_col" onchange="hide_show_table(this.id);">City
     
     <table id="employee_table" align="center" cellpadding=10>
     <tr>
