@@ -12,7 +12,7 @@ def create_orders():
             vendingId_fk INTEGER,
             customerId_fk VARCHAR(255),
             orderTime INTEGER,
-            qrCode VARCHAR(255)
+            qrCode VARCHAR(255) 
         ); """
 
     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))

@@ -40,15 +40,14 @@ function CSVtoArray(text) {
                 items = CSVtoArray(row)
 
                 if ( i > 0 ) {
-                    items[0] = parseInt(items[0])|| -1
-                    items[1] = parseInt(items[1])|| -1|| -1
+                    items[0] = parseInt(items[0])
+                    items[1] = parseFloat(items[1])|| -1
                     items[2] = parseFloat(items[2])|| -1
                     items[3] = parseFloat(items[3])|| -1
-                    items[4] = parseFloat(items[4])|| -1
-                    items[6] = parseFloat(items[6])|| -1
-                    items[12] = parseFloat(items[12])|| -1
-                    items[14] = parseFloat(items[14])|| -1
-                    items[15] = parseInt(items[15]) || -1
+                    items[5] = parseFloat(items[5])|| -1
+                    items[11] = parseFloat(items[11])|| -1
+                    items[13] = parseFloat(items[13])|| -1
+                    items[14] = parseInt(items[14]) || -1
 
 
 
@@ -60,40 +59,40 @@ function CSVtoArray(text) {
 
 
                 console.log( i + "  " + items )
-                tmp += JSON.stringify( items) + "\n"
+                tmp += JSON.stringify( items) + ",\n"
             })
             document.getElementById("in").value = tmp 
         }
 
         function useExample() { 
-            const x = `itemId,mercantId_fk,price,instock,deployed,brand,cbd,desc,farm,harvest,name,strain,thc,type,weight,count,product
-1,1,13.07,42,0,Estraweeda,30.49,"Relaxed, Euphoric, Sleepy, Hungry, Happy",,21/05/20,Indica_5,Estraweeda,20.17,preroll,,5,preroll
-2,2,7.2,13,0,Estraweeda,32.86,"Happy, Relaxed, Uplifted, Euphoric, Sleepy",,23/11/20,Hybrid_15,Estraweeda,10.08,preroll,,15,preroll
-3,2,30.42,61,0,Red Flight,20.45,"Relaxed, Creative, Uplifted, Euphoric, Hungry",,15/05/20,Hybrid_5,Red Flight,38.64,preroll,,5,preroll
-4,1,86,84,0,Estraweeda,16.07,"Relaxed, Creative, Uplifted, Euphoric, Hungry",,2/2/19,Hybrid_5,Estraweeda,38.66,preroll,,5,preroll
-5,1,77.81,28,0,Estraweeda,36.29,"Relaxed, Creative, Uplifted, Euphoric, Hungry",,23/04/20,Hybrid_15,Estraweeda,13.8,preroll,,15,preroll
-6,2,70.15,11,0,Silky,39.87,"Relaxed, Sleepy, Euphoric, Happy, Uplifted",,15/04/20,Indica_10,Silky,19.99,preroll,,10,preroll
-7,2,68.33,72,0,Silky,28.85,"Relaxed, Euphoric, Sleepy, Hungry, Happy",,17/01/21,Indica_10,Silky,23.38,preroll,,10,preroll
-8,2,43.99,94,0,Red Flight,26.13,"Euphoric, Uplifted, Relaxed, Talkative, Happy",,27/09/21,Sativa_15,Red Flight,11.79,preroll,,15,preroll
-9,1,74.8,58,0,Silky,24.8,"Happy, Relaxed, Sleepy, Euphoric, Creative",,21/09/21,Indica_15,Silky,26.28,preroll,,15,preroll
-10,2,85.11,17,0,Estraweeda,39.3,"Happy, Relaxed, Sleepy, Euphoric, Creative",,12/9/21,Indica_10,Estraweeda,34.48,preroll,,10,preroll
-11,2,68.78,34,0,Silky,15.06,"Hungry, Happy, Tingly, Uplifted, Creative",,2/4/20,Sativa_15,Silky,14.07,preroll,,15,preroll
-12,2,20.11,45,0,Red Flight,24.35,"Hungry, Happy, Tingly, Uplifted, Creative",,23/07/21,Sativa_20,Red Flight,39.39,preroll,,20,preroll
-13,2,29.33,78,0,Estraweeda,18.73,"Hungry, Happy, Tingly, Uplifted, Creative",,19/04/21,Sativa_20,Estraweeda,10.78,preroll,,20,preroll
-14,2,96.16,91,0,Red Flight,19.57,"Happy, Relaxed, Sleepy, Euphoric, Creative",,7/8/21,Indica_10,Red Flight,16.66,preroll,,10,preroll
-15,2,29.2,8,0,Estraweeda,21.03,"Euphoric, Uplifted, Relaxed, Talkative, Happy",,10/1/20,Sativa_5,Estraweeda,19.63,preroll,,5,preroll
-16,1,93.84,23,0,Silky,20.67,"Relaxed, Creative, Uplifted, Euphoric, Hungry",,18/11/21,Hybrid_15,Silky,30.65,preroll,,15,preroll
-17,2,43.39,59,0,Silky,14.35,"Happy, Relaxed, Uplifted, Euphoric, Sleepy",,5/5/19,Hybrid_15,Silky,36.07,preroll,,15,preroll
-18,1,0.24,93,0,Silky,10.26,"Hungry, Happy, Tingly, Uplifted, Creative",,11/7/20,Sativa_20,Silky,39.46,preroll,,20,preroll
-19,1,78.66,79,0,Estraweeda,25.95,"Relaxed, Sleepy, Euphoric, Happy, Uplifted",,12/10/20,Indica_5,Estraweeda,31.94,preroll,,5,preroll
-20,1,60.38,86,0,Silky,33.96,"Hungry, Happy, Tingly, Uplifted, Creative",,12/10/20,Sativa_5,Silky,38.04,preroll,,5,preroll
-21,2,64.3,75,0,Peanut,0.09,indoor outdoor terpenes,Noble,10/22/19,Kellog,Peanut Butt  er Pie,27.3,flower,1.09,,flower
-22,2,62.76,88,0,Sunset,0.7,indoor outdoor terpenes,HighWinds,11/5/19,Kellog,Sunset Sherbert,28.4,flower,1.07,,flower
-23,1,87.07,82,0,Headdog,0.07,indoor outdoor terpenes,Heros of the Farm,11/14/19,Kellog,Headdog,26.64,flower,1.04,,flower
-24,1,42.85,67,0,OG,0.09,indoor outdoor terpenes,Makru Farms,10/21/19,Kellog,OG KB,25.03,flower,1.04,,flower
-25,1,76.24,42,0,LostCause,0,indoor outdoor terpenes,Trichome,11/5/19,Kellog,Lost Cause,22.06,flower,1.08,,flower
-26,2,92.04,44,0,AB,0.09,indoor outdoor terpenes,Makru Farms,10/21/19,Kellog,AB KB,25.03,flower,1.04,,flower
-27,1,71.43,81,0,LostLake,0,indoor outdoor terpenes,Trichome,11/5/19,Kellog,Lost Lake,22.06,flower,1.08,,flower`
+            const x = `merchantId_fk,price,instock,deployed,brand,cbd,desc,farm,harvest,name,strain,thc,type,weight,count,product
+1,13.07,42,0,Estraweeda,30.49,"Relaxed, Euphoric, Sleepy, Hungry, Happy",,21/05/20,Indica_5,Estraweeda,20.17,preroll,,5,preroll
+2,7.2,13,0,Estraweeda,32.86,"Happy, Relaxed, Uplifted, Euphoric, Sleepy",,23/11/20,Hybrid_15,Estraweeda,10.08,preroll,,15,preroll
+2,30.42,61,0,Red Flight,20.45,"Relaxed, Creative, Uplifted, Euphoric, Hungry",,15/05/20,Hybrid_5,Red Flight,38.64,preroll,,5,preroll
+1,86,84,0,Estraweeda,16.07,"Relaxed, Creative, Uplifted, Euphoric, Hungry",,2/2/19,Hybrid_5,Estraweeda,38.66,preroll,,5,preroll
+1,77.81,28,0,Estraweeda,36.29,"Relaxed, Creative, Uplifted, Euphoric, Hungry",,23/04/20,Hybrid_15,Estraweeda,13.8,preroll,,15,preroll
+2,70.15,11,0,Silky,39.87,"Relaxed, Sleepy, Euphoric, Happy, Uplifted",,15/04/20,Indica_10,Silky,19.99,preroll,,10,preroll
+2,68.33,72,0,Silky,28.85,"Relaxed, Euphoric, Sleepy, Hungry, Happy",,17/01/21,Indica_10,Silky,23.38,preroll,,10,preroll
+2,43.99,94,0,Red Flight,26.13,"Euphoric, Uplifted, Relaxed, Talkative, Happy",,27/09/21,Sativa_15,Red Flight,11.79,preroll,,15,preroll
+1,74.8,58,0,Silky,24.8,"Happy, Relaxed, Sleepy, Euphoric, Creative",,21/09/21,Indica_15,Silky,26.28,preroll,,15,preroll
+2,85.11,17,0,Estraweeda,39.3,"Happy, Relaxed, Sleepy, Euphoric, Creative",,12/9/21,Indica_10,Estraweeda,34.48,preroll,,10,preroll
+2,68.78,34,0,Silky,15.06,"Hungry, Happy, Tingly, Uplifted, Creative",,2/4/20,Sativa_15,Silky,14.07,preroll,,15,preroll
+2,20.11,45,0,Red Flight,24.35,"Hungry, Happy, Tingly, Uplifted, Creative",,23/07/21,Sativa_20,Red Flight,39.39,preroll,,20,preroll
+2,29.33,78,0,Estraweeda,18.73,"Hungry, Happy, Tingly, Uplifted, Creative",,19/04/21,Sativa_20,Estraweeda,10.78,preroll,,20,preroll
+2,96.16,91,0,Red Flight,19.57,"Happy, Relaxed, Sleepy, Euphoric, Creative",,7/8/21,Indica_10,Red Flight,16.66,preroll,,10,preroll
+2,29.2,8,0,Estraweeda,21.03,"Euphoric, Uplifted, Relaxed, Talkative, Happy",,10/1/20,Sativa_5,Estraweeda,19.63,preroll,,5,preroll
+1,93.84,23,0,Silky,20.67,"Relaxed, Creative, Uplifted, Euphoric, Hungry",,18/11/21,Hybrid_15,Silky,30.65,preroll,,15,preroll
+2,43.39,59,0,Silky,14.35,"Happy, Relaxed, Uplifted, Euphoric, Sleepy",,5/5/19,Hybrid_15,Silky,36.07,preroll,,15,preroll
+1,0.24,93,0,Silky,10.26,"Hungry, Happy, Tingly, Uplifted, Creative",,11/7/20,Sativa_20,Silky,39.46,preroll,,20,preroll
+1,78.66,79,0,Estraweeda,25.95,"Relaxed, Sleepy, Euphoric, Happy, Uplifted",,12/10/20,Indica_5,Estraweeda,31.94,preroll,,5,preroll
+1,60.38,86,0,Silky,33.96,"Hungry, Happy, Tingly, Uplifted, Creative",,12/10/20,Sativa_5,Silky,38.04,preroll,,5,preroll
+2,64.3,75,0,Peanut,0.09,indoor outdoor terpenes,Noble,10/22/19,Kellog,Peanut Butt  er Pie,27.3,flower,1.09,,flower
+2,62.76,88,0,Sunset,0.7,indoor outdoor terpenes,HighWinds,11/5/19,Kellog,Sunset Sherbert,28.4,flower,1.07,,flower
+1,87.07,82,0,Headdog,0.07,indoor outdoor terpenes,Heros of the Farm,11/14/19,Kellog,Headdog,26.64,flower,1.04,,flower
+1,42.85,67,0,OG,0.09,indoor outdoor terpenes,Makru Farms,10/21/19,Kellog,OG KB,25.03,flower,1.04,,flower
+1,76.24,42,0,LostCause,0,indoor outdoor terpenes,Trichome,11/5/19,Kellog,Lost Cause,22.06,flower,1.08,,flower
+2,92.04,44,0,AB,0.09,indoor outdoor terpenes,Makru Farms,10/21/19,Kellog,AB KB,25.03,flower,1.04,,flower
+1,71.43,81,0,LostLake,0,indoor outdoor terpenes,Trichome,11/5/19,Kellog,Lost Lake,22.06,flower,1.08,,flower`
 document.getElementById("in").value = x
         }
 

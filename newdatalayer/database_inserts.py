@@ -63,6 +63,8 @@ def insert_into_item_table():
     sql = "insert into Item(merchantId_fk, price, instock, deployed, JSON) values ({}, {},{},{}, '{}');".format(
              merchantId_fk, price, instock, deployed, json
       )
+
+
     cursor.execute(sql)
   conn.commit() 
 #         sql = "insert into Item(merchantId_fk, name, brand, JSON) values ({}, '{}','{}','{}');".format(
@@ -75,6 +77,62 @@ def insert_into_item_table():
 
 
 
+def insert_into_item2_table(): 
+
+  items = [
+    [1,13.07,42,-1,"Estraweeda",30.49,"Relaxed, Euphoric, Sleepy, Hungry, Happy","","21/05/20","Indica_5","Estraweeda",20.17,"preroll",-1,5,"preroll"],
+[2,7.2,13,-1,"Estraweeda",32.86,"Happy, Relaxed, Uplifted, Euphoric, Sleepy","","23/11/20","Hybrid_15","Estraweeda",10.08,"preroll",-1,15,"preroll"],
+[2,30.42,61,-1,"Red Flight",20.45,"Relaxed, Creative, Uplifted, Euphoric, Hungry","","15/05/20","Hybrid_5","Red Flight",38.64,"preroll",-1,5,"preroll"],
+[1,86,84,-1,"Estraweeda",16.07,"Relaxed, Creative, Uplifted, Euphoric, Hungry","","2/2/19","Hybrid_5","Estraweeda",38.66,"preroll",-1,5,"preroll"],
+[1,77.81,28,-1,"Estraweeda",36.29,"Relaxed, Creative, Uplifted, Euphoric, Hungry","","23/04/20","Hybrid_15","Estraweeda",13.8,"preroll",-1,15,"preroll"],
+[2,70.15,11,-1,"Silky",39.87,"Relaxed, Sleepy, Euphoric, Happy, Uplifted","","15/04/20","Indica_10","Silky",19.99,"preroll",-1,10,"preroll"],
+[2,68.33,72,-1,"Silky",28.85,"Relaxed, Euphoric, Sleepy, Hungry, Happy","","17/01/21","Indica_10","Silky",23.38,"preroll",-1,10,"preroll"],
+[2,43.99,94,-1,"Red Flight",26.13,"Euphoric, Uplifted, Relaxed, Talkative, Happy","","27/09/21","Sativa_15","Red Flight",11.79,"preroll",-1,15,"preroll"],
+[1,74.8,58,-1,"Silky",24.8,"Happy, Relaxed, Sleepy, Euphoric, Creative","","21/09/21","Indica_15","Silky",26.28,"preroll",-1,15,"preroll"],
+[2,85.11,17,-1,"Estraweeda",39.3,"Happy, Relaxed, Sleepy, Euphoric, Creative","","12/9/21","Indica_10","Estraweeda",34.48,"preroll",-1,10,"preroll"],
+[2,68.78,34,-1,"Silky",15.06,"Hungry, Happy, Tingly, Uplifted, Creative","","2/4/20","Sativa_15","Silky",14.07,"preroll",-1,15,"preroll"],
+[2,20.11,45,-1,"Red Flight",24.35,"Hungry, Happy, Tingly, Uplifted, Creative","","23/07/21","Sativa_20","Red Flight",39.39,"preroll",-1,20,"preroll"],
+[2,29.33,78,-1,"Estraweeda",18.73,"Hungry, Happy, Tingly, Uplifted, Creative","","19/04/21","Sativa_20","Estraweeda",10.78,"preroll",-1,20,"preroll"],
+[2,96.16,91,-1,"Red Flight",19.57,"Happy, Relaxed, Sleepy, Euphoric, Creative","","7/8/21","Indica_10","Red Flight",16.66,"preroll",-1,10,"preroll"],
+[2,29.2,8,-1,"Estraweeda",21.03,"Euphoric, Uplifted, Relaxed, Talkative, Happy","","10/1/20","Sativa_5","Estraweeda",19.63,"preroll",-1,5,"preroll"],
+[1,93.84,23,-1,"Silky",20.67,"Relaxed, Creative, Uplifted, Euphoric, Hungry","","18/11/21","Hybrid_15","Silky",30.65,"preroll",-1,15,"preroll"],
+[2,43.39,59,-1,"Silky",14.35,"Happy, Relaxed, Uplifted, Euphoric, Sleepy","","5/5/19","Hybrid_15","Silky",36.07,"preroll",-1,15,"preroll"],
+[1,0.24,93,-1,"Silky",10.26,"Hungry, Happy, Tingly, Uplifted, Creative","","11/7/20","Sativa_20","Silky",39.46,"preroll",-1,20,"preroll"],
+[1,78.66,79,-1,"Estraweeda",25.95,"Relaxed, Sleepy, Euphoric, Happy, Uplifted","","12/10/20","Indica_5","Estraweeda",31.94,"preroll",-1,5,"preroll"],
+[1,60.38,86,-1,"Silky",33.96,"Hungry, Happy, Tingly, Uplifted, Creative","","12/10/20","Sativa_5","Silky",38.04,"preroll",-1,5,"preroll"],
+[2,64.3,75,-1,"Peanut",0.09,"indoor outdoor terpenes","Noble","10/22/19","Kellog","Peanut Butt  er Pie",27.3,"flower",1.09,-1,"flower"],
+[2,62.76,88,-1,"Sunset",0.7,"indoor outdoor terpenes","HighWinds","11/5/19","Kellog","Sunset Sherbert",28.4,"flower",1.07,-1,"flower"],
+[1,87.07,82,-1,"Headdog",0.07,"indoor outdoor terpenes","Heros of the Farm","11/14/19","Kellog","Headdog",26.64,"flower",1.04,-1,"flower"],
+[1,42.85,67,-1,"OG",0.09,"indoor outdoor terpenes","Makru Farms","10/21/19","Kellog","OG KB",25.03,"flower",1.04,-1,"flower"],
+[1,76.24,42,-1,"LostCause",-1,"indoor outdoor terpenes","Trichome","11/5/19","Kellog","Lost Cause",22.06,"flower",1.08,-1,"flower"],
+[2,92.04,44,-1,"AB",0.09,"indoor outdoor terpenes","Makru Farms","10/21/19","Kellog","AB KB",25.03,"flower",1.04,-1,"flower"],
+[1,71.43,81,-1,"LostLake",-1,"indoor outdoor terpenes","Trichome","11/5/19","Kellog","Lost Lake",22.06,"flower",1.08,-1,"flower"],
+]
+  for item in items:
+    merchantId_fk = item[0]
+    price = item[1]
+    instock = item[2]
+    deployed = item[3]
+    brand = item[4]
+    cbd = item[5]
+    desc = item[6]
+    farm = item[7]
+    harvest = item[8]
+    name = item[9]
+    strain = item[10]
+    thc = item[11]
+    thetype = item[12]
+    weight = item[13]
+    count = item[14]
+    product = item[15]
+
+
+
+    sql = "insert into Item2(merchantId_fk,price,instock,deployed,brand,cbd,desc,farm,harvest,name,strain,thc,type,weight,count,product) values ({},{},{},{},'{}',{},'{}','{}','{}','{}','{}',{},'{}',{},{},'{}')".format(merchantId_fk,price,instock,deployed,brand,cbd,desc,farm,harvest,name,strain,thc,thetype,weight,count,product)
+
+    print(sql)
+    cursor.execute(sql)
+  conn.commit() 
 
 
 def insert_merchants():
@@ -301,13 +359,13 @@ def insert_associates():
 
 
 
+insert_into_item2_table()
 
-
-truncate_tables()
-insert_into_item_table()
-insert_merchants()
-insert_stores()
-insert_vending_machines()
-insert_associates()
-count_the_rows()
-conn.close()
+# truncate_tables()
+# insert_into_item_table()
+# insert_merchants()
+# insert_stores()
+# insert_vending_machines()
+# insert_associates()
+# count_the_rows()
+# conn.close()
