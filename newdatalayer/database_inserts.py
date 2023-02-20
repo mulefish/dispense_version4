@@ -2,7 +2,7 @@ import sqlite3
 
 conn = sqlite3.connect("new_dispense.db")
 cursor = conn.cursor()
-tables = ["Item","Merchant", "Store", "vendingMachine", "Associate"]
+tables = ["Item","Merchant", "Store", "vendingMachine", "Associate", "Item2"]
 def count_the_rows():
     print("count_the_rows")
     for table in tables:
@@ -67,14 +67,6 @@ def insert_into_item_table():
 
     cursor.execute(sql)
   conn.commit() 
-#         sql = "insert into Item(merchantId_fk, name, brand, JSON) values ({}, '{}','{}','{}');".format(
-#             merchantId_fk, name, brand, json
-#         )
-#         cursor.execute(sql)
-#         # print( sql )
-
-#     conn.commit()
-
 
 
 def insert_into_item2_table(): 
@@ -130,7 +122,7 @@ def insert_into_item2_table():
 
     sql = "insert into Item2(merchantId_fk,price,instock,deployed,brand,cbd,desc,farm,harvest,name,strain,thc,type,weight,count,product) values ({},{},{},{},'{}',{},'{}','{}','{}','{}','{}',{},'{}',{},{},'{}')".format(merchantId_fk,price,instock,deployed,brand,cbd,desc,farm,harvest,name,strain,thc,thetype,weight,count,product)
 
-    print(sql)
+
     cursor.execute(sql)
   conn.commit() 
 
@@ -359,13 +351,13 @@ def insert_associates():
 
 
 
-insert_into_item2_table()
 
-# truncate_tables()
-# insert_into_item_table()
-# insert_merchants()
-# insert_stores()
-# insert_vending_machines()
-# insert_associates()
-# count_the_rows()
-# conn.close()
+truncate_tables()
+insert_into_item_table()
+insert_merchants()
+insert_stores()
+insert_vending_machines()
+insert_associates()
+insert_into_item2_table()
+count_the_rows()
+conn.close()
