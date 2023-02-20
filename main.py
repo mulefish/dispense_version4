@@ -76,6 +76,24 @@ def bulk_insert():
     return render_template('bulk_insert.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
 
+@app.route('/fill_vending_machines')
+@login_required
+def fill_vending_machines():
+    cyan("bulk_insert")
+    username = current_user.name 
+    merchantId = user_ids[username]
+    green("username {} and merchantId {} " . format( username, merchantId ))
+
+    # store info
+    storeInfoFetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
+    stores = do_select(storeInfoFetch)
+    # vending machines this merchant has 
+    vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
+    # inventory
+    inventory = get_inventory_for_a_merchant_as_json(username)
+
+    return render_template('fill_vending_machines.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
+
 
 
 @app.route('/')

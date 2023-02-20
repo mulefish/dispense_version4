@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <meta charset="UTF-8">
+    <title>Dispense</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+body
+{
+ text-align:center;
+ width:100%;
+ margin:0 auto;
+ padding:0px;
+ font-family:helvetica;
+ background-color:#FA8258;
+}
+#wrapper
+{
+ text-align:center;
+ margin:0 auto;
+ padding:0px;
+ width:995px;
+}
+#checkbox_div
+{
+ width:375px;
+ margin-left:309px;
+}
+#checkbox_div p
+{
+ margin:5px;
+ color:white;
+ font-weight:bold;
+ font-size:17px;
+}
+#checkbox_div li
+{
+ color:white;
+ display:inline-block;
+ margin:5px;
+ font-size:17px;
+ font-weight:bold;
+}
+#checkbox_div input[type="checkbox"]
+{
+ width:20px;
+ height:20px;
+}
+#employee_table
+{
+ color:#FE642E;
+ background-color:white;
+ text-align:center;
+}
+#employee_table th
+{
+ border:1px dashed #FE642E;
+}
+#employee_table td
+{
+ min-width:70px;
+ border:1px dashed #FE642E;
+}
+
+
+    </style>
+
+
+    <script src="/static/make_tables.js"></script>
+    
+
+    <script>
+        const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')
+        const inventory = JSON.parse('{{ inventory | tojson }}')
+
+        </script>
+</head>
+<body>
+    {% include "headers/isLoggedinHeader.html" %}
+
+
+
+        FILL vendingMachines
+
+{{inventory}}
+
+        <hr>
+
+        {{vendingMachines}}
+        <hr/>
+
+
+
+<!-- begin snippet: js hide: false console: true babel: null -->
+
+<!-- language: lang-js -->
+<!-- language: lang-html -->
+    <div class='goat'>hello</div>
+  <table id='id_of_table' border=1>
+       <col class="col1"/>
+       <col class="col2"/>
+       <col class="col3"/>
+       <col class="col4"/>
+       <tr><td>  1</td><td>   a</td><td>   b</td><td>     c</td><td>d</td></tr>
+       <tr><td>  3</td><td> a</td><td>  b</td><td>     c</td><td>d</td></tr>
+       <tr><td>  4</td><td>  a</td><td> b</td><td>     c</td><td>d</td></tr>
+       <tr><td>  5</td><td>  a</td><td>   b</td><td>c</td><td>d</td></tr>
+       <tr><td>  6</td><td>   a</td><td>    b</td><td>    c</td><td>d</td></tr>
+     </table>
+     <button id="btnHide">hide French</button>
+     <button id="btnShow">show French</button>
+
+
+
+
+
+
+<script>
+
+
+
+    function show_hide_column( col_no, do_show ){
+        
+        const table  = document.getElementById( 'id_of_table' )
+        const column = table.getElementsByTagName( 'col' )[col_no]
+        if ( column ){
+            column.style.visibility = do_show?"":"collapse";
+        }
+     }
+    
+     const btnHide = document.getElementById( 'btnHide' )
+     btnHide.addEventListener( "click", () => show_hide_column( 2, false ))
+    
+     const btnShow = document.getElementById( 'btnShow' )
+     btnShow.addEventListener( "click", () => show_hide_column( 2, true ))
+    </script>
+
+
+
+<script type="text/javascript">
+    function hide_show_table(col_name)
+    {
+     var checkbox_val=document.getElementById(col_name).value;
+     if(checkbox_val=="hide")
+     {
+      var all_col=document.getElementsByClassName(col_name);
+      for(var i=0;i<all_col.length;i++)
+      {
+       all_col[i].style.display="none";
+      }
+      document.getElementById(col_name+"_head").style.display="none";
+      document.getElementById(col_name).value="show";
+     }
+        
+     else
+     {
+      var all_col=document.getElementsByClassName(col_name);
+      for(var i=0;i<all_col.length;i++)
+      {
+       all_col[i].style.display="table-cell";
+      }
+      document.getElementById(col_name+"_head").style.display="table-cell";
+      document.getElementById(col_name).value="hide";
+     }
+    }
+    </script>
+    </head>
+    <body>
+    <div id="wrapper">
+    
+    <div id="checkbox_div">
+     <p>Show Hide Column</p>
+     <li><input type="checkbox" value="hide" id="name_col" onchange="hide_show_table(this.id);">Name</li>
+     <li><input type="checkbox" value="hide" id="age_col" onchange="hide_show_table(this.id);">Age</li>
+     <li><input type="checkbox" value="hide" id="city_col" onchange="hide_show_table(this.id);">City</li>
+    </div>
+    
+    <table id="employee_table" align="center" cellpadding=10>
+    <tr>
+     <th>S.no</th>
+     <th id="name_col_head">Name</th>
+     <th id="age_col_head">Age</th>
+     <th id="city_col_head">City</th>
+    </tr>
+    
+    <tr>
+     <td>1</td>
+     <td class="name_col">Amit</td>
+     <td class="age_col">26</td>
+     <td class="city_col">Agra</td>
+    </tr>
+    
+    <tr>
+     <td>2</td>
+     <td class="name_col">Rahul</td>
+     <td class="age_col">22</td>
+     <td class="city_col">Mumbai</td>
+    </tr>
+    
+    <tr>
+     <td>3</td>
+     <td class="name_col">Manoj</td>
+     <td class="age_col">31</td>
+     <td class="city_col">Delhi</td>
+    </tr>
+    
+    <tr>
+     <td>4</td>
+     <td class="name_col">Rashmi</td>
+     <td class="age_col">25</td>
+     <td class="city_col">Bhopal</td>
+    </tr>
+    
+    <tr>
+     <td>5</td>
+     <td class="name_col">Shivam</td>
+     <td class="age_col">23</td>
+     <td class="city_col">Jaipur</td>
+    </tr>
+    
+    </table>
+    
+    </div>
+
+</body>
+
+</html>
