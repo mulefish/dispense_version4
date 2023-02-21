@@ -7,15 +7,6 @@
     <title>Dispense</title>
     <link rel="stylesheet" href="/static/style.css">
 
-    <style>
-#checkbox_div input[type="checkbox"]
-{
- width:20px;
- height:20px;
-}
-
-    </style>
-
 
     <script src="/static/make_tables.js"></script>
     
@@ -33,13 +24,15 @@
 
     <div id="stores"></div>
 
-        FILL vendingMachines
-
-
-        <hr>
-
-        {{vendingMachines}}
-        <hr/>
+    <table border="1">
+        <tr>
+            <td>Selected ItemId</td>
+            <td><h4 id="theSelectedItem"  class='selected'  /></td>
+            <td>Selected VendingMachine</td>
+            <td><h4 id="theSelectedVendingMachine" class='selected' /></td>
+            <td>Selected RowCol</td>
+            <td><h4 id="theSelectedRowCol" class='selected'  /></td>
+        </table>
 
 
 
@@ -81,7 +74,7 @@ try {
                         let buttons = "" 
                         const storeId = store["storeId"]
                         vendingMachines[storeId].forEach((vendingId)=> { 
-                            buttons += `<button onClick='showVendingMachine(${vendingId})'>${vendingId}</button>`
+                            buttons += `<button onClick='setSelectedItem(${vendingId})'>${vendingId}</button>`
                         }) 
                         table += "<td>" + buttons + "</td>"
                     } else {
@@ -98,8 +91,38 @@ try {
             alert( error)
         }
 
-</script>
 
+
+                let theSelectedItem = -1 
+                let theSelectedVendingMachine = -1 
+                let theSelectedRowCol = "NILL"
+        
+                function setSelectedItem(itemId) { 
+                    theSelectedItem = itemId
+                    document.getElementById("theSelectedItem").innerHTML = theSelectedItem
+                }
+                function setSelectedVendingMachine(vendingMachineId) { 
+                    theSelectedVendingMachine = vendingMachineId
+                    document.getElementById("theSelectedVendingMachine").innerHTML = vendingMachineId
+                }
+                function setSelectedRowCol(rowcol) { 
+                    alert( rowcol)
+                    // if (theSelectedItem > 0 && theSelectedVendingMachine > 0 ) {  
+                    //     theSelectedRowCol = rowcol
+                    //     document.getElementById("theSelectedRowCol").innerHTML = theSelectedRowCol
+                    // }
+                }
+                function unselectEverything() { 
+                    theSelectedItem = -1 
+                    theSelectedVendingMachine = -1 
+                    theSelectedRowCol = "NILL"
+                    document.getElementById("theSelectedItem").innerHTML =""
+                    document.getElementById("theSelectedVendingMachine").innerHTML = ""
+                    document.getElementById("theSelectedRowCol").innerHTML = ""
+                }
+
+
+</script>
 
 
 <script type="text/javascript">
@@ -135,31 +158,13 @@ try {
         <table border='1'>
             <tr>
                 <td valign='top'>
-                    <!-- <table border='1'>
-                        <tr><td><button onClick="toggle('itemId')">itemId</button></td></tr>
-                        <tr><td><button onClick="toggle('price')">price</button></td></tr>
-                        <tr><td><button onClick="toggle('instock')">instock</button></td></tr>
-                        <tr><td><button onClick="toggle('deployed')">deployed</button></td></tr>
-                        <tr><td><button onClick="toggle('brand')">brand</button></td></tr>
-                        <tr><td><button onClick="toggle('cbd')">cbd</button></td></tr>
-                        <tr><td><button onClick="toggle('desc')">desc</button></td></tr>
-                        <tr><td><button onClick="toggle('farm')">farm</button></td></tr>
-                        <tr><td><button onClick="toggle('harvest')">harvest</button></td></tr>
-                        <tr><td><button onClick="toggle('name')">name</button></td></tr>
-                        <tr><td><button onClick="toggle('strain')">strain</button></td></tr>
-                        <tr><td><button onClick="toggle('thc')">thc</button></td></tr>
-                        <tr><td><button onClick="toggle('type')">type</button></td></tr>
-                        <tr><td><button onClick="toggle('weight')">weight</button></td></tr>
-                        <tr><td><button onClick="toggle('count')">count</button></td></tr>
-                        <tr><td><button onClick="toggle('product')">product</button></td></tr>
-                    </table> -->
                     <div id="controls" > </div>
-
                 </td>
                 <td valign='top'>
                     <div id="inventory" > </div>
                 </td>
                 <td valign='top'>
+                    <div id="vendingMachine"></div>
                 </td>
             </tr>
         </table>
@@ -200,9 +205,9 @@ try {
 
                     } else {
                         table += `<tr><td><input type="checkbox" id="t_${key}" onChange="toggle('${key}')">  <label for="t_${key}">${key}</label></td></tr>`
-
                     }
                 }
+                
                 document.getElementById("controls").innerHTML = table
 
 
@@ -252,6 +257,7 @@ try {
                             table += "<th>" + key + "</th>"
                         }
                     }
+                    table += "<th>edit</th>"
                     table += "</tr>"
 
 
@@ -273,7 +279,8 @@ try {
                     if ( showHide['weight'] === true ){ tr += `<td >${row[14]}</td>`}
                     if ( showHide['count'] === true ){ tr += `<td >${row[15]}</td>`}
                     if ( showHide['product'] === true ){ tr += `<td >${row[16]}</td>`}
-
+                    // tr += `<td ><button onClick="setSelectedItem(${row[0])">Deploy ${row[0]}</button></td>`
+                    tr += `<td><button onClick="setSelectedItem(${row[0]})">${row[0]}</button>`
                     tr += "</tr>"
                     table += tr 
                 })  
@@ -290,6 +297,39 @@ try {
     </div>
 
     <hr/>
+
+
+
+<script>
+    function sayHi(rc) {
+        alert(rc) 
+        finch 
+    }
+    function makeVendingMachine() {
+
+        const l = ['a', 'b', 'c','d', 'e']
+        const n = [1,2,3,4,5,6]
+        let table = "<table border='1'>"
+        l.forEach((letter) => { 
+            n.forEach((number) => { 
+                const key = letter + number 
+                let tr = "<tr>"
+
+                tr += `<td><button onClick="setSelectedRowCol('${key}');">${key}</button></td>`
+                tr += `<td><input type="number" class='rc_number' id="c_${key}" min='0'></input> </td>`
+                tr += `<td><div id="v_${key}"></div> </td>`
+                tr += "</tr>"
+                table += tr
+
+            })
+        })
+        table += "</table>"
+        document.getElementById("vendingMachine").innerHTML = table
+    }
+
+    makeVendingMachine()
+
+</script> 
 
 
 </body>
