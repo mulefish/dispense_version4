@@ -38,6 +38,8 @@
 
 <!-- begin snippet: js hide: false console: true babel: null -->
 <script>
+    const HIGH_LIGHT_COLOR = "#ff6633"
+    const NOT_HIGH_LIGHT_COLOR = "#ffffff"
 
 try { 
             const data = JSON.parse('{{ stores | tojson }}')
@@ -74,7 +76,7 @@ try {
                         let buttons = "" 
                         const storeId = store["storeId"]
                         vendingMachines[storeId].forEach((vendingId)=> { 
-                            buttons += `<button onClick='setSelectedItem(${vendingId})'>${vendingId}</button>`
+                            buttons += `<button onClick='setSelectedVendingMachine(${vendingId})'>${vendingId}</button>`
                         }) 
                         table += "<td>" + buttons + "</td>"
                     } else {
@@ -96,21 +98,37 @@ try {
                 let theSelectedItem = -1 
                 let theSelectedVendingMachine = -1 
                 let theSelectedRowCol = "NILL"
-        
-                function setSelectedItem(itemId) { 
+                let lastSelectedRow = undefined 
+                function setSelectedItem(itemId, rowInTableId) { 
                     theSelectedItem = itemId
                     document.getElementById("theSelectedItem").innerHTML = theSelectedItem
+                    document.getElementById(rowInTableId).style.backgroundColor=HIGH_LIGHT_COLOR; 
+                    if ( lastSelectedRow !== undefined ) {
+                        document.getElementById(lastSelectedRow).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
+                    }
+                    lastSelectedRow = rowInTableId
                 }
                 function setSelectedVendingMachine(vendingMachineId) { 
                     theSelectedVendingMachine = vendingMachineId
                     document.getElementById("theSelectedVendingMachine").innerHTML = vendingMachineId
+                    makeVendingMachine()
                 }
-                function setSelectedRowCol(rowcol) { 
-                    alert( rowcol)
+                let lastSpoolId = undefined 
+                function setSelectedSpool(rowcol, spoolRowId) { 
+                    // alert( rowcol)
                     // if (theSelectedItem > 0 && theSelectedVendingMachine > 0 ) {  
                     //     theSelectedRowCol = rowcol
                     //     document.getElementById("theSelectedRowCol").innerHTML = theSelectedRowCol
                     // }
+
+                    document.getElementById(spoolRowId).style.backgroundColor=HIGH_LIGHT_COLOR; 
+                    if ( lastSpoolId !== undefined ) {
+                        document.getElementById(lastSpoolId).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
+                    }
+                    lastSpoolId = spoolRowId
+
+
+
                 }
                 function unselectEverything() { 
                     theSelectedItem = -1 
@@ -160,9 +178,11 @@ try {
                 <td valign='top'>
                     <div id="controls" > </div>
                 </td>
+                <td>&nbsp;</td>
                 <td valign='top'>
                     <div id="inventory" > </div>
                 </td>
+                <td>&nbsp;</td>
                 <td valign='top'>
                     <div id="vendingMachine"></div>
                 </td>
@@ -246,9 +266,10 @@ try {
                 makeInventoryTable2()
             }
 
+
             function makeInventoryTable2() { 
 
-                let table = "<table border='1'>"
+                let table = "<table border='1' id='inventoryTable'>"
                     table += "<tr>"
                     for ( let key in showHide ) { 
                         const n = columns[key]
@@ -262,7 +283,7 @@ try {
 
 
                 inventory2.forEach((row, i)=> { 
-                    let tr = "<tr>"
+                    let tr = `<tr id='row_${i}'>`
                     if ( showHide['itemId'] === true ){ tr += `<td class="number">${row[0]}</td>`}
                     if ( showHide['price'] === true ){ tr += `<td class="number">${row[2]}</td>`}
                     if ( showHide['instock'] === true ){ tr += `<td class="number">${row[3]}</td>`}
@@ -279,8 +300,7 @@ try {
                     if ( showHide['weight'] === true ){ tr += `<td >${row[14]}</td>`}
                     if ( showHide['count'] === true ){ tr += `<td >${row[15]}</td>`}
                     if ( showHide['product'] === true ){ tr += `<td >${row[16]}</td>`}
-                    // tr += `<td ><button onClick="setSelectedItem(${row[0])">Deploy ${row[0]}</button></td>`
-                    tr += `<td><button onClick="setSelectedItem(${row[0]})">${row[0]}</button>`
+                    tr += `<td><button onClick="setSelectedItem(${row[0]}, 'row_${i}')">${row[0]}</button>`
                     tr += "</tr>"
                     table += tr 
                 })  
@@ -310,24 +330,25 @@ try {
         const l = ['a', 'b', 'c','d', 'e']
         const n = [1,2,3,4,5,6]
         let table = "<table border='1'>"
+        let count = 0 
         l.forEach((letter) => { 
             n.forEach((number) => { 
                 const key = letter + number 
-                let tr = "<tr>"
+                let tr = `<tr id="spool_${count}">`
 
-                tr += `<td><button onClick="setSelectedRowCol('${key}');">${key}</button></td>`
-                tr += `<td><input type="number" class='rc_number' id="c_${key}" min='0'></input> </td>`
-                tr += `<td><div id="v_${key}"></div> </td>`
+                tr += `<td><button onClick="setSelectedSpool('${key}', 'spool_${count}');">${key}</button></td>`
+                tr += `<td><input type="number" class='rc_number' id="spool_count_${key}" min='0'></input> </td>`
+                tr += `<td><div id="spool_value_${key}"></div> </td>`
                 tr += "</tr>"
                 table += tr
-
+                count++ 
             })
         })
         table += "</table>"
         document.getElementById("vendingMachine").innerHTML = table
     }
 
-    makeVendingMachine()
+    // makeVendingMachine()
 
 </script> 
 
