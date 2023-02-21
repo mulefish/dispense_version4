@@ -136,7 +136,6 @@ try {
                     }
                     lastSelectedRow = rowInTableId
 
-                    maybeAddToVendingMachine(rowInTableId)
 
 
                 }
@@ -169,9 +168,17 @@ try {
                             const x = out + numberOfItems
                             console.log( " out " + out + " total " + total_possible + " addedd " + x ) 
                             if ( out + numberOfItems <= total_possible ) {
+
+                                console.log("Before: " +  inventory2[lastSelectedRow])
+
                                 document.getElementById("spool_count_" + theSelectedSpool).innerHTML = numberOfItems
                                 document.getElementById("spool_item_" + theSelectedSpool).innerHTML = inventory2[lastSelectedRow][itemId_index] 
                                 inventory2[lastSelectedRow][deployed_index] += numberOfItems
+
+
+                                console.log("After: " +  inventory2[lastSelectedRow])
+
+
                                 makeInventoryTable2()
                             } else {
                                 alert("Your have " + total_possible + "\nBut this would make it " + ( total_possible - (out + numberOfItems)))
@@ -200,7 +207,7 @@ try {
                     
                     }
                     lastSpoolId = spoolRowIndex
-                    maybeAddToVendingMachine()
+                   // maybeAddToVendingMachine()
 
                 }
                 function unselectEverything() { 
@@ -255,7 +262,30 @@ try {
                 <td valign='top'>
                     <div id="inventory" > </div>
                 </td>
-                <td>&nbsp;</td>
+                <td valign='top'>
+
+                    <table border='1'>
+                        <tr>
+                            <th>
+                                Transfer
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button onClick="maybeAddToVendingMachine()">To vending</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button>From vending</button>
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+
+                </td>
                 <td valign='top'>
                     <div id="vendingMachine"></div>
                 </td>
@@ -389,8 +419,7 @@ try {
                 tr += `<td><button onClick="setSelectedSpool('${key}', '${index}');">${key}</button></td>`
                 // tr += `<td><input type="number" class='rc_number' id="spool_count_${key}" min='0'></input> </td>`
                 tr += `<td><div id="spool_count_${key}" min='0'></div> </td>`
-
-                tr += `<td><div id="spool_item_${key}">&nbsp;</div> </td>`
+                tr += `<td><div id="spool_item_${key}">&nbsp;</div></td>`
                 tr += "</tr>"
                 table += tr
                 index++ 
