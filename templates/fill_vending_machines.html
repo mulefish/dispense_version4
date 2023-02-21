@@ -28,10 +28,14 @@
         <tr>
             <td>Selected ItemId</td>
             <td><h4 id="theSelectedItem"  class='selected'  /></td>
+            <td><h4 id="theSelectedItemRow"  class='selected'  /></td>
+
             <td>Selected VendingMachine</td>
             <td><h4 id="theSelectedVendingMachine" class='selected' /></td>
-            <td>Selected RowCol</td>
-            <td><h4 id="theSelectedRowCol" class='selected'  /></td>
+            <td>Selected Spool</td>
+            <td><h4 id="theSelectedSpool" class='selected'  /></td>
+            <td><h4 id="theSelectedSpoolRow"  class='selected'  /></td>
+
         </table>
 
 
@@ -97,46 +101,75 @@ try {
 
                 let theSelectedItem = -1 
                 let theSelectedVendingMachine = -1 
-                let theSelectedRowCol = "NILL"
+                let theSelectedSpool = undefined
+                let theSelectedSpoolRow = undefined 
                 let lastSelectedRow = undefined 
                 function setSelectedItem(itemId, rowInTableId) { 
                     theSelectedItem = itemId
                     document.getElementById("theSelectedItem").innerHTML = theSelectedItem
-                    document.getElementById(rowInTableId).style.backgroundColor=HIGH_LIGHT_COLOR; 
+                    document.getElementById("theSelectedItemRow").innerHTML = rowInTableId
+                    document.getElementById("row_" + rowInTableId).style.backgroundColor=HIGH_LIGHT_COLOR; 
                     if ( lastSelectedRow !== undefined ) {
                         document.getElementById(lastSelectedRow).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
                     }
-                    lastSelectedRow = rowInTableId
+                    lastSelectedRow = "row_" + rowInTableId
+
+                    maybeAddToVendingMachine(rowInTableId)
+
+
                 }
+
+                function maybeAddToVendingMachine() { 
+                    if ( lastSelectedRow !== undefined ) { // This is the item 
+                        const index = lastSelectedRow.replace("row_", "")
+                        if ( theSelectedVendingMachine > 0 ) { 
+
+
+
+
+                        }                        
+                    }
+                }
+
+
                 function setSelectedVendingMachine(vendingMachineId) { 
                     theSelectedVendingMachine = vendingMachineId
                     document.getElementById("theSelectedVendingMachine").innerHTML = vendingMachineId
                     makeVendingMachine()
                 }
                 let lastSpoolId = undefined 
-                function setSelectedSpool(rowcol, spoolRowId) { 
+                function setSelectedSpool(rowcol, spoolRowIndex) { 
                     // alert( rowcol)
                     // if (theSelectedItem > 0 && theSelectedVendingMachine > 0 ) {  
                     //     theSelectedRowCol = rowcol
                     //     document.getElementById("theSelectedRowCol").innerHTML = theSelectedRowCol
                     // }
-
-                    document.getElementById(spoolRowId).style.backgroundColor=HIGH_LIGHT_COLOR; 
+                    document.getElementById("theSelectedSpool").innerHTML = rowcol
+                    document.getElementById("theSelectedSpoolRow").innerHTML = spoolRowIndex
+                    document.getElementById("spool_" + spoolRowIndex).style.backgroundColor=HIGH_LIGHT_COLOR; 
+                    // if ( lastSpoolId !== undefined ) {
+                    //     document.getElementById("spool_ " + lastSpoolId).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
+                    // }
+                    
                     if ( lastSpoolId !== undefined ) {
-                        document.getElementById(lastSpoolId).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
-                    }
-                    lastSpoolId = spoolRowId
+                        console.log( "YAY " + spoolRowIndex + " and " + lastSpoolId)
+                        document.getElementById("spool_" + lastSpoolId).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
+                    
+                    } else { 
+                        console.log( "BOO " + spoolRowIndex + " and " + lastSpoolId)
 
+                    }
+                    lastSpoolId = spoolRowIndex
 
 
                 }
                 function unselectEverything() { 
                     theSelectedItem = -1 
                     theSelectedVendingMachine = -1 
-                    theSelectedRowCol = "NILL"
+                    theSelectedSpool = undefined
                     document.getElementById("theSelectedItem").innerHTML =""
                     document.getElementById("theSelectedVendingMachine").innerHTML = ""
-                    document.getElementById("theSelectedRowCol").innerHTML = ""
+                    document.getElementById("theSelectedSpool").innerHTML = ""
                 }
 
 
@@ -300,7 +333,7 @@ try {
                     if ( showHide['weight'] === true ){ tr += `<td >${row[14]}</td>`}
                     if ( showHide['count'] === true ){ tr += `<td >${row[15]}</td>`}
                     if ( showHide['product'] === true ){ tr += `<td >${row[16]}</td>`}
-                    tr += `<td><button onClick="setSelectedItem(${row[0]}, 'row_${i}')">${row[0]}</button>`
+                    tr += `<td><button onClick="setSelectedItem(${row[0]}, '${i}')">${row[0]}</button>`
                     tr += "</tr>"
                     table += tr 
                 })  
@@ -312,7 +345,7 @@ try {
 </script>
     
 
-<button onClick="makeInventoryTable2()">make again</button>
+
 
     </div>
 
@@ -330,18 +363,18 @@ try {
         const l = ['a', 'b', 'c','d', 'e']
         const n = [1,2,3,4,5,6]
         let table = "<table border='1'>"
-        let count = 0 
+        let index = 0 
         l.forEach((letter) => { 
             n.forEach((number) => { 
                 const key = letter + number 
-                let tr = `<tr id="spool_${count}">`
+                let tr = `<tr id="spool_${index}">`
 
-                tr += `<td><button onClick="setSelectedSpool('${key}', 'spool_${count}');">${key}</button></td>`
+                tr += `<td><button onClick="setSelectedSpool('${key}', '${index}');">${key}</button></td>`
                 tr += `<td><input type="number" class='rc_number' id="spool_count_${key}" min='0'></input> </td>`
-                tr += `<td><div id="spool_value_${key}"></div> </td>`
+                tr += `<td><div id="spool_value_${key}">  spool_${index}</div> </td>`
                 tr += "</tr>"
                 table += tr
-                count++ 
+                index++ 
             })
         })
         table += "</table>"
