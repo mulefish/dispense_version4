@@ -29,7 +29,11 @@
 
     <script>
         const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')
-        const inventory = JSON.parse('{{ inventory | tojson }}')
+        const inventory2 = JSON.parse('{{ inventory2 | tojson }}')
+
+        console.log( JSON.stringify( inventory2, null, 2 ))
+        console.log("2222222222 ")
+        
 
         </script>
 </head>
@@ -40,7 +44,6 @@
 
         FILL vendingMachines
 
-{{inventory}}
 
         <hr>
 
@@ -84,11 +87,72 @@
     </head>
     <body>
     <div id="wrapper">
+        <table border='1'>
+            <tr>
+                <td valign='top'>
+                    <table border='1'>
+                        <tr><td><input type="checkbox" value="hide" id="name_col" onchange="hide_show_table(this.id);">Name</td></tr>
+                        <tr><td><input type="checkbox" value="hide" id="age_col" onchange="hide_show_table(this.id);">Age</td></tr>
+                        <tr><td><input type="checkbox" value="hide" id="city_col" onchange="hide_show_table(this.id);">City</td></tr>
+                    </table>
+                </td>
+                <td valign='top'>
+                    <div id="inventory" > </div>
+                </td>
+                <td valign='top'>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <script>
+
+            function makeInventoryTable2() { 
+
+                let table = "<table border='1'>"
+                table += `<tr>
+                    <th>itemId</th>
+                    // <th>merchantId_fk</th>
+                    <th>price</th>
+                    <th>instock</th>
+                    <th>deployed</th>
+                    <th>brand</th>
+                    <th>cbd</th>
+                    <th>desc</th>
+                    <th>farm</th>
+                    <th>harvest</th>
+                    <th>name</th>
+                    <th>strain</th>
+                    <th>thc</th>
+                    <th>type</th>
+                    <th>weight</th>
+                    <th>count</th>
+                    <th>product</th>
+                    </tr>`
+
+                inventory2.forEach((row, i)=> { 
+                    let tr = "<tr>"
+                    tr += `<td id="itemId_${i}">${row[0]}</td>`
+                    // tr += `<td id="merchantId_fk_${i}">${row[1]}</td>`
+                    tr += `<td id="price_${i}">${row[2]}</td>`
+                    tr += `<td id="instock_${i}">${row[3]}</td>`
+                    tr += `<td id="deployed_${i}">${row[4]}</td>`
+                    tr += `<td id="brand_${i}">${row[5]}</td>`
+
+                    tr += "</tr>"
+                    table += tr 
+                })  
+                document.getElementById("inventory").innerHTML = table 
+            }
+            makeInventoryTable2()
+
+</script>
     
-<input type="checkbox" value="hide" id="name_col" onchange="hide_show_table(this.id);">Name
-<input type="checkbox" value="hide" id="age_col" onchange="hide_show_table(this.id);">Age
-<input type="checkbox" value="hide" id="city_col" onchange="hide_show_table(this.id);">City
-    
+
+<!-- merchantId_fk,price,instock,deployed,brand,cbd,desc,farm,harvest,name,strain,thc,type,weight,count,product -->
+
+<!--
     <table id="employee_table" align="center" cellpadding=10>
     <tr>
      <th>S.no</th>
@@ -133,8 +197,11 @@
     </tr>
     
     </table>
-    
+-->    
     </div>
+
+    <hr/>
+
 
 </body>
 

@@ -73,6 +73,20 @@ def get_inventory_for_a_merchant_as_json(merchantName):
     return ary
 
 
+def line94(merchantName): 
+    merchantId = get_merchantId_from_merchantName(merchantName)
+    # Mixed JSON + SQLite is a pain.
+    # Convert everything into JSON and send that. 
+    # Downside? On the over 'ingestion' side of the house I will need to remember this goof-around
+    ary = [] 
+    sqlfetch = f'select * from Item2 where merchantId_fk == {merchantId}'
+
+    rows = do_select(sqlfetch)
+    for row in rows:
+        ary.append(row)
+    return ary
+
+
 def insert_new_product(row_to_insert): 
     conn = sqlite3.connect('./newdatalayer/new_dispense.db')
     cursor = conn.cursor()

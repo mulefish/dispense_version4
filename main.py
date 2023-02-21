@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
 
 from flask import jsonify
 
@@ -90,9 +90,10 @@ def fill_vending_machines():
     # vending machines this merchant has 
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
     # inventory
-    inventory = get_inventory_for_a_merchant_as_json(username)
+    # inventory = get_inventory_for_a_merchant_as_json(username)
+    inventory2 = line94(username)
 
-    return render_template('fill_vending_machines.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
+    return render_template('fill_vending_machines.html', stores=stores, vendingMachines=vendingMachines, inventory2=inventory2 )
 
 
 
