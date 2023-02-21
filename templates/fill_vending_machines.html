@@ -31,7 +31,7 @@
 <body>
     {% include "headers/isLoggedinHeader.html" %}
 
-
+    <div id="stores"></div>
 
         FILL vendingMachines
 
@@ -44,7 +44,61 @@
 
 
 <!-- begin snippet: js hide: false console: true babel: null -->
+<script>
 
+try { 
+            const data = JSON.parse('{{ stores | tojson }}')
+            merchantId = data[0][0]
+            const stores = [] 
+            data.forEach((datum)=> { 
+                const obj = {
+                    merchantId:datum[0],
+                    storeId:datum[1],
+                    storeName:datum[2],
+                    storeAddress:datum[3],
+                    merchantName:datum[4],
+                    billing_address:datum[5],
+                    phone:datum[6],
+                    vending:"vending"
+                }
+                stores.push(obj)
+            })
+            let keys = Object.keys(stores[0])
+            let table = "<table border='1' id='stores'><tr>"
+            keys.forEach((key)=> { 
+                table += "<th>" + key + "</th>"
+            })
+            table += "</tr>"
+
+            stores.forEach((store)=> { 
+                table += "<tr>"
+                keys.forEach((key)=> { 
+                    if ( key === "vending") {
+                        // Create buttons for EACH vending machine in this store. 
+                        // If a store has zero machines...   ...no buttons. 
+                        // If a store has 20 machines...  20 buttons. 
+                        // We might want to think of a machine naming convension.
+                        let buttons = "" 
+                        const storeId = store["storeId"]
+                        vendingMachines[storeId].forEach((vendingId)=> { 
+                            buttons += `<button onClick='showVendingMachine(${vendingId})'>${vendingId}</button>`
+                        }) 
+                        table += "<td>" + buttons + "</td>"
+                    } else {
+                        const value = store[key]
+                        table += "<td>" + value + "</td>"
+                    }
+                })
+                table += "</tr>"
+            })
+            table += "</table>"
+            document.getElementById("stores").innerHTML = table
+        } catch( error) { 
+            console.log( error )
+            alert( error)
+        }
+
+</script>
 
 
 
