@@ -14,13 +14,6 @@
  height:20px;
 }
 
-#age_col_head {
-    display:none
-}
-.age_col {
-    display:none
-}
-
     </style>
 
 
@@ -31,8 +24,6 @@
         const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')
         const inventory2 = JSON.parse('{{ inventory2 | tojson }}')
 
-        console.log( JSON.stringify( inventory2, null, 2 ))
-        console.log("2222222222 ")
         
 
         </script>
@@ -91,10 +82,25 @@
             <tr>
                 <td valign='top'>
                     <table border='1'>
-                        <tr><td><input type="checkbox" value="hide" id="name_col" onchange="hide_show_table(this.id);">Name</td></tr>
-                        <tr><td><input type="checkbox" value="hide" id="age_col" onchange="hide_show_table(this.id);">Age</td></tr>
-                        <tr><td><input type="checkbox" value="hide" id="city_col" onchange="hide_show_table(this.id);">City</td></tr>
+                        <tr><td><button onClick="toggle('itemId')">itemId</button></td></tr>
+                        <tr><td><button onClick="toggle('price')">price</button></td></tr>
+                            <tr><td><button onClick="toggle('instock')">instock</button></td></tr>
+                            <tr><td><button onClick="toggle('deployed')">deployed</button></td></tr>
+                            <tr><td><button onClick="toggle('brand')">brand</button></td></tr>
+                            <tr><td><button onClick="toggle('cbd')">cbd</button></td></tr>
+                            <tr><td><button onClick="toggle('desc')">desc</button></td></tr>
+                            <tr><td><button onClick="toggle('farm')">farm</button></td></tr>
+                            <tr><td><button onClick="toggle('harvest')">harvest</button></td></tr>
+                            <tr><td><button onClick="toggle('name')">name</button></td></tr>
+                            <tr><td><button onClick="toggle('strain')">strain</button></td></tr>
+                            <tr><td><button onClick="toggle('thc')">thc</button></td></tr>
+                            <tr><td><button onClick="toggle('type')">type</button></td></tr>
+                            <tr><td><button onClick="toggle('weight')">weight</button></td></tr>
+                            <tr><td><button onClick="toggle('count')">count</button></td></tr>
+                            <tr><td><button onClick="toggle('product')">product</button></td></tr>
                     </table>
+
+
                 </td>
                 <td valign='top'>
                     <div id="inventory" > </div>
@@ -108,37 +114,91 @@
 
         <script>
 
+
+            let showHide = {
+                
+                itemId:true, 
+                price:true,
+                instock:true,
+                deployed:true,
+                brand:false,
+                cbd:true,
+                desc:false,
+                farm:false,
+                harvest:false,
+                name:false,
+                strain:true,
+                thc:true,
+                type:true,
+                weight:true,
+                count:true,
+                product:true
+            } 
+
+            let columns  = {
+                
+                itemId:0, 
+                price:2,
+                instock:3,
+                deployed:4,
+                brand:5,
+                cbd:6,
+                desc:7,
+                farm:8,
+                harvest:9,
+                name:10,
+                strain:11,
+                thc:12,
+                type:13,
+                weight:14,
+                count:15,
+                product:16
+            } 
+
+
+
+            function toggle(key) {
+                console.log("toggle " + key )
+                if ( showHide[key] == true ) {
+                    showHide[key] = false 
+                } else {
+                    showHide[key] = true 
+                }
+                makeInventoryTable2()
+            }
+
             function makeInventoryTable2() { 
 
                 let table = "<table border='1'>"
-                table += `<tr>
-                    <th>itemId</th>
-                    // <th>merchantId_fk</th>
-                    <th>price</th>
-                    <th>instock</th>
-                    <th>deployed</th>
-                    <th>brand</th>
-                    <th>cbd</th>
-                    <th>desc</th>
-                    <th>farm</th>
-                    <th>harvest</th>
-                    <th>name</th>
-                    <th>strain</th>
-                    <th>thc</th>
-                    <th>type</th>
-                    <th>weight</th>
-                    <th>count</th>
-                    <th>product</th>
-                    </tr>`
+                    table += "<tr>"
+                    for ( let key in showHide ) { 
+                        const n = columns[key]
+                        const bool = showHide[key]
+                        if ( bool === true ) { 
+                            table += "<th>" + key + "</th>"
+                        }
+                    }
+                    table += "</tr>"
+
 
                 inventory2.forEach((row, i)=> { 
                     let tr = "<tr>"
-                    tr += `<td id="itemId_${i}">${row[0]}</td>`
-                    // tr += `<td id="merchantId_fk_${i}">${row[1]}</td>`
-                    tr += `<td id="price_${i}">${row[2]}</td>`
-                    tr += `<td id="instock_${i}">${row[3]}</td>`
-                    tr += `<td id="deployed_${i}">${row[4]}</td>`
-                    tr += `<td id="brand_${i}">${row[5]}</td>`
+                    if ( showHide['itemId'] === true ){ tr += `<td class="number">${row[0]}</td>`}
+                    if ( showHide['price'] === true ){ tr += `<td class="number">${row[2]}</td>`}
+                    if ( showHide['instock'] === true ){ tr += `<td class="number">${row[3]}</td>`}
+                    if ( showHide['deployed'] === true ){ tr += `<td class="number">${row[4]}</td>`}
+                    if ( showHide['brand'] === true ){ tr += `<td class="number">${row[5]}</td>`}
+                    if ( showHide['cbd'] === true ){ tr += `<td class="number">${row[6]}</td>`}
+                    if ( showHide['desc'] === true ){ tr += `<td class="desc">${row[7]}</td>`}
+                    if ( showHide['farm'] === true ){ tr += `<td >${row[8]}</td>`}
+                    if ( showHide['harvest'] === true ){ tr += `<td >${row[9]}</td>`}
+                    if ( showHide['name'] === true ){ tr += `<td >${row[10]}</td>`}
+                    if ( showHide['strain'] === true ){ tr += `<td >${row[11]}</td>`}
+                    if ( showHide['thc'] === true ){ tr += `<td >${row[12]}</td>`}
+                    if ( showHide['type'] === true ){ tr += `<td >${row[13]}</td>`}
+                    if ( showHide['weight'] === true ){ tr += `<td >${row[14]}</td>`}
+                    if ( showHide['count'] === true ){ tr += `<td >${row[15]}</td>`}
+                    if ( showHide['product'] === true ){ tr += `<td >${row[16]}</td>`}
 
                     tr += "</tr>"
                     table += tr 
@@ -150,54 +210,8 @@
 </script>
     
 
-<!-- merchantId_fk,price,instock,deployed,brand,cbd,desc,farm,harvest,name,strain,thc,type,weight,count,product -->
+<button onClick="makeInventoryTable2()">make again</button>
 
-<!--
-    <table id="employee_table" align="center" cellpadding=10>
-    <tr>
-     <th>S.no</th>
-     <th id="name_col_head">Name</th>
-     <th id="age_col_head">Age</th>
-     <th id="city_col_head">City</th>
-    </tr>
-    
-    <tr>
-     <td>1</td>
-     <td class="name_col">Amit</td>
-     <td class="age_col">26</td>
-     <td class="city_col">Agra</td>
-    </tr>
-    
-    <tr>
-     <td>2</td>
-     <td class="name_col">Rahul</td>
-     <td class="age_col">22</td>
-     <td class="city_col">Mumbai</td>
-    </tr>
-    
-    <tr>
-     <td>3</td>
-     <td class="name_col">Manoj</td>
-     <td class="age_col">31</td>
-     <td class="city_col">Delhi</td>
-    </tr>
-    
-    <tr>
-     <td>4</td>
-     <td class="name_col">Rashmi</td>
-     <td class="age_col">25</td>
-     <td class="city_col">Bhopal</td>
-    </tr>
-    
-    <tr>
-     <td>5</td>
-     <td class="name_col">Shivam</td>
-     <td class="age_col">23</td>
-     <td class="city_col">Jaipur</td>
-    </tr>
-    
-    </table>
--->    
     </div>
 
     <hr/>

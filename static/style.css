@@ -17,6 +17,10 @@
 
 } 
 
+.desc {
+  font-size:8pt;
+}
+
 .rc_number {
   width:40px;
   text-align: right;
