@@ -45,6 +45,28 @@
     const HIGH_LIGHT_COLOR = "#ff6633"
     const NOT_HIGH_LIGHT_COLOR = "#ffffff"
 
+    let columns  = {
+                
+                itemId:0, 
+                price:2,
+                instock:3,
+                deployed:4,
+                brand:5,
+                cbd:6,
+                desc:7,
+                farm:8,
+                harvest:9,
+                name:10,
+                strain:11,
+                thc:12,
+                type:13,
+                weight:14,
+                count:15,
+                product:16
+            } 
+
+
+
 try { 
             const data = JSON.parse('{{ stores | tojson }}')
             merchantId = data[0][0]
@@ -110,9 +132,9 @@ try {
                     document.getElementById("theSelectedItemRow").innerHTML = rowInTableId
                     document.getElementById("row_" + rowInTableId).style.backgroundColor=HIGH_LIGHT_COLOR; 
                     if ( lastSelectedRow !== undefined ) {
-                        document.getElementById(lastSelectedRow).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
+                        document.getElementById("row_" + lastSelectedRow).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
                     }
-                    lastSelectedRow = "row_" + rowInTableId
+                    lastSelectedRow = rowInTableId
 
                     maybeAddToVendingMachine(rowInTableId)
 
@@ -120,14 +142,43 @@ try {
                 }
 
                 function maybeAddToVendingMachine() { 
-                    if ( lastSelectedRow !== undefined ) { // This is the item 
-                        const index = lastSelectedRow.replace("row_", "")
-                        if ( theSelectedVendingMachine > 0 ) { 
 
+                    let doIt = false 
+                    if ( theSelectedItem != undefined && theSelectedVendingMachine !== undefined && theSelectedSpoolRow !== undefined ) { 
+                        doIt = true 
+                    }
 
+                    if ( doIt === true ) {
 
+                        const itemId_index = columns['itemId']
+                        const instock_index = columns['instock']
+                        const deployed_index = columns['deployed']
 
-                        }                        
+                        console.log( lastSelectedRow + "   " + inventory2[lastSelectedRow])
+                        const raw_numberOfItems = prompt("Number of items", "0");
+                        const numberOfItems = parseInt(raw_numberOfItems)
+                        if ( ! isNaN(numberOfItems) ) {
+                            let out = parseInt(inventory2[lastSelectedRow][deployed_index])
+                            if ( out === -1 ) {
+                                out = 0 
+                            }
+                            const total_possible =  inventory2[lastSelectedRow][instock_index] 
+
+                            console.log( out + " and " + total_possible)
+
+                            const x = out + numberOfItems
+                            console.log( " out " + out + " total " + total_possible + " addedd " + x ) 
+                            if ( out + numberOfItems <= total_possible ) {
+                                document.getElementById("spool_count_" + theSelectedSpool).innerHTML = numberOfItems
+                                document.getElementById("spool_item_" + theSelectedSpool).innerHTML = inventory2[lastSelectedRow][itemId_index] 
+                                inventory2[lastSelectedRow][deployed_index] += numberOfItems
+                                makeInventoryTable2()
+                            } else {
+                                alert("Your have " + total_possible + "\nBut this would make it " + ( total_possible - (out + numberOfItems)))
+                            }
+                        } else { 
+                            alert("This input " + numberOfItems + " in not value")
+                        }
                     }
                 }
 
@@ -139,28 +190,17 @@ try {
                 }
                 let lastSpoolId = undefined 
                 function setSelectedSpool(rowcol, spoolRowIndex) { 
-                    // alert( rowcol)
-                    // if (theSelectedItem > 0 && theSelectedVendingMachine > 0 ) {  
-                    //     theSelectedRowCol = rowcol
-                    //     document.getElementById("theSelectedRowCol").innerHTML = theSelectedRowCol
-                    // }
                     document.getElementById("theSelectedSpool").innerHTML = rowcol
+                    theSelectedSpool = rowcol
+                    theSelectedSpoolRow = spoolRowIndex
                     document.getElementById("theSelectedSpoolRow").innerHTML = spoolRowIndex
                     document.getElementById("spool_" + spoolRowIndex).style.backgroundColor=HIGH_LIGHT_COLOR; 
-                    // if ( lastSpoolId !== undefined ) {
-                    //     document.getElementById("spool_ " + lastSpoolId).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
-                    // }
-                    
                     if ( lastSpoolId !== undefined ) {
-                        console.log( "YAY " + spoolRowIndex + " and " + lastSpoolId)
                         document.getElementById("spool_" + lastSpoolId).style.backgroundColor=NOT_HIGH_LIGHT_COLOR; 
                     
-                    } else { 
-                        console.log( "BOO " + spoolRowIndex + " and " + lastSpoolId)
-
                     }
                     lastSpoolId = spoolRowIndex
-
+                    maybeAddToVendingMachine()
 
                 }
                 function unselectEverything() { 
@@ -267,27 +307,6 @@ try {
             }
 
 
-            let columns  = {
-                
-                itemId:0, 
-                price:2,
-                instock:3,
-                deployed:4,
-                brand:5,
-                cbd:6,
-                desc:7,
-                farm:8,
-                harvest:9,
-                name:10,
-                strain:11,
-                thc:12,
-                type:13,
-                weight:14,
-                count:15,
-                product:16
-            } 
-
-
 
             function toggle(key) {
                 console.log("toggle " + key )
@@ -354,15 +373,13 @@ try {
 
 
 <script>
-    function sayHi(rc) {
-        alert(rc) 
-        finch 
-    }
+    
     function makeVendingMachine() {
 
         const l = ['a', 'b', 'c','d', 'e']
         const n = [1,2,3,4,5,6]
         let table = "<table border='1'>"
+        table += "<tr><th>RowCol</th><th>Count</th><th>ItemId</th></tr>"
         let index = 0 
         l.forEach((letter) => { 
             n.forEach((number) => { 
@@ -370,8 +387,10 @@ try {
                 let tr = `<tr id="spool_${index}">`
 
                 tr += `<td><button onClick="setSelectedSpool('${key}', '${index}');">${key}</button></td>`
-                tr += `<td><input type="number" class='rc_number' id="spool_count_${key}" min='0'></input> </td>`
-                tr += `<td><div id="spool_value_${key}">  spool_${index}</div> </td>`
+                // tr += `<td><input type="number" class='rc_number' id="spool_count_${key}" min='0'></input> </td>`
+                tr += `<td><div id="spool_count_${key}" min='0'></div> </td>`
+
+                tr += `<td><div id="spool_item_${key}">&nbsp;</div> </td>`
                 tr += "</tr>"
                 table += tr
                 index++ 
