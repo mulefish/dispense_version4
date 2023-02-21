@@ -81,25 +81,25 @@
         <table border='1'>
             <tr>
                 <td valign='top'>
-                    <table border='1'>
+                    <!-- <table border='1'>
                         <tr><td><button onClick="toggle('itemId')">itemId</button></td></tr>
                         <tr><td><button onClick="toggle('price')">price</button></td></tr>
-                            <tr><td><button onClick="toggle('instock')">instock</button></td></tr>
-                            <tr><td><button onClick="toggle('deployed')">deployed</button></td></tr>
-                            <tr><td><button onClick="toggle('brand')">brand</button></td></tr>
-                            <tr><td><button onClick="toggle('cbd')">cbd</button></td></tr>
-                            <tr><td><button onClick="toggle('desc')">desc</button></td></tr>
-                            <tr><td><button onClick="toggle('farm')">farm</button></td></tr>
-                            <tr><td><button onClick="toggle('harvest')">harvest</button></td></tr>
-                            <tr><td><button onClick="toggle('name')">name</button></td></tr>
-                            <tr><td><button onClick="toggle('strain')">strain</button></td></tr>
-                            <tr><td><button onClick="toggle('thc')">thc</button></td></tr>
-                            <tr><td><button onClick="toggle('type')">type</button></td></tr>
-                            <tr><td><button onClick="toggle('weight')">weight</button></td></tr>
-                            <tr><td><button onClick="toggle('count')">count</button></td></tr>
-                            <tr><td><button onClick="toggle('product')">product</button></td></tr>
-                    </table>
-
+                        <tr><td><button onClick="toggle('instock')">instock</button></td></tr>
+                        <tr><td><button onClick="toggle('deployed')">deployed</button></td></tr>
+                        <tr><td><button onClick="toggle('brand')">brand</button></td></tr>
+                        <tr><td><button onClick="toggle('cbd')">cbd</button></td></tr>
+                        <tr><td><button onClick="toggle('desc')">desc</button></td></tr>
+                        <tr><td><button onClick="toggle('farm')">farm</button></td></tr>
+                        <tr><td><button onClick="toggle('harvest')">harvest</button></td></tr>
+                        <tr><td><button onClick="toggle('name')">name</button></td></tr>
+                        <tr><td><button onClick="toggle('strain')">strain</button></td></tr>
+                        <tr><td><button onClick="toggle('thc')">thc</button></td></tr>
+                        <tr><td><button onClick="toggle('type')">type</button></td></tr>
+                        <tr><td><button onClick="toggle('weight')">weight</button></td></tr>
+                        <tr><td><button onClick="toggle('count')">count</button></td></tr>
+                        <tr><td><button onClick="toggle('product')">product</button></td></tr>
+                    </table> -->
+                    <div id="controls" > </div>
 
                 </td>
                 <td valign='top'>
@@ -134,6 +134,26 @@
                 count:true,
                 product:true
             } 
+
+            function makeControls() { 
+
+                let table = "<table border='1'>"
+                for ( let key in showHide) {
+                    const bool = showHide[key]
+                    // table += `<tr><td><button onClick="toggle('${key}')">${key}</button></td></tr>`
+                    if ( bool === true ) {
+                        table += `<tr><td><input type="checkbox" id="t_${key}" onChange="toggle('${key}')" checked>  <label for="t_${key}">${key}</label></td></tr>`
+
+                    } else {
+                        table += `<tr><td><input type="checkbox" id="t_${key}" onChange="toggle('${key}')">  <label for="t_${key}">${key}</label></td></tr>`
+
+                    }
+                }
+                document.getElementById("controls").innerHTML = table
+
+
+            }
+
 
             let columns  = {
                 
@@ -205,6 +225,7 @@
                 })  
                 document.getElementById("inventory").innerHTML = table 
             }
+            makeControls()
             makeInventoryTable2()
 
 </script>
