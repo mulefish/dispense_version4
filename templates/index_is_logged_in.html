@@ -34,7 +34,7 @@
     <script src="/static/external_scripts/xlsx_0.16.8_full_min.js"></script>
     <script>
         // All rows need to start with one of these, otherwise is will be ignored
-    const possibleCommands = ["machine", "store", "spool"];
+    const possibleCommands = ["machine", "store", "spool", "keys"];
     function isValidCommand(candidate) {
         candidate = candidate.trim().toLowerCase() 
         return possibleCommands.includes(candidate);
@@ -54,7 +54,7 @@
             if ( row.length > 0 ) { 
                 if (isValidCommand(row[0]))  { 
                     data.push(row)
-                }
+                } 
             }
           })
           createTable(data)
@@ -64,7 +64,7 @@
 
       function createTable(data) { 
         console.log(data)
-
+        indicateIsWellFormed( )
       }
 
     </script>
