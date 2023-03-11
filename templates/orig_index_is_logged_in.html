@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <meta charset="UTF-8">
+    <title>Dispense</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/make_tables.js"></script>
+    
+    <script>
+        const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')
+        const inventory = JSON.parse('{{ inventory | tojson }}')
+
+    </script>
+</head>
+
+<body>
+    {% include "headers/isLoggedinHeader.html" %}
+
+
+
+    <div id="stores"></div>
+    <table border="1">
+        <tr>
+            <td>
+   <button onClick='addNewProduct()'>Add a product</button>
+            </td>
+            <td>Selected ItemId</td>
+            <td><h4 id="theSelectedItem"  class='selected'  /></td>
+            <td>Selected VendingMachine</td>
+            <td><h4 id="theSelectedVendingMachine" class='selected' /></td>
+            <td>Selected RowCol</td>
+            <td><h4 id="theSelectedRowCol" class='selected'  /></td>
+            <script>
+                let theSelectedItem = -1 
+                let theSelectedVendingMachine = -1 
+                let theSelectedRowCol = "NILL"
+        
+                function setSelectedItem(itemId) { 
+                    theSelectedItem = itemId
+                    document.getElementById("theSelectedItem").innerHTML = theSelectedItem
+                }
+                function setSelectedVendingMachine(vendingMachineId) { 
+                    theSelectedVendingMachine = vendingMachineId
+                    document.getElementById("theSelectedVendingMachine").innerHTML = vendingMachineId
+                }
+                function setSelectedRowCol(rowcol) { 
+                    if (theSelectedItem > 0 && theSelectedVendingMachine > 0 ) {  
+                        theSelectedRowCol = rowcol
+                        document.getElementById("theSelectedRowCol").innerHTML = theSelectedRowCol
+                    }
+                }
+                function unselectEverything() { 
+                    theSelectedItem = -1 
+                    theSelectedVendingMachine = -1 
+                    theSelectedRowCol = "NILL"
+                    document.getElementById("theSelectedItem").innerHTML =""
+                    document.getElementById("theSelectedVendingMachine").innerHTML = ""
+                    document.getElementById("theSelectedRowCol").innerHTML = ""
+                }
+                </script>
+
+        </tr>
+    </table> 
+
+    {% include "headers/new_product_modal.html" %}
+
+    <hr/>
+                <div id="merchantInventory"></div>
+                <hr/>
+                <div id="vendingMachine"></div> 
+    <br />
+
+
+
+    <script>
+    function showVendingMachine(vendingMachineId) {
+        setSelectedVendingMachine(vendingMachineId)
+    } 
+    let merchantId = 0 
+
+
+
+
+        function create_vending_machine_matrix() { 
+        const rows = ['a', 'b', 'c', 'd', 'e', 'f'] 
+                const cols = [1,2,3,4,5,6]
+                
+                let table = "<table border='1'>"
+                table += "<tr>"
+                cols.forEach((c)=> { 
+                    table += "<th>RowCol</th><th>Count</th><th>Item Id</th>"
+                }) 
+                table += "</tr>"
+                
+                rows.forEach((r)=> { 
+                    table += "<tr>"
+                    cols.forEach((c)=> { 
+                        const rowcol = r + c 
+                        table += `<td class='rc' onmouseenter='setSelectedRowCol("${rowcol}")'>${rowcol}</td>`
+                        table += `<td onmouseenter='setSelectedRowCol("${rowcol}")'><input type='number' min='0' value='0' class='rc_number' id='${rowcol}' ></input></td>`
+                        table += `<td onmouseenter='setSelectedRowCol("${rowcol}")' id='rowcol_item_${rowcol}'></td>` 
+                    })
+                    table += "</tr>"
+                })
+                table += "</table>"
+                // console.log( table)
+                document.getElementById("vendingMachine").innerHTML = table 
+            } 
+
+        try { 
+            const data = JSON.parse('{{ stores | tojson }}')
+            merchantId = data[0][0]
+            const stores = [] 
+            data.forEach((datum)=> { 
+                const obj = {
+                    merchantId:datum[0],
+                    storeId:datum[1],
+                    storeName:datum[2],
+                    storeAddress:datum[3],
+                    merchantName:datum[4],
+                    billing_address:datum[5],
+                    phone:datum[6],
+                    vending:"vending"
+                }
+                stores.push(obj)
+            })
+            let keys = Object.keys(stores[0])
+            let table = "<table border='1' id='stores'><tr>"
+            keys.forEach((key)=> { 
+                table += "<th>" + key + "</th>"
+            })
+            table += "</tr>"
+
+            stores.forEach((store)=> { 
+                table += "<tr>"
+                keys.forEach((key)=> { 
+                    if ( key === "vending") {
+                        // Create buttons for EACH vending machine in this store. 
+                        // If a store has zero machines...   ...no buttons. 
+                        // If a store has 20 machines...  20 buttons. 
+                        // We might want to think of a machine naming convension.
+                        let buttons = "" 
+                        const storeId = store["storeId"]
+                        vendingMachines[storeId].forEach((vendingId)=> { 
+                            buttons += `<button onClick='showVendingMachine(${vendingId})'>${vendingId}</button>`
+                        }) 
+                        table += "<td>" + buttons + "</td>"
+                    } else {
+                        const value = store[key]
+                        table += "<td>" + value + "</td>"
+                    }
+                })
+                table += "</tr>"
+            })
+            table += "</table>"
+            document.getElementById("stores").innerHTML = table
+        } catch( error) { 
+            console.log( error )
+            alert( error)
+        }
+
+
+
+    </script>
+    
+    <script>
+    makeInventoryTable(inventory, "merchantInventory")
+    create_vending_machine_matrix()
+
+    </script>
+
+
+
+
+
+
+</body>
+
+</html>
