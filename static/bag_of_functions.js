@@ -67,14 +67,14 @@ function fileUpload(event) {
 
     function createTable(data, storeId, machineId, columns) { 
         // log_obj(data)
-        log_info( "storeId " + JSON.stringify( storeId ))
-        log_info( "machine " + JSON.stringify( machine ))
+        // log_info( "storeIdTuple " + JSON.stringify( storeIdTuple ))
+        // log_info( "machine " + JSON.stringify( machine ))
         // log_info( "columns " + JSON.stringify( columns ))
 
         let table = "<table border='1' class='machineTable'><tr>"
 
-        table += "<tr><th>Store</th><th>" + storeId[1] + "</th><tr>"
-        table += "<tr><th>MachineId</th><th>" + machine[1] + "</th><tr>"
+        table += "<tr><th>Store</th><th>" + storeId + "</th><tr>"
+        table += "<tr><th>MachineId</th><th>" + machineId + "</th><tr>"
 
 
         Object.keys(columns).forEach((c, i)=> {
@@ -109,8 +109,8 @@ function fileUpload(event) {
         });
         const data = []
         const seen = {}
-        let storeId = []
-        let machineId = []
+        let storeIdTuple = []
+        let machineIdTuple = []
         let columns = {} 
         rows.forEach((row, i) => {
             if (row.length > 0) {
@@ -118,7 +118,7 @@ function fileUpload(event) {
                 if (isValidCommand(candidate)) {
                     seen[candidate] = 1
                     if ( candidate === "store") {
-                        storeId = row
+                        storeIdTuple = row
                     } else if ( candidate === "keys") {
                         // columns = row
                         row.forEach((col, i)=> { 
@@ -126,7 +126,7 @@ function fileUpload(event) {
                             columns[col] = i
                         })
                     } else if ( candidate === "machine") { 
-                        machine = row
+                        machineIdTuple = row
                     } else if ( candidate === "spool") {
                         data.push(row)
                     }
@@ -148,13 +148,26 @@ function fileUpload(event) {
             indicateIsWellFormed(isCommandsOk, "Missing " + issues)
         } else {
 
-            // Ok, we have the commands. Now what about the columns? 
-
-            isColumnsOk = doesMapHaveMandatoryKeys(columns, mandatoryColumns)
+            // Ok, we have the commands. Now, what about the columns? 
+            isColumnsOk = doTheColumnsContainTheMandatoryFields(columns, mandatoryColumns)
+            // isStoreIdOk_and_machineId = true// does(columns, mandatoryColumns)
 
             if ( isColumnsOk === true ) {
-                createTable(data, storeId, machineId, columns)
-                indicateIsWellFormed(true )
+
+                // Ok, we have - at the least - the proper columns ( likely have more, but at least have the minimum)
+                // Now, what about the storeId and the machineId? 
+                let idsAreOk = hasStoreId_hasMachineId(storeIdTuple, machineIdTuple)
+                idsAreOk = true 
+
+                if ( idsAreOk ) { 
+                    const storeId = storeIdTuple[1]
+                    const machineId = machineIdTuple[1]
+                    createTable(data, storeId, machineId, columns)
+                    indicateIsWellFormed(true)
+                } else {
+                    indicateIsWellFormed(false, "Both a store name and a machine name are needed")
+                }
+
             } else {
                 indicateIsWellFormed(false, "These columns are mandatory: " + JSON.stringify( mandatoryColumns ))
             }
@@ -163,12 +176,30 @@ function fileUpload(event) {
     reader.readAsBinaryString(file);
 };
 
-function doesMapHaveMandatoryKeys(map, neededKeysAry ) {
+function doTheColumnsContainTheMandatoryFields(map, neededKeysAry ) {
     let isOk = true 
     neededKeysAry.forEach((key)=> { 
         if ( ! map.hasOwnProperty(key)) {
             isOk = false 
         }
     })
+    return isOk 
+}
+
+function hasStoreId_hasMachineId(storeIdTuple, machineIdTuple) {
+    // The Database will need a storeId AND a machine ID to write to!
+    let s = false 
+    let m = false 
+    if ( storeIdTuple.length > 1 ) {
+        if ( storeIdTuple[1].length > 0 ) {
+            s = true 
+        }
+    }
+    if ( machineIdTuple.length > 1 ) {
+        if ( machineIdTuple[1].length > 0 ) {
+            m = true 
+        }
+    }
+    let isOk = true === s && s === m
     return isOk 
 }
