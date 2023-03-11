@@ -2,6 +2,7 @@ const DATA_NO_OPINION = "no_opinion"
 const DATA_IS_GOOD = "is_good"
 const DATA_IS_BAD = "is_bad"
 const possibleCommands = ["machine", "store", "spool", "keys"];
+const mandatoryColumns = ["spool", "uid", "count", "price"];
 
 //// commmon funcs 
 function log_info(msg) {
@@ -21,6 +22,7 @@ function log_obj(obj) {
 const colorDiv = document.getElementById('isItWellFormed');
 
 function indicateIsWellFormed(isOk_orIsNothing_orIsBad, issues) {
+
     switch (isOk_orIsNothing_orIsBad) {
         case true:
             if (colorDiv.classList.contains(DATA_NO_OPINION)) {
@@ -64,13 +66,18 @@ function fileUpload(event) {
     }
 
     function createTable(data, storeId, machineId, columns) { 
-        log_obj(data)
+        // log_obj(data)
         log_info( "storeId " + JSON.stringify( storeId ))
-        log_info( "machineId " + JSON.stringify( machineId ))
-        log_info( "columns " + JSON.stringify( columns ))
+        log_info( "machine " + JSON.stringify( machine ))
+        // log_info( "columns " + JSON.stringify( columns ))
 
         let table = "<table border='1' class='machineTable'><tr>"
-        columns.forEach((c, i)=> {
+
+        table += "<tr><th>Store</th><th>" + storeId[1] + "</th><tr>"
+        table += "<tr><th>MachineId</th><th>" + machine[1] + "</th><tr>"
+
+
+        Object.keys(columns).forEach((c, i)=> {
             table += "<th>" + c + "</th>"
         })
         table += "</tr>"
@@ -83,9 +90,6 @@ function fileUpload(event) {
         })
         table += "</table>"
         document.getElementById("machineTable").innerHTML = table 
-
-
-
 
     }
 
@@ -107,7 +111,7 @@ function fileUpload(event) {
         const seen = {}
         let storeId = []
         let machineId = []
-        let columns = []
+        let columns = {} 
         rows.forEach((row, i) => {
             if (row.length > 0) {
                 const candidate = row[0].trim().toLowerCase()
@@ -116,7 +120,11 @@ function fileUpload(event) {
                     if ( candidate === "store") {
                         storeId = row
                     } else if ( candidate === "keys") {
-                        columns = row
+                        // columns = row
+                        row.forEach((col, i)=> { 
+                            col = col.trim().toLowerCase()
+                            columns[col] = i
+                        })
                     } else if ( candidate === "machine") { 
                         machine = row
                     } else if ( candidate === "spool") {
@@ -127,26 +135,40 @@ function fileUpload(event) {
         })
 
         let issues = ""
-        let isOk = true
+        let isCommandsOk = true
         possibleCommands.forEach((cmd) => {
             if (!seen.hasOwnProperty(cmd)) {
                 issues += cmd + ","
-                isOk = false
+                isCommandsOk = false
             }
         })
-        if ( isOk === false ) { 
+        if ( isCommandsOk === false ) { 
             // snip the trailing comma
             issues = issues.substring(0, issues.length - 1)
-            indicateIsWellFormed(isOk, "Missing " + issues)
+            indicateIsWellFormed(isCommandsOk, "Missing " + issues)
         } else {
-            createTable(data, storeId, machineId, columns)
-            indicateIsWellFormed(isOk)
+
+            // Ok, we have the commands. Now what about the columns? 
+
+            isColumnsOk = doesMapHaveMandatoryKeys(columns, mandatoryColumns)
+
+            if ( isColumnsOk === true ) {
+                createTable(data, storeId, machineId, columns)
+                indicateIsWellFormed(true )
+            } else {
+                indicateIsWellFormed(false, "These columns are mandatory: " + JSON.stringify( mandatoryColumns ))
+            }
         }
-
-
-
-
     };
     reader.readAsBinaryString(file);
 };
 
+function doesMapHaveMandatoryKeys(map, neededKeysAry ) {
+    let isOk = true 
+    neededKeysAry.forEach((key)=> { 
+        if ( ! map.hasOwnProperty(key)) {
+            isOk = false 
+        }
+    })
+    return isOk 
+}

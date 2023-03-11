@@ -11,8 +11,18 @@
 }
 /* end color to indicated OK or not*/
 
+/* Needed and is OK vs not Ok */ 
+.needed_columns_and_is_ok { 
+  background-color: lightgreen;
+} 
+
+
+/* machineTable css */ 
 .machineTable td {
   text-align:center
+}
+.machineTable tr:nth-child(odd){
+  background-color: #e9e9e9;
 }
 
 
