@@ -3,14 +3,153 @@ const DATA_IS_GOOD = "is_good"
 const DATA_IS_BAD = "is_bad"
 const possibleCommands = ["machine", "store", "spool", "keys"];
 const mandatoryColumns = ["spool", "uid", "count", "price"];
+let dataObject = null;
+const NILL = "NILL"
+class DataObject { 
+
+    constructor() { 
+        this.spools = [] 
+        this.columns = {} 
+        this.storeId = NILL
+        this.machineId = NILL 
+        this.errors = {
+
+        }
+        
+    }
+
+    addSpool(row) {
+        this.spools.push(row)
+    }
+    setMachine(machineId) {
+        if ( machineId !== undefined && machineId.length > 0 ) { 
+            this.machineId = machineId
+        }
+
+    }
+    setStore(storeId) {
+        if ( storeId !== undefined && storeId.length > 0 ) { 
+            this.storeId = storeId
+        }
+    }
+    setKeys(columns) {
+        columns.forEach((c, i)=>{
+            const k = c.trim().toLowerCase()
+            this.columns[k] = i
+        })
+    }
+    addInfo(row) {
+        const candidate = row[0].trim().toLowerCase()
+        if ( candidate === "spool") {
+            this.addSpool(row)
+        }
+
+        if ( candidate === "machine") {
+            this.setMachine(row[1])
+        }
+
+        if ( candidate === "store") {
+            this.setStore(row[1])
+        }
+        if ( candidate === "keys") {
+            this.setKeys(row)
+        }
+    }
+
+    _checkTheShape() { 
+        // Did we get a store id? 
+        if ( this.storeId !== NILL && this.storeId.length > 0 ) {
+        } else {
+            this.errors["storeId"] = "is missing"
+        }
+        // Did we get a machine id? 
+        if ( this.machineId !== NILL && this.machineId.length > 0 ) {
+        } else {
+            this.errors["machineId"] = "is missing"
+        }
+        // Did we get the minimum of the proper keys? 
+        mandatoryColumns.forEach((col) => { 
+            if ( ! this.columns.hasOwnProperty(col)) {
+                this.errors[col] = "is missing"
+            }
+        })
+        // Do all the spools have the minimum of the proper values AND is the spool ID reasonible? 
+        let isFine = true 
+        let dataErrors = {} 
+        const idReg_oneLetter_oneNumber = /^[A-Za-z][0-9]$/;
+        const spoolIds_dupeCheck = {} 
+        this.spools.forEach((spool)=> {     
+            const spoolId = spool[this.columns["spool"]]
+            const price = spool[this.columns["price"]]
+            const count = spool[this.columns["count"]]
+            const uid = spool[this.columns["uid"]]
+            // spools - See if missing OR if duplicated
+            if ( spoolId !== undefined && idReg_oneLetter_oneNumber.test(spoolId)) {
+                // spoolId is well shaped! Something like 'B5' 
+                if ( ! spoolIds_dupeCheck.hasOwnProperty(spoolId)) {
+                    spoolIds_dupeCheck[spoolId] = 1
+                } else {
+                    spoolIds_dupeCheck[spoolId] += 1
+                    dataErrors["spool duplicate " + spoolId] = spoolIds_dupeCheck[spoolId]
+                }
+            } else {
+                dataErrors["spool id error"] = NILL
+            }
+            // prices - See if missing OR if not a whole number
+            if ( price !== undefined ) {
+                const num = Number.parseInt(price);
+                if ( Number.isInteger(num) === true ) { 
+                    // GOOD!
+                } else {
+                    dataErrors["price" + price] = "Price " + price + " is not a number"
+                }
+            } else {
+                dataErrors["price"] = "A price is missing"
+            }
+            // count - See if missing OR if not a whole number
+            if ( count !== undefined ) {
+                const num = Number.parseInt(count);
+                if ( Number.isInteger(num) === true ) { 
+                    // GOOD!
+                } else {
+                    dataErrors["count" + count] = "Count '" + count + "' is not a number"
+                }
+            } else {
+                dataErrors["count"] = "A count is missing"
+            }
+            // uid - See if missing or empty
+            if ( uid !== undefined ) {
+                // GOOD!
+            } else {
+                dataErrors["uid"] = "A uid " + uid + " is missing"
+            }
+        });
+
+        for ( let k in dataErrors) { 
+            this.errors[k] = dataErrors[k]
+        }
+        return this.errors
+    }
+
+    checkTheShape() { 
+        const theErrors = this._checkTheShape()
+        const n = Object.keys(theErrors).length 
+        const result = {
+            isOk : n === 0 ? true : false,
+            errors:theErrors
+        }
+        return result
+    }
+
+}
 
 //// commmon funcs 
 function log_info(msg) {
     console.log("%c" + msg, "background:lightgreen;")
 }
 
-function log_error(msg) {
-    console.log("%c" + msg, "background:lightred;")
+function log_blue(msg) {
+    console.log("%c .... |" + msg + "|", "background:lightblue;")
 }
 
 function log_obj(obj) {
@@ -60,6 +199,19 @@ function indicateIsWellFormed(isOk_orIsNothing_orIsBad, issues) {
     }
 }
 ///// Most important func /////////////////
+
+function createDataObject(rows) {
+    dataObject = new DataObject() 
+    rows.forEach((row, i) => {
+        if (row.length > 0) {
+            dataObject.addInfo(row)
+        }
+    })
+    const result = dataObject.checkTheShape()
+    log_obj(result)
+}
+
+
 function fileUpload(event) {
     function isValidCommand(candidate) {
         return possibleCommands.includes(candidate);
@@ -94,7 +246,6 @@ function fileUpload(event) {
     }
 
 
-
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -107,99 +258,7 @@ function fileUpload(event) {
         const rows = XLSX.utils.sheet_to_json(worksheet, {
             header: 1
         });
-        const data = []
-        const seen = {}
-        let storeIdTuple = []
-        let machineIdTuple = []
-        let columns = {} 
-        rows.forEach((row, i) => {
-            if (row.length > 0) {
-                const candidate = row[0].trim().toLowerCase()
-                if (isValidCommand(candidate)) {
-                    seen[candidate] = 1
-                    if ( candidate === "store") {
-                        storeIdTuple = row
-                    } else if ( candidate === "keys") {
-                        // columns = row
-                        row.forEach((col, i)=> { 
-                            col = col.trim().toLowerCase()
-                            columns[col] = i
-                        })
-                    } else if ( candidate === "machine") { 
-                        machineIdTuple = row
-                    } else if ( candidate === "spool") {
-                        data.push(row)
-                    }
-                }
-            }
-        })
-
-        let issues = ""
-        let isCommandsOk = true
-        possibleCommands.forEach((cmd) => {
-            if (!seen.hasOwnProperty(cmd)) {
-                issues += cmd + ","
-                isCommandsOk = false
-            }
-        })
-        if ( isCommandsOk === false ) { 
-            // snip the trailing comma
-            issues = issues.substring(0, issues.length - 1)
-            indicateIsWellFormed(isCommandsOk, "Missing " + issues)
-        } else {
-
-            // Ok, we have the commands. Now, what about the columns? 
-            isColumnsOk = doTheColumnsContainTheMandatoryFields(columns, mandatoryColumns)
-            // isStoreIdOk_and_machineId = true// does(columns, mandatoryColumns)
-
-            if ( isColumnsOk === true ) {
-
-                // Ok, we have - at the least - the proper columns ( likely have more, but at least have the minimum)
-                // Now, what about the storeId and the machineId? 
-                let idsAreOk = hasStoreId_hasMachineId(storeIdTuple, machineIdTuple)
-                idsAreOk = true 
-
-                if ( idsAreOk ) { 
-                    const storeId = storeIdTuple[1]
-                    const machineId = machineIdTuple[1]
-                    createTable(data, storeId, machineId, columns)
-                    indicateIsWellFormed(true)
-                } else {
-                    indicateIsWellFormed(false, "Both a store name and a machine name are needed")
-                }
-
-            } else {
-                indicateIsWellFormed(false, "These columns are mandatory: " + JSON.stringify( mandatoryColumns ))
-            }
-        }
+        createDataObject(rows ) // Broken out to make testing easy 
     };
     reader.readAsBinaryString(file);
 };
-
-function doTheColumnsContainTheMandatoryFields(map, neededKeysAry ) {
-    let isOk = true 
-    neededKeysAry.forEach((key)=> { 
-        if ( ! map.hasOwnProperty(key)) {
-            isOk = false 
-        }
-    })
-    return isOk 
-}
-
-function hasStoreId_hasMachineId(storeIdTuple, machineIdTuple) {
-    // The Database will need a storeId AND a machine ID to write to!
-    let s = false 
-    let m = false 
-    if ( storeIdTuple.length > 1 ) {
-        if ( storeIdTuple[1].length > 0 ) {
-            s = true 
-        }
-    }
-    if ( machineIdTuple.length > 1 ) {
-        if ( machineIdTuple[1].length > 0 ) {
-            m = true 
-        }
-    }
-    let isOk = true === s && s === m
-    return isOk 
-}
