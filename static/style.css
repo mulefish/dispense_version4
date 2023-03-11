@@ -4,11 +4,16 @@
 }
 .is_bad {
   background-color: red;
+  color:white;
 }
 .is_good {
   background-color: lightgreen;
 }
 /* end color to indicated OK or not*/
+
+.machineTable td {
+  text-align:center
+}
 
 
 * {box-sizing: border-box;}
