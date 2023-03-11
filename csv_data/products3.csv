@@ -1,18 +1,18 @@
 ﻿store,penny,,,,,,,,,,,,,,
-machine,uidmonster,,,,,,,,,,,,,,
+machine,finch,,,,,,,,,,,,,,
 keys,spool,uid,count, price,Type,grams,Producer,Strain,Classification,BatchInfo,Harvest,Canabinoids,% THC-A,% Delta 9,% CBD
 SPOOL,A1,15643151 - A1,9,$25.00 ,Flower,3.5,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,1/6/23,21,4,9,5
 SPOOL,A2,15643151 - A2,10,$50.00 ,Flower,7,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,1/6/23,21,4,9,5
 SPOOL,A3,15643151 - A3,10,$100.00 ,Flower,14,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,1/6/23,21,4,9,5
 SPOOL,A4,1545615-J5,10,$25.00 ,Flower,3.5,Ballys collective,Kimbo Kush,Indica,MER - 55788596,1/1/23,28,8,12,3
-SPOOL,Z3,1545615-J6,3,$45.00 ,Flower,7,Ballys collective,Kimbo Kush,Indica,MER - 55788596,1/1/23,28,8,12,3
-SPOOL,B1,1545615-J7,10,$85.00 ,Flower,14,Ballys collective,Kimbo Kush,Indica,MER - 55788596,1/1/23,28,8,12,3
-SPOOL,B2,54845613-J5,10,$30.00 ,Flower,3.5,Ballys collective,Low Key Kush,Indica,MER - 6489489,1/6/23,24,6,10,2
-SPOOL,B3,54845613-J6,10,$50.00 ,Flower,7,Ballys collective,Low Key Kush,Indica,MER - 6489489,1/6/23,24,6,10,2
-SPOOL,B4,54845613-J7,10,$100.00 ,Flower,14,Ballys collective,Low Key Kush,Indica,MER - 6489489,1/6/23,24,6,10,2
-SPOOL,B5,7845364-J5,3,$20.00 ,Flower,3.5,Ballys collective,Strawberry Cough,Indica,JEI-789451,1/12/23,26,7,11,6
+SPOOL,Z3,,3,$45.00 ,Flower,7,Ballys collective,Kimbo Kush,Indica,MER - 55788596,1/1/23,28,8,12,3
+SPOOL,B1,,10,penny,Flower,14,Ballys collective,Kimbo Kush,Indica,MER - 55788596,1/1/23,28,8,12,3
+SPOOL,B2,54845613-J5,Cat,$30.00 ,Flower,3.5,Ballys collective,Low Key Kush,Indica,MER - 6489489,1/6/23,24,6,10,2
+SPOOL,B2,54845613-J6,10,$50.00 ,Flower,7,Ballys collective,Low Key Kush,Indica,MER - 6489489,1/6/23,24,6,10,2
+SPOOL,B2,54845613-J7,,$100.00 ,Flower,14,Ballys collective,Low Key Kush,Indica,MER - 6489489,1/6/23,24,6,10,2
+SPOOL,B2,,3,$20.00 ,Flower,3.5,Ballys collective,Strawberry Cough,Indica,JEI-789451,1/12/23,26,7,11,6
 SPOOL,C1,7845364-J6,10,$40.00 ,Flower,7,Ballys collective,Strawberry Cough,Indica,JEI-789451,1/12/23,26,7,11,6
-SPOOL,C2,7845364-J7,10,$60.00 ,Flower,14,Ballys collective,Strawberry Cough,Indica,JEI-789451,1/12/23,26,7,11,6
+SPOOL,C2,7845364-J7,10,,Flower,14,Ballys collective,Strawberry Cough,Indica,JEI-789451,1/12/23,26,7,11,6
 SPOOL,C3,85413165-A1,10,$30.00 ,Flower,3.5,Paddle Creek Cannabis,Red Diamonds,Indica,KLT - 51573315,1/5/23,24,5,14,0.5
 SPOOL,C4,85413165-A2,10,$60.00 ,Flower,7,Paddle Creek Cannabis,Red Diamonds,Indica,KLT - 51573315,1/5/23,24,5,14,0.5
 SPOOL,C5,85413165-A3,10,$85.00 ,Flower,14,Paddle Creek Cannabis,Red Diamonds,Indica,KLT - 51573315,1/5/23,24,5,14,0.5

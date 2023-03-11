@@ -121,7 +121,7 @@ class DataObject {
             if ( uid !== undefined ) {
                 // GOOD!
             } else {
-                dataErrors["uid"] = "A uid " + uid + " is missing"
+                dataErrors["uid"] = "A uid is missing"
             }
         });
 
@@ -160,9 +160,9 @@ function log_obj(obj) {
 ////// Show the human if the data is well shaped or not 
 const colorDiv = document.getElementById('isItWellFormed');
 
-function indicateIsWellFormed(isOk_orIsNothing_orIsBad, issues) {
+function indicateHowWellFormed(shapeOfTheData) {
 
-    switch (isOk_orIsNothing_orIsBad) {
+    switch (shapeOfTheData["isOk"]) {
         case true:
             if (colorDiv.classList.contains(DATA_NO_OPINION)) {
                 colorDiv.classList.remove(DATA_NO_OPINION);
@@ -175,15 +175,21 @@ function indicateIsWellFormed(isOk_orIsNothing_orIsBad, issues) {
             }
             break;
         case false:
+            let issues = "<table border='1'>"
+            for ( let k in shapeOfTheData["errors"]) { 
+                const v = shapeOfTheData["errors"][k]
+                issues += `<tr><td>${k}</td><td>${v}</td></tr>`
+            }
+            issues += "</table>"
             if (colorDiv.classList.contains(DATA_NO_OPINION)) {
                 colorDiv.classList.remove(DATA_NO_OPINION);
                 colorDiv.classList.add(DATA_IS_BAD);
-                colorDiv.innerHTML = issues
             } else if (colorDiv.classList.contains(DATA_IS_GOOD)) {
                 colorDiv.classList.remove(DATA_IS_GOOD);
                 colorDiv.classList.add(DATA_IS_BAD);
-                colorDiv.innerHTML = issues
             }
+            colorDiv.innerHTML = issues
+
             break;
         default:
             if (colorDiv.classList.contains(DATA_IS_GOOD)) {
@@ -198,7 +204,15 @@ function indicateIsWellFormed(isOk_orIsNothing_orIsBad, issues) {
             break;
     }
 }
-///// Most important func /////////////////
+function makeTable(dataObject) {
+    let table = "<table border='1' id='machineTable'>"
+    table += `<tr><th>storeId</th><td>${dataObject.storeId}</td></tr>`
+    table += `<tr><th>machineId</th><td>${dataObject.machineId}</td></tr>`
+
+    
+
+
+}
 
 function createDataObject(rows) {
     dataObject = new DataObject() 
@@ -207,8 +221,10 @@ function createDataObject(rows) {
             dataObject.addInfo(row)
         }
     })
-    const result = dataObject.checkTheShape()
-    log_obj(result)
+    const isTheDataAllOk = dataObject.checkTheShape()
+    indicateHowWellFormed(isTheDataAllOk)
+    const theTable = makeTable(dataObject)
+    document.getElementById("machineTable").innerHTML = theTable
 }
 
 
