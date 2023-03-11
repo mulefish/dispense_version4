@@ -18,53 +18,75 @@ function log_obj(obj) {
 ////// Show the human if the data is well shaped or not 
 const colorDiv = document.getElementById('isItWellFormed');
 function indicateIsWellFormed(isOk_orIsNothing_orIsBad, issues) {
-    console.log("IWF: " + isOk_orIsNothing_orIsBad)
-    if (isOk_orIsNothing_orIsBad == undefined) {
-        if (colorDiv.classList.contains(DATA_IS_GOOD)) {
-
-            console.log("A A")
-            colorDiv.classList.remove(DATA_IS_GOOD);
-            colorDiv.classList.add(DATA_NO_OPINION);
-            colorDiv.innerHTML = ""
-        } else if (colorDiv.classList.contains(DATA_IS_BAD)) {
-            console.log("A B")
-
-            colorDiv.classList.remove(DATA_IS_BAD);
-            colorDiv.classList.add(DATA_NO_OPINION);
-            colorDiv.innerHTML = ""
-        } else {
-            console.log("hello the classList is " + colorDiv.classList)
-        }
-    } else {
-        if (isOk_orIsNothing_orIsBad === true) {
-
+    switch (isOk_orIsNothing_orIsBad) {
+        case true:
             if (colorDiv.classList.contains(DATA_NO_OPINION)) {
-                console.log("B A")
                 colorDiv.classList.remove(DATA_NO_OPINION);
                 colorDiv.classList.add(DATA_IS_GOOD);
                 colorDiv.innerHTML = DATA_IS_GOOD
             } else if (colorDiv.classList.contains(DATA_IS_BAD)) {
-                console.log("B B")
                 colorDiv.classList.remove(DATA_IS_BAD);
                 colorDiv.classList.add(DATA_IS_GOOD);
                 colorDiv.innerHTML = DATA_IS_GOOD
             }
-        } else if (isOk_orIsNothing_orIsBad === false) {
+            break;
+        case false: 
             if (colorDiv.classList.contains(DATA_NO_OPINION)) {
-                console.log("C A")
-
                 colorDiv.classList.remove(DATA_NO_OPINION);
                 colorDiv.classList.add(DATA_IS_BAD);
                 colorDiv.innerHTML = issues
             } else if (colorDiv.classList.contains(DATA_IS_GOOD)) {
-                console.log("C B")
-
                 colorDiv.classList.remove(DATA_IS_GOOD);
                 colorDiv.classList.add(DATA_IS_BAD);
                 colorDiv.innerHTML = issues
             }
+            break;
+        default:
+            if (colorDiv.classList.contains(DATA_IS_GOOD)) {
+            colorDiv.classList.remove(DATA_IS_GOOD);
+            colorDiv.classList.add(DATA_NO_OPINION);
+            colorDiv.innerHTML = ""
+        } else if (colorDiv.classList.contains(DATA_IS_BAD)) {
+            colorDiv.classList.remove(DATA_IS_BAD);
+            colorDiv.classList.add(DATA_NO_OPINION);
+            colorDiv.innerHTML = ""
         }
+            break;
     }
+    // if (isOk_orIsNothing_orIsBad == undefined) {
+    //     if (colorDiv.classList.contains(DATA_IS_GOOD)) {
+    //         colorDiv.classList.remove(DATA_IS_GOOD);
+    //         colorDiv.classList.add(DATA_NO_OPINION);
+    //         colorDiv.innerHTML = ""
+    //     } else if (colorDiv.classList.contains(DATA_IS_BAD)) {
+    //         colorDiv.classList.remove(DATA_IS_BAD);
+    //         colorDiv.classList.add(DATA_NO_OPINION);
+    //         colorDiv.innerHTML = ""
+    //     }
+    // } else {
+    //     if (isOk_orIsNothing_orIsBad === true) {
+
+    //         if (colorDiv.classList.contains(DATA_NO_OPINION)) {
+    //             colorDiv.classList.remove(DATA_NO_OPINION);
+    //             colorDiv.classList.add(DATA_IS_GOOD);
+    //             colorDiv.innerHTML = DATA_IS_GOOD
+    //         } else if (colorDiv.classList.contains(DATA_IS_BAD)) {
+    //             colorDiv.classList.remove(DATA_IS_BAD);
+    //             colorDiv.classList.add(DATA_IS_GOOD);
+    //             colorDiv.innerHTML = DATA_IS_GOOD
+    //         }
+    //     } else if (isOk_orIsNothing_orIsBad === false) {
+    //         if (colorDiv.classList.contains(DATA_NO_OPINION)) {
+    //             colorDiv.classList.remove(DATA_NO_OPINION);
+    //             colorDiv.classList.add(DATA_IS_BAD);
+    //             colorDiv.innerHTML = issues
+    //         } else if (colorDiv.classList.contains(DATA_IS_GOOD)) {
+    //             colorDiv.classList.remove(DATA_IS_GOOD);
+    //             colorDiv.classList.add(DATA_IS_BAD);
+    //             colorDiv.innerHTML = issues
+    //         }
+    //     }
+    // }
 }
 //////////
 
@@ -111,20 +133,9 @@ function fileUpload(event) {
         log_obj(seen )
     };
     reader.readAsBinaryString(file);
-    // function dataIsOkSoFar(data) {
-    //     data.each()
-
-
-
-    // }
 };
 
-
-
-
-
-
-
+////////////////// THIS IS IMPORTANT! 
 const fileInput = document.getElementById('fileInput');
 fileInput.addEventListener('change', (event) => {
      fileUpload(event)
