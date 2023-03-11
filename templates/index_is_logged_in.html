@@ -4,15 +4,6 @@
 <html>
   <head>
     <style>
-         .white {
-        background-color: white;
-      }
-      .red {
-        background-color: red;
-      }
-      .green {
-        background-color: green;
-      }
       </style>
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
         <meta charset="UTF-8">
@@ -35,9 +26,12 @@
             </td>
         </tr>
     </table>
+    HELLLO 
     <hr/>
     <button onclick="toggleColor()">Toggle Color</button>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script> -->
+    <!-- This local lib is the same as the CDN one. I pulled it down so I would work without a network -->
+    <script src="/static/external_scripts/xlsx_0.16.8_full_min.js"></script>
     <script>
       const fileInput = document.getElementById('fileInput');
       fileInput.addEventListener('change', (event) => {
@@ -56,26 +50,9 @@
       });
     </script>
 
+ 
 
-<script>
-    const colorDiv = document.getElementById('isItWellFormed');
-    function toggleColor() {
-      if (colorDiv.classList.contains('white')) {
-        colorDiv.classList.remove('white');
-        colorDiv.classList.add('red');
-        colorDiv.innerHTML = "NO"
-      } else if (colorDiv.classList.contains('red')) {
-        colorDiv.classList.remove('red');
-        colorDiv.classList.add('green');
-        colorDiv.innerHTML = "YES"
-      } else {
-        colorDiv.classList.remove('green');
-        colorDiv.classList.add('white');
-        colorDiv.innerHTML = ""
 
-      }
-
-    }
-  </script>
+    <script src="/static/bag_of_functions.js"></script>
   </body>
 </html>
