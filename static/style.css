@@ -1,13 +1,14 @@
-
-.white {
-  background-color: white;
+/* color a div to show if the excel sheet is OK or not OR if it hasn't been parsed yet */
+.no_opinion {
+  background-color: "#e0e0e0";
 }
-.red {
+.is_bad {
   background-color: red;
 }
-.green {
-  background-color: green;
+.is_good {
+  background-color: lightgreen;
 }
+/* end color to indicated OK or not*/
 
 
 * {box-sizing: border-box;}

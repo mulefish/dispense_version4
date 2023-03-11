@@ -17,8 +17,8 @@
 
     <table border='1'>
         <tr>
-            <td>Is it formed?</td>
-            <td id="isItWellFormed" class="white" align="center">&nbsp;</td>
+            <td align='center'>Is it formed?</td>
+            <td id="isItWellFormed" class="no_opinion" align="center"></td>
         </tr>
         <tr >
             <td colspan='2'>
@@ -32,42 +32,6 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script> -->
     <!-- This local lib is the same as the CDN one. I pulled it down so I would work without a network -->
     <script src="/static/external_scripts/xlsx_0.16.8_full_min.js"></script>
-    <script>
-        // All rows need to start with one of these, otherwise is will be ignored
-    const possibleCommands = ["machine", "store", "spool", "keys"];
-    function isValidCommand(candidate) {
-        candidate = candidate.trim().toLowerCase() 
-        return possibleCommands.includes(candidate);
-    }
-      const fileInput = document.getElementById('fileInput');
-      fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const fileData = event.target.result;
-          const workbook = XLSX.read(fileData, {type: 'binary'});
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-          const data = [] 
-          rows.forEach((row, i)=> { 
-            if ( row.length > 0 ) { 
-                if (isValidCommand(row[0]))  { 
-                    data.push(row)
-                } 
-            }
-          })
-          createTable(data)
-        };
-        reader.readAsBinaryString(file);
-      });
-
-      function createTable(data) { 
-        console.log(data)
-        indicateIsWellFormed( )
-      }
-
-    </script>
 
  
 
