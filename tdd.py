@@ -1,36 +1,33 @@
 from common import yellow, cyan, log, green, verdict, getUsers
-from newdatalayer.database_middle_layer import delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import get_stores_for_user, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
 
 
-def get_stores_for_user_test():
-    name = "kermitt"
-    # sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{name}"'
-    sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{name}"'
-    stores = do_select(sqlfetch)
-    # print( stores )
-    columns = {
-        "merchantId":0,
-        "storeId":1,
-        "storeName":2,
-        "storeAddress":3, 
-        "nerchantName":4,
-        "billing_address":5,
-        "phone":6
-    }
-    result = []
-    for ary in stores: 
-        obj = {} 
-        for k in columns: 
-            index = columns[k]
-            obj[k] = ary[index]
-        result.append(obj)
+def getStoresForUser_oughtToBeGood_test():
+    found = get_stores_for_user("kermitt")
 
-    print( result)
+    stores = [] 
+    for obj in found:
+        stores.append( obj["storeName"])
 
 
-    # actualLength = len(stores)
-    # isOk = actualLength > 0
-    # verdict(isOk, True, "get_users_test got {} results ".format(len(stores)))
+    isOk = False 
+    if "Kitty Buds" in stores and "Bright Flower" in stores:
+        isOk = True 
+
+    verdict(isOk, True, "getStoresForUser_oughtToBeGood_test got {} ".format(stores))
+
+def getStoresForUser_oughtToBeFail_withWrongName_test():
+    found = get_stores_for_user("This name is not in the database")
+
+    stores = [] 
+    for obj in found:
+        stores.append( obj["storeName"])
+
+    isOk = len(stores) == 0 
+    verdict(isOk, True, "getStoresForUser_oughtToBeGood_test got {} ".format(stores))
+
+
+
 
 
 def get_stores_test():
@@ -109,4 +106,5 @@ if __name__ == "__main__":
     # get_merchantId_from_merchantName_test()
     # insert_new_product_test() 
     
-    get_stores_for_user_test() 
+    getStoresForUser_oughtToBeGood_test() 
+    getStoresForUser_oughtToBeFail_withWrongName_test()

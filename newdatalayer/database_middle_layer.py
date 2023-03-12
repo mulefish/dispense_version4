@@ -2,6 +2,27 @@
 import sqlite3
 import json
 
+def get_stores_for_user( username): 
+    sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
+    stores = do_select(sqlfetch)
+    columns = {
+        "merchantId":0,
+        "storeId":1,
+        "storeName":2,
+        "storeAddress":3, 
+        "nerchantName":4,
+        "billing_address":5,
+        "phone":6
+    }
+    found = []
+    for ary in stores: 
+        obj = {} 
+        for k in columns: 
+            index = columns[k]
+            obj[k] = ary[index]
+        found.append(obj)
+    return found
+
 def do_select(sqlfetch):
     conn = sqlite3.connect('./newdatalayer/new_dispense.db')
     cursor = conn.cursor()
