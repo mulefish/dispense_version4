@@ -68,6 +68,7 @@ function indicateHowWellFormed(shapeOfTheData) {
     }
 }
 function makeTable(dataObject) {
+    log_blue("makeTable for "  + dataObject.storeId + " machine " + dataObject.machineId)
     let table = "<table border='1' class='machineTable'>"
     if ( dataObject['storeId_health'] === "ok") {
         table += `<tr><th>storeId</th><td>${dataObject.storeId}</td></tr>`
