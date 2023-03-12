@@ -1,6 +1,8 @@
 const DATA_NO_OPINION = "no_opinion"
 const DATA_IS_GOOD = "is_good"
 const DATA_IS_BAD = "is_bad"
+const HIDE_ME = "hideMe"
+const SHOW_ME = "showMe"
 const possibleCommands = ["machine", "store", "spool", "keys"];
 const mandatoryColumns = ["spool", "uid", "count", "price"];
 let dataObject = null;
@@ -22,6 +24,7 @@ function log_obj(obj) {
 
 ////// Show the human if the data is well shaped or not 
 const colorDiv = document.getElementById('isItWellFormed');
+const saveButton = document.getElementById('saveButton')
 
 function indicateHowWellFormed(shapeOfTheData) {
 
@@ -36,6 +39,12 @@ function indicateHowWellFormed(shapeOfTheData) {
                 colorDiv.classList.add(DATA_IS_GOOD);
                 colorDiv.innerHTML = DATA_IS_GOOD
             }
+
+            if ( saveButton.classList.contains(HIDE_ME)) {
+                saveButton.classList.remove(HIDE_ME)
+                saveButton.classList.add(SHOW_ME)
+            }
+
             break;
         case false:
             let issues = "<table border='1'>"
@@ -53,6 +62,13 @@ function indicateHowWellFormed(shapeOfTheData) {
             }
             colorDiv.innerHTML = issues
 
+            if ( saveButton.classList.contains(SHOW_ME)) {
+                saveButton.classList.remove(SHOW_ME)
+                saveButton.classList.add(HIDE_ME)
+            }
+
+
+
             break;
         default:
             if (colorDiv.classList.contains(DATA_IS_GOOD)) {
@@ -63,6 +79,10 @@ function indicateHowWellFormed(shapeOfTheData) {
                 colorDiv.classList.remove(DATA_IS_BAD);
                 colorDiv.classList.add(DATA_NO_OPINION);
                 colorDiv.innerHTML = ""
+            }
+            if ( saveButton.classList.contains(SHOW_ME)) {
+                saveButton.classList.remove(SHOW_ME)
+                saveButton.classList.add(HIDE_ME)
             }
             break;
     }
@@ -122,35 +142,6 @@ function fileUpload(event) {
     function isValidCommand(candidate) {
         return possibleCommands.includes(candidate);
     }
-
-    // function createTable(data, storeId, machineId, columns) { 
-    //     let table = "<table border='1' class='machineTable'><tr>"
-
-    //     table += "<tr><th>Store</th><th>" + storeId + "</th><tr>"
-    //     table += "<tr><th>MachineId</th><th>" + machineId + "</th><tr>"
-    //     table += "<tbody>"
-
-
-    //     table += "</tbody>"
-    //     table += "</table>"
-
-
-    //     // Object.keys(columns).forEach((c, i)=> {
-    //     //     table += "<th>" + c + "</th>"
-    //     // })
-    //     // table += "</tr>"
-    //     // data.forEach((row, i)=> {
-    //     //     table += "<tr>"
-    //     //     row.forEach((column)=> { 
-    //     //         table += "<td>" + column + "</td>"
-    //     //     })
-    //     //     table += "</tr>"
-    //     // })
-    //     // table += "</table>"
-    //     document.getElementById("machineTable").innerHTML = table 
-
-    // }
-
 
     const file = event.target.files[0];
     const reader = new FileReader();

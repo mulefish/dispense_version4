@@ -16,6 +16,14 @@
   background-color: lightgreen;
 } 
 
+/* save button */ 
+.hideMe {
+  display:none
+}
+
+.showMe { 
+  display:inline;
+}
 
 /* machineTable css */ 
 .machineTable td {

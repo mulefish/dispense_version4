@@ -14,14 +14,28 @@
   </head>
   <body>
     {% include "headers/isLoggedinHeader.html" %}
+    <script>
+        const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')  
+        const stores = JSON.parse('{{ stores | tojson }}')
+        console.log("vendingMachines")
+        console.log(vendingMachines)
+        console.log("stores")
+        console.log(stores)
 
+        function save() { 
+            console.log( "save")
+        }
+
+    </script>
     <table border='1'>
         <tr>
             <td align='center' valign='top'>Well formed?</td>
             <td id="isItWellFormed" class="no_opinion" align="center"></td>
+            <td align='center'><button class='hideMe' id='saveButton' onClick="save()">save</td>
+
         </tr>
         <tr >
-            <td colspan='2'>
+            <td colspan='3'>
                 <input type="file" id="fileInput">
             </td>
         </tr>
@@ -36,7 +50,7 @@
     <script src="/static/external_scripts/xlsx_0.16.8_full_min.js"></script>
 
     <script>
-        ////////////////// THIS IS IMPORTANT! 
+
     const fileInput = document.getElementById('fileInput');
     fileInput.addEventListener('change', (event) => {
         fileUpload(event)
