@@ -1,6 +1,17 @@
 from common import yellow, cyan, log, green, verdict, getUsers
-from newdatalayer.database_middle_layer import get_stores_for_user, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+# from newdatalayer.database_middle_layer import get_stores_for_user, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import get_column_names_of_a_table, get_stores_for_user, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
 
+def get_column_names_of_a_table_test(): 
+    table_name = "store"    
+    column_names = get_column_names_of_a_table(table_name)
+    expected = ['storeId', 'name', 'address', 'lat', 'lon', 'phone', 'merchantId_fk']
+    isOk = False
+    if set(expected) == set(column_names):
+        isOk = True
+    verdict(isOk, True, "get_column_names_of_a_table_test got {} ".format(column_names))
+
+    
 
 def getStoresForUser_oughtToBeGood_test():
     found = get_stores_for_user("kermitt")
@@ -108,3 +119,4 @@ if __name__ == "__main__":
     
     getStoresForUser_oughtToBeGood_test() 
     getStoresForUser_oughtToBeFail_withWrongName_test()
+    get_column_names_of_a_table_test()

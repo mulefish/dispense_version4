@@ -2,6 +2,16 @@
 import sqlite3
 import json
 
+def get_column_names_of_a_table(table_name):
+    conn = sqlite3.connect('./newdatalayer/new_dispense.db')
+    cursor = conn.cursor()
+    cursor.execute(f"PRAGMA table_info({table_name})")
+    column_names = [row[1] for row in cursor.fetchall()]
+    # print(column_names)
+    cursor.close()
+    conn.close()
+    return column_names
+
 def get_stores_for_user( username): 
     sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
     stores = do_select(sqlfetch)
