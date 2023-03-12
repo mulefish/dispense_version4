@@ -24,7 +24,7 @@ def getStoresForUser_oughtToBeFail_withWrongName_test():
         stores.append( obj["storeName"])
 
     isOk = len(stores) == 0 
-    verdict(isOk, True, "getStoresForUser_oughtToBeGood_test got {} ".format(stores))
+    verdict(isOk, True, "getStoresForUser_oughtToBeFail_withWrongName_test got {} ".format(stores))
 
 
 
