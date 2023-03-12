@@ -77,7 +77,7 @@ function makeTable(dataObject) {
         table += `<th>${k}</th>`
     }
     table += "</tr>"
-    dataObject.spools.forEach((spool)=> { 
+    dataObject.spools.forEach((spool, i )=> { 
         table += "<tr>"
 
 
@@ -85,7 +85,11 @@ function makeTable(dataObject) {
         for ( let k in dataObject['columns']) { 
             const index = dataObject['columns'][k]
             const value = spool[index]
-            table += `<td class='is_bad'>${value}</td>`
+            if ( dataObject.health[i][index] === "ok") {
+                table += `<td>${value}</td>`
+            } else {
+                table += `<td class='is_bad'>${value}  ${dataObject.health[i][index]}</td>`
+            }
         }
         table += "</tr>"
     })

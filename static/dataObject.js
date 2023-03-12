@@ -73,11 +73,29 @@ class DataObject {
         const idReg_oneLetter_oneNumber = /^[A-Za-z][0-9]$/;
         const spoolIds_dupeCheck = {} 
         this.spools.forEach((spool, j)=> {     
-            const spoolId = spool[this.columns["spool"]]
-            const price = spool[this.columns["price"]]
-            const count = spool[this.columns["count"]]
-            const uid = spool[this.columns["uid"]]
-            
+            this.health.push([])
+            // let index = 0 
+            // for ( let k in this.columns ) { 
+            //     this.health[j][index] = "ok"
+            //     index++
+            // }
+            Object.keys(this.columns).forEach((x, index)=> { 
+                this.health[j][index] = "ok"
+            })
+
+
+            const spoolId_index = this.columns["spool"]
+            const price_index = this.columns["price"]
+            const count_index= this.columns["count"]
+            const uid_index = this.columns["uid"]
+
+
+            const spoolId = spool[spoolId_index]
+            const price = spool[price_index]
+            const count = spool[count_index]
+            const uid = spool[uid_index]
+
+
             // spools - See if missing OR if duplicated
             if ( spoolId !== undefined && idReg_oneLetter_oneNumber.test(spoolId)) {
                 // spoolId is well shaped! Something like 'B5' 
@@ -86,9 +104,11 @@ class DataObject {
                 } else {
                     spoolIds_dupeCheck[spoolId] += 1
                     dataErrors["spool duplicate " + spoolId] = spoolIds_dupeCheck[spoolId]
+                    this.health[j][spoolId_index] = "dupe"
                 }
             } else {
                 dataErrors["spool id error"] = NILL
+                this.health[j][spoolId_index] = NILL
             }
             // prices - See if missing OR if not a whole number
             if ( price !== undefined ) {
@@ -97,8 +117,10 @@ class DataObject {
                     // GOOD!
                 } else {
                     dataErrors["price" + price] = "Price " + price + " is not a number"
+                    this.health[j][price_index] = "NaN"
                 }
             } else {
+                this.health[j][price_index] = NILL
                 dataErrors["price"] = "A price is missing"
             }
             // count - See if missing OR if not a whole number
@@ -108,15 +130,18 @@ class DataObject {
                     // GOOD!
                 } else {
                     dataErrors["count" + count] = "Count '" + count + "' is not a number"
+                    this.health[j][this.columns["count"]] = "NaN"
                 }
             } else {
                 dataErrors["count"] = "A count is missing"
+                this.health[j][count_index] = NILL
             }
             // uid - See if missing or empty
             if ( uid !== undefined ) {
                 // GOOD!
             } else {
                 dataErrors["uid"] = "A uid is missing"
+                this.health[j][uid_index] = NILL
             }
         });
 
