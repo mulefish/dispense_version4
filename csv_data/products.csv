@@ -1,5 +1,5 @@
-﻿SPOOL,storeAblert,,spool,       uid   ,count, price,,,,,,,,,
-machine,,,,,,,,,,,,,,,
+﻿store,storeAblert,,spool,       uid   ,count, price,,,,,,,,,
+machine,EEBOO,,,,,,,,,,,,,,
 keys,spool,       uid   ,count, price,Product Type,weight (g),Producer,Strain,Strain Classification,Batch information,Harvest Date,Total Canabinoids,% THC-A,% Delta 9,% CBD
 SPOOL,A1,15643151 - A1,9,$25.00 ,Flower,3.5,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,1/6/23,21,4,9,5
 SPOOL,A2,15643151 - A2,10,$50.00 ,Flower,7,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,1/6/23,21,4,9,5
