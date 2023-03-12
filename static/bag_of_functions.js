@@ -68,7 +68,7 @@ function indicateHowWellFormed(shapeOfTheData) {
     }
 }
 function makeTable(dataObject) {
-    let table = "<table border='1' id='machineTable'>"
+    let table = "<table border='1' class='machineTable'>"
     table += `<tr><th>storeId</th><td>${dataObject.storeId}</td></tr>`
     table += `<tr><th>machineId</th><td>${dataObject.machineId}</td></tr>`
     table += "<tbody><tr>"
@@ -79,9 +79,14 @@ function makeTable(dataObject) {
     table += "</tr>"
     dataObject.spools.forEach((spool)=> { 
         table += "<tr>"
-        spool.forEach((thing)=> { 
-            table += `<td>${thing}</td>`
-        })
+
+
+
+        for ( let k in dataObject['columns']) { 
+            const index = dataObject['columns'][k]
+            const value = spool[index]
+            table += `<td class='is_bad'>${value}</td>`
+        }
         table += "</tr>"
     })
 
@@ -94,15 +99,12 @@ function makeTable(dataObject) {
 
 function createDataObject(rows) {
     dataObject = new DataObject() 
-    log_info( dataObject )
-    log_blue("well? ")
     rows.forEach((row, i) => {
         if (row.length > 0) {
             dataObject.addInfo(row)
         }
     })
     const isTheDataAllOk = dataObject.checkTheShape()
-    // log_info( JSON.stringify( dataObject ) )
     indicateHowWellFormed(isTheDataAllOk)
     const theTable = makeTable(dataObject)
     document.getElementById("machineTable").innerHTML = theTable

@@ -2,13 +2,14 @@ class DataObject {
 
     constructor() { 
         this.spools = [] 
+        this.health = [] 
         this.columns = {} 
         this.storeId = NILL
         this.machineId = NILL 
         this.errors = {
 
         }
-        
+        this.health = [] 
     }
 
     addSpool(row) {
@@ -71,11 +72,12 @@ class DataObject {
         let dataErrors = {} 
         const idReg_oneLetter_oneNumber = /^[A-Za-z][0-9]$/;
         const spoolIds_dupeCheck = {} 
-        this.spools.forEach((spool)=> {     
+        this.spools.forEach((spool, j)=> {     
             const spoolId = spool[this.columns["spool"]]
             const price = spool[this.columns["price"]]
             const count = spool[this.columns["count"]]
             const uid = spool[this.columns["uid"]]
+            
             // spools - See if missing OR if duplicated
             if ( spoolId !== undefined && idReg_oneLetter_oneNumber.test(spoolId)) {
                 // spoolId is well shaped! Something like 'B5' 
