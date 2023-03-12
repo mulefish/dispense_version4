@@ -11,15 +11,16 @@ def get_column_names_of_a_table_test():
         isOk = True
     verdict(isOk, True, "get_column_names_of_a_table_test got {} ".format(column_names))
 
+
+
+
     
 
 def getStoresForUser_oughtToBeGood_test():
     found = get_stores_for_user("kermitt")
-
     stores = [] 
     for obj in found:
         stores.append( obj["storeName"])
-
 
     isOk = False 
     if "Kitty Buds" in stores and "Bright Flower" in stores:
