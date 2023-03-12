@@ -74,21 +74,14 @@ class DataObject {
         const spoolIds_dupeCheck = {} 
         this.spools.forEach((spool, j)=> {     
             this.health.push([])
-            // let index = 0 
-            // for ( let k in this.columns ) { 
-            //     this.health[j][index] = "ok"
-            //     index++
-            // }
-            Object.keys(this.columns).forEach((x, index)=> { 
+             Object.keys(this.columns).forEach((x, index)=> { 
                 this.health[j][index] = "ok"
             })
-
 
             const spoolId_index = this.columns["spool"]
             const price_index = this.columns["price"]
             const count_index= this.columns["count"]
             const uid_index = this.columns["uid"]
-
 
             const spoolId = spool[spoolId_index]
             const price = spool[price_index]
