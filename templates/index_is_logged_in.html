@@ -23,7 +23,12 @@
         console.log(stores)
 
         function save() { 
-            console.log( "save")
+            const dataToUpsert = {
+                storeId: dataObject.storeId, 
+                machineId: dataObject.machineId, 
+                spools:dataObject.spools
+            }
+            console.log( JSON.stringify( dataToUpsert))
         }
 
     </script>
