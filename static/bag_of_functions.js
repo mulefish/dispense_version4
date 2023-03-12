@@ -5,143 +5,6 @@ const possibleCommands = ["machine", "store", "spool", "keys"];
 const mandatoryColumns = ["spool", "uid", "count", "price"];
 let dataObject = null;
 const NILL = "NILL"
-class DataObject { 
-
-    constructor() { 
-        this.spools = [] 
-        this.columns = {} 
-        this.storeId = NILL
-        this.machineId = NILL 
-        this.errors = {
-
-        }
-        
-    }
-
-    addSpool(row) {
-        this.spools.push(row)
-    }
-    setMachine(machineId) {
-        if ( machineId !== undefined && machineId.length > 0 ) { 
-            this.machineId = machineId
-        }
-
-    }
-    setStore(storeId) {
-        if ( storeId !== undefined && storeId.length > 0 ) { 
-            this.storeId = storeId
-        }
-    }
-    setKeys(columns) {
-        columns.forEach((c, i)=>{
-            const k = c.trim().toLowerCase()
-            this.columns[k] = i
-        })
-    }
-    addInfo(row) {
-        const candidate = row[0].trim().toLowerCase()
-        if ( candidate === "spool") {
-            this.addSpool(row)
-        }
-
-        if ( candidate === "machine") {
-            this.setMachine(row[1])
-        }
-
-        if ( candidate === "store") {
-            this.setStore(row[1])
-        }
-        if ( candidate === "keys") {
-            this.setKeys(row)
-        }
-    }
-
-    _checkTheShape() { 
-        // Did we get a store id? 
-        if ( this.storeId !== NILL && this.storeId.length > 0 ) {
-        } else {
-            this.errors["storeId"] = "is missing"
-        }
-        // Did we get a machine id? 
-        if ( this.machineId !== NILL && this.machineId.length > 0 ) {
-        } else {
-            this.errors["machineId"] = "is missing"
-        }
-        // Did we get the minimum of the proper keys? 
-        mandatoryColumns.forEach((col) => { 
-            if ( ! this.columns.hasOwnProperty(col)) {
-                this.errors[col] = "is missing"
-            }
-        })
-        // Do all the spools have the minimum of the proper values AND is the spool ID reasonible? 
-        let isFine = true 
-        let dataErrors = {} 
-        const idReg_oneLetter_oneNumber = /^[A-Za-z][0-9]$/;
-        const spoolIds_dupeCheck = {} 
-        this.spools.forEach((spool)=> {     
-            const spoolId = spool[this.columns["spool"]]
-            const price = spool[this.columns["price"]]
-            const count = spool[this.columns["count"]]
-            const uid = spool[this.columns["uid"]]
-            // spools - See if missing OR if duplicated
-            if ( spoolId !== undefined && idReg_oneLetter_oneNumber.test(spoolId)) {
-                // spoolId is well shaped! Something like 'B5' 
-                if ( ! spoolIds_dupeCheck.hasOwnProperty(spoolId)) {
-                    spoolIds_dupeCheck[spoolId] = 1
-                } else {
-                    spoolIds_dupeCheck[spoolId] += 1
-                    dataErrors["spool duplicate " + spoolId] = spoolIds_dupeCheck[spoolId]
-                }
-            } else {
-                dataErrors["spool id error"] = NILL
-            }
-            // prices - See if missing OR if not a whole number
-            if ( price !== undefined ) {
-                const num = Number.parseInt(price);
-                if ( Number.isInteger(num) === true ) { 
-                    // GOOD!
-                } else {
-                    dataErrors["price" + price] = "Price " + price + " is not a number"
-                }
-            } else {
-                dataErrors["price"] = "A price is missing"
-            }
-            // count - See if missing OR if not a whole number
-            if ( count !== undefined ) {
-                const num = Number.parseInt(count);
-                if ( Number.isInteger(num) === true ) { 
-                    // GOOD!
-                } else {
-                    dataErrors["count" + count] = "Count '" + count + "' is not a number"
-                }
-            } else {
-                dataErrors["count"] = "A count is missing"
-            }
-            // uid - See if missing or empty
-            if ( uid !== undefined ) {
-                // GOOD!
-            } else {
-                dataErrors["uid"] = "A uid is missing"
-            }
-        });
-
-        for ( let k in dataErrors) { 
-            this.errors[k] = dataErrors[k]
-        }
-        return this.errors
-    }
-
-    checkTheShape() { 
-        const theErrors = this._checkTheShape()
-        const n = Object.keys(theErrors).length 
-        const result = {
-            isOk : n === 0 ? true : false,
-            errors:theErrors
-        }
-        return result
-    }
-
-}
 
 //// commmon funcs 
 function log_info(msg) {
@@ -208,20 +71,38 @@ function makeTable(dataObject) {
     let table = "<table border='1' id='machineTable'>"
     table += `<tr><th>storeId</th><td>${dataObject.storeId}</td></tr>`
     table += `<tr><th>machineId</th><td>${dataObject.machineId}</td></tr>`
+    table += "<tbody><tr>"
+    for ( let k in dataObject['columns']) { 
+        const v = dataObject['columns'][k]
+        table += `<th>${k}</th>`
+    }
+    table += "</tr>"
+    dataObject.spools.forEach((spool)=> { 
+        table += "<tr>"
+        spool.forEach((thing)=> { 
+            table += `<td>${thing}</td>`
+        })
+        table += "</tr>"
+    })
 
-    
+
+    table += "</tbody></table>"
+    return table 
 
 
 }
 
 function createDataObject(rows) {
     dataObject = new DataObject() 
+    log_info( dataObject )
+    log_blue("well? ")
     rows.forEach((row, i) => {
         if (row.length > 0) {
             dataObject.addInfo(row)
         }
     })
     const isTheDataAllOk = dataObject.checkTheShape()
+    // log_info( JSON.stringify( dataObject ) )
     indicateHowWellFormed(isTheDataAllOk)
     const theTable = makeTable(dataObject)
     document.getElementById("machineTable").innerHTML = theTable
@@ -233,33 +114,33 @@ function fileUpload(event) {
         return possibleCommands.includes(candidate);
     }
 
-    function createTable(data, storeId, machineId, columns) { 
-        // log_obj(data)
-        // log_info( "storeIdTuple " + JSON.stringify( storeIdTuple ))
-        // log_info( "machine " + JSON.stringify( machine ))
-        // log_info( "columns " + JSON.stringify( columns ))
+    // function createTable(data, storeId, machineId, columns) { 
+    //     let table = "<table border='1' class='machineTable'><tr>"
 
-        let table = "<table border='1' class='machineTable'><tr>"
-
-        table += "<tr><th>Store</th><th>" + storeId + "</th><tr>"
-        table += "<tr><th>MachineId</th><th>" + machineId + "</th><tr>"
+    //     table += "<tr><th>Store</th><th>" + storeId + "</th><tr>"
+    //     table += "<tr><th>MachineId</th><th>" + machineId + "</th><tr>"
+    //     table += "<tbody>"
 
 
-        Object.keys(columns).forEach((c, i)=> {
-            table += "<th>" + c + "</th>"
-        })
-        table += "</tr>"
-        data.forEach((row, i)=> {
-            table += "<tr>"
-            row.forEach((column)=> { 
-                table += "<td>" + column + "</td>"
-            })
-            table += "</tr>"
-        })
-        table += "</table>"
-        document.getElementById("machineTable").innerHTML = table 
+    //     table += "</tbody>"
+    //     table += "</table>"
 
-    }
+
+    //     // Object.keys(columns).forEach((c, i)=> {
+    //     //     table += "<th>" + c + "</th>"
+    //     // })
+    //     // table += "</tr>"
+    //     // data.forEach((row, i)=> {
+    //     //     table += "<tr>"
+    //     //     row.forEach((column)=> { 
+    //     //         table += "<td>" + column + "</td>"
+    //     //     })
+    //     //     table += "</tr>"
+    //     // })
+    //     // table += "</table>"
+    //     document.getElementById("machineTable").innerHTML = table 
+
+    // }
 
 
     const file = event.target.files[0];
