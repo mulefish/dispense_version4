@@ -69,8 +69,17 @@ function indicateHowWellFormed(shapeOfTheData) {
 }
 function makeTable(dataObject) {
     let table = "<table border='1' class='machineTable'>"
-    table += `<tr><th>storeId</th><td>${dataObject.storeId}</td></tr>`
-    table += `<tr><th>machineId</th><td>${dataObject.machineId}</td></tr>`
+    if ( dataObject['storeId_health'] === "ok") {
+        table += `<tr><th>storeId</th><td>${dataObject.storeId}</td></tr>`
+    } else {
+        table += `<tr><th>storeId</th><td class='is_bad'>${dataObject.storeId}</td></tr>`
+    }
+
+    if ( dataObject['machineId_health'] === "ok") {
+        table += `<tr><th>machineId</th><td>${dataObject.machineId}</td></tr>`
+    } else {
+        table += `<tr><th>machineId</th><td class='is_bad'>${dataObject.machineId}</td></tr>`
+    }
     table += "<tbody><tr>"
     for ( let k in dataObject['columns']) { 
         const v = dataObject['columns'][k]
@@ -79,9 +88,6 @@ function makeTable(dataObject) {
     table += "</tr>"
     dataObject.spools.forEach((spool, i )=> { 
         table += "<tr>"
-
-
-
         for ( let k in dataObject['columns']) { 
             const index = dataObject['columns'][k]
             const value = spool[index]
@@ -93,12 +99,8 @@ function makeTable(dataObject) {
         }
         table += "</tr>"
     })
-
-
     table += "</tbody></table>"
     return table 
-
-
 }
 
 function createDataObject(rows) {

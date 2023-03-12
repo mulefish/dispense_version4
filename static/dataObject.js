@@ -10,6 +10,8 @@ class DataObject {
 
         }
         this.health = [] 
+        this.storeId_health="ok"
+        this.machineId_health = "ok"
     }
 
     addSpool(row) {
@@ -55,11 +57,13 @@ class DataObject {
         if ( this.storeId !== NILL && this.storeId.length > 0 ) {
         } else {
             this.errors["storeId"] = "is missing"
+            this.storeId_health = NILL
         }
         // Did we get a machine id? 
         if ( this.machineId !== NILL && this.machineId.length > 0 ) {
         } else {
             this.errors["machineId"] = "is missing"
+            this.machineId_health = NILL
         }
         // Did we get the minimum of the proper keys? 
         mandatoryColumns.forEach((col) => { 
