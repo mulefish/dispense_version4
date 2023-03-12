@@ -57,6 +57,23 @@ def merchant():
     return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
 
+
+@app.route('/upsert', methods=['POST'])
+@login_required
+def upsert():
+    cyan("upsert")
+    # username = current_user.name 
+    # merchantId = user_ids[username]
+
+    data = request.get_json()
+    print(data)
+
+    result = {
+        "username":current_user.name
+    } 
+    return jsonify(result)
+
+
 @app.route('/bulk_insert')
 @login_required
 def bulk_insert():
@@ -104,64 +121,62 @@ def lulu():
 
 
 
-@app.route('/add_new_product_for_a_merchant', methods=['POST'])
-@login_required
-def add_new_product_for_a_merchant():
-    cyan("add_new_product_for_a_merchant")
-    obj = {
-        "status":"Missing information"
-    }
+# @app.route('/add_new_product_for_a_merchant', methods=['POST'])
+# @login_required
+# def add_new_product_for_a_merchant():
+#     cyan("add_new_product_for_a_merchant")
+#     obj = {
+#         "status":"Missing information"
+#     }
 
-    # insert into Item(merchantId_fk, price, instock, deployed, JSON) values (-1, 99,88,77, '{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}');
+#     # insert into Item(merchantId_fk, price, instock, deployed, JSON) values (-1, 99,88,77, '{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}');
 
-    obj = request.get_json()
-    username = current_user.name 
-    merchantId = user_ids[username]
-    obj["username"] = username
-    obj["merchantId"] = merchantId
-    # print( obj )
+#     obj = request.get_json()
+#     username = current_user.name 
+#     merchantId = user_ids[username]
+#     obj["username"] = username
+#     obj["merchantId"] = merchantId
+#     # print( obj )
 
-    collection = obj["json"]
-    price = obj["price"]
-    deployed = obj["deployed"]
-    instock = obj["instock"]
+#     collection = obj["json"]
+#     price = obj["price"]
+#     deployed = obj["deployed"]
+#     instock = obj["instock"]
 
-    cyan("username {} ".format( username ))
-    cyan("merchantId {} ".format( merchantId ))
-    json_as_string = json.dumps(collection)
-    objectToInsert = [merchantId,price,instock,0,json_as_string]
+#     cyan("username {} ".format( username ))
+#     cyan("merchantId {} ".format( merchantId ))
+#     json_as_string = json.dumps(collection)
+#     objectToInsert = [merchantId,price,instock,0,json_as_string]
 
 
-    cyan( objectToInsert)
+#     cyan( objectToInsert)
 
-    result = insert_new_product(objectToInsert)
+#     result = insert_new_product(objectToInsert)
 
-    return jsonify(result)
+#     return jsonify(result)
     
-@app.route('/get_vending_machine', methods=['POST'])
-def get_vending_machine():
-    obj = {
-        "status":"Missing information"
-    }
-    x = request.get_json()
-    if "vendingId" in x:
+# @app.route('/get_vending_machine', methods=['POST'])
+# def get_vending_machine():
+#     obj = {
+#         "status":"Missing information"
+#     }
+#     x = request.get_json()
+#     if "vendingId" in x:
+#         vendingId = x["vendingId"]
+#         cyan("get_vending_machine for vendingId {}".format( vendingId))
+#         query = "select * from vendingMachine where vendingId = {}".format(vendingId)
+#         cyan(query)
+#         result = do_select(query)
+#         # print(result)
+#         obj["status"] = "OK"
+#         obj["data"] = result
+
+#     else: 
+#         cyan("get_vending_machine is missing a parameter")
+#         obj["status"] = "Missing parameter"
 
 
-        vendingId = x["vendingId"]
-        cyan("get_vending_machine for vendingId {}".format( vendingId))
-        query = "select * from vendingMachine where vendingId = {}".format(vendingId)
-        cyan(query)
-        result = do_select(query)
-        # print(result)
-        obj["status"] = "OK"
-        obj["data"] = result
-
-    else: 
-        cyan("get_vending_machine is missing a parameter")
-        obj["status"] = "Missing parameter"
-
-
-    return jsonify(obj)
+#     return jsonify(obj)
     
 
 

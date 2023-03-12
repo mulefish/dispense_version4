@@ -1,6 +1,38 @@
 from common import yellow, cyan, log, green, verdict, getUsers
 from newdatalayer.database_middle_layer import delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
 
+
+def get_stores_for_user_test():
+    name = "kermitt"
+    # sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{name}"'
+    sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{name}"'
+    stores = do_select(sqlfetch)
+    # print( stores )
+    columns = {
+        "merchantId":0,
+        "storeId":1,
+        "storeName":2,
+        "storeAddress":3, 
+        "nerchantName":4,
+        "billing_address":5,
+        "phone":6
+    }
+    result = []
+    for ary in stores: 
+        obj = {} 
+        for k in columns: 
+            index = columns[k]
+            obj[k] = ary[index]
+        result.append(obj)
+
+    print( result)
+
+
+    # actualLength = len(stores)
+    # isOk = actualLength > 0
+    # verdict(isOk, True, "get_users_test got {} results ".format(len(stores)))
+
+
 def get_stores_test():
     name = "kermitt"
     # sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{name}"'
@@ -75,5 +107,6 @@ if __name__ == "__main__":
     # get_vending_machines_of_stores_for_a_merchant_test()
     # get_inventory_for_a_merchant_as_json_test()
     # get_merchantId_from_merchantName_test()
-    insert_new_product_test() 
+    # insert_new_product_test() 
     
+    get_stores_for_user_test() 
