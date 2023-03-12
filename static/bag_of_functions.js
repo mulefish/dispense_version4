@@ -87,6 +87,35 @@ function indicateHowWellFormed(shapeOfTheData) {
             break;
     }
 }
+
+function getDate_fromExcelSerialDate(serialDate) {
+    // Dates like 01/01/23 are converted into a seriel date like '44937'. 
+    // getDate_fromExcelSerialDate will convert 44937 back to human friendly date 
+
+    function isValidDate(d) {
+        return d instanceof Date && !isNaN(d);
+      }
+      function zeroPad(n) {
+        return n.toString().padStart(2, '0');
+      }
+      
+      function formatDate(date) {
+        const month = zeroPad(date.getMonth() + 1);
+        const day = zeroPad(date.getDate());
+        const year = zeroPad(date.getFullYear() % 100);
+        return `${month}/${day}/${year}`;
+      }
+
+    const unixTimestamp = (serialDate - 25569) * 86400000;
+    const d = new Date(unixTimestamp);
+    if ( isValidDate(d)) {
+        let prettyDate = formatDate(d)
+        return prettyDate
+    } else {
+        return d // it will say 'Invalid date'
+    }
+}
+
 function makeTable(dataObject) {
     log_blue("makeTable for "  + dataObject.storeId + " machine " + dataObject.machineId)
     let table = "<table border='1' class='machineTable'>"
@@ -142,7 +171,8 @@ function fileUpload(event) {
     function isValidCommand(candidate) {
         return possibleCommands.includes(candidate);
     }
-
+    //const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { raw: true });
+        
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -153,8 +183,11 @@ function fileUpload(event) {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const rows = XLSX.utils.sheet_to_json(worksheet, {
-            header: 1
+            header: 1,  raw: true 
         });
+        // const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { raw: true });
+        // const rows = XLSX.utils.sheet_to_json(worksheet, {raw: true});
+
         createDataObject(rows ) // Broken out to make testing easy 
     };
     reader.readAsBinaryString(file);

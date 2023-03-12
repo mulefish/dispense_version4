@@ -15,6 +15,7 @@ class DataObject {
     }
 
     addSpool(row) {
+
         this.spools.push(row)
     }
     setMachine(machineId) {
@@ -35,20 +36,30 @@ class DataObject {
         })
     }
     addInfo(row) {
-        const candidate = row[0].trim().toLowerCase()
-        if ( candidate === "spool") {
-            this.addSpool(row)
-        }
 
-        if ( candidate === "machine") {
-            this.setMachine(row[1])
-        }
+        try {
+            const candidate = row[0].trim().toLowerCase()
+            if ( candidate === "spool") {
+                this.addSpool(row)
+            }
 
-        if ( candidate === "store") {
-            this.setStore(row[1])
-        }
-        if ( candidate === "keys") {
-            this.setKeys(row)
+            if ( candidate === "machine") {
+                this.setMachine(row[1])
+            }
+
+            if ( candidate === "store") {
+                this.setStore(row[1])
+            }
+            if ( candidate === "keys") {
+                this.setKeys(row)
+            }
+        } catch ( rowIsIllFormed ) {
+            const msg = rowIsIllFormed.message 
+            if ( msg.includes("Cannot read properties of undefined")) {
+                // ignore it
+            } else {
+                console.log(rowIsIllFormed.message + "   |" + row + "|")
+            }
         }
     }
 
@@ -86,6 +97,11 @@ class DataObject {
             const price_index = this.columns["price"]
             const count_index= this.columns["count"]
             const uid_index = this.columns["uid"]
+            // Dates like 01/01/23 are converted into a seriel date like '44937'. 
+            // getDate_fromExcelSerialDate will convert 44937 back to human friendly date 
+            const harvest_index = this.columns["harvest"]
+            const pretty_date = getDate_fromExcelSerialDate( spool[harvest_index])
+            spool[harvest_index] = pretty_date
 
             const spoolId = spool[spoolId_index]
             const price = spool[price_index]
