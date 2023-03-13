@@ -12,8 +12,9 @@ def get_column_names_of_a_table(table_name):
     conn.close()
     return column_names
 
-def get_stores_for_user( username): 
-    sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
+def get_stores_for_user_and_storeName(username, storeName): 
+    # sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
+    sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}" and a.name = "{storeName}"'
     stores = do_select(sqlfetch)
     columns = {
         "merchantId":0,

@@ -240,6 +240,7 @@ def create_vendingMachine():
     table = """CREATE TABLE vendingMachine (
             vendingId INTEGER PRIMARY KEY AUTOINCREMENT,
             storeId_fk INTEGER,
+            vendingName VARCHAR(20),
             merchantId_fk INTEGER,
             version VARCHAR(10),
             averageMark REAL,

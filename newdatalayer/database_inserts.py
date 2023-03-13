@@ -239,6 +239,7 @@ def insert_vending_machines():
       {
         "storeId_fk":machines[0]["storeId_fk"],
         "merchantId_fk":machines[0]["merchantId_fk"],
+        "vendingName": "Maggy",
         "version":"v1_1",
         "averageMark":1,
         "PAYLOAD":'{  A0: {},  A1: {},A2: {},  A3: {},  A4: {},  A5: {},  A6: {},  A7: {},  B0: {},  B1: {},  B2: {},  B3: {},  B4: {},  B5: {},  B6: {},  B7: {},  C0: {},  C1: {},  C2: {},  C3: {},  C4: {},  C5: {},  C6: {},  C7: {},  D0: {},  D1: {},  D2: {},  D3: {},  D4: {},  D5: {},  D6: {},  D7: {},  E0: {},  E1: {},  E2: {},  E3: {},  E4: {},  E5: {},  E6: {},  E7: {}}',
@@ -246,6 +247,7 @@ def insert_vending_machines():
       {
         "storeId_fk":machines[0]["storeId_fk"],
         "merchantId_fk":machines[0]["merchantId_fk"],
+        "vendingName": "Shabone",
         "version":"v1_2",
         "averageMark":1,
         "PAYLOAD":'{  A0: {},  A1: {},A2: {},  A3: {},  A4: {},  A5: {},  A6: {},  A7: {},  B0: {},  B1: {},  B2: {},  B3: {},  B4: {},  B5: {},  B6: {},  B7: {},  C0: {},  C1: {},  C2: {},  C3: {},  C4: {},  C5: {},  C6: {},  C7: {},  D0: {},  D1: {},  D2: {},  D3: {},  D4: {},  D5: {},  D6: {},  D7: {},  E0: {},  E1: {},  E2: {},  E3: {},  E4: {},  E5: {},  E6: {},  E7: {}}',
@@ -257,6 +259,7 @@ def insert_vending_machines():
       {
         "storeId_fk":machines[1]["storeId_fk"],
         "merchantId_fk":machines[1]["merchantId_fk"],
+        "vendingName": "Eeboo",
         "version":"v1_3",
         "averageMark":1,
         "PAYLOAD":'{  A0: {},  A1: {},A2: {},  A3: {},  A4: {},  A5: {},  A6: {},  A7: {},  B0: {},  B1: {},  B2: {},  B3: {},  B4: {},  B5: {},  B6: {},  B7: {},  C0: {},  C1: {},  C2: {},  C3: {},  C4: {},  C5: {},  C6: {},  C7: {},  D0: {},  D1: {},  D2: {},  D3: {},  D4: {},  D5: {},  D6: {},  D7: {},  E0: {},  E1: {},  E2: {},  E3: {},  E4: {},  E5: {},  E6: {},  E7: {}}',
@@ -267,11 +270,10 @@ def insert_vending_machines():
       {
         "storeId_fk":machines[2]["storeId_fk"],
         "merchantId_fk":machines[2]["merchantId_fk"],
+        "vendingName": "Mr. C",
         "version":"v1_1",
         "averageMark":1,
         "PAYLOAD":'{  A0: {},  A1: {},A2: {},  A3: {},  A4: {},  A5: {},  A6: {},  A7: {},  B0: {},  B1: {},  B2: {},  B3: {},  B4: {},  B5: {},  B6: {},  B7: {},  C0: {},  C1: {},  C2: {},  C3: {},  C4: {},  C5: {},  C6: {},  C7: {},  D0: {},  D1: {},  D2: {},  D3: {},  D4: {},  D5: {},  D6: {},  D7: {},  E0: {},  E1: {},  E2: {},  E3: {},  E4: {},  E5: {},  E6: {},  E7: {}}',
-
-
       }, 
 
     ] 
@@ -279,11 +281,12 @@ def insert_vending_machines():
     for vm in vendingMachines:
         storeId_fk = vm['storeId_fk']
         merchantId_fk = vm['merchantId_fk']
+        vendingName = vm["vendingName"]
         version = vm['version']
         averageMark = vm['averageMark']
         payload = vm['PAYLOAD']
-        sql = "insert into vendingMachine(storeId_fk,merchantId_fk,version,averageMark, JSON) values ({},{},'{}',{}, '{}' );".format(
-          storeId_fk, merchantId_fk, version, averageMark, payload
+        sql = "insert into vendingMachine(storeId_fk,merchantId_fk,vendingName, version,averageMark, JSON) values ({},{},'{}','{}',{}, '{}' );".format(
+          storeId_fk, merchantId_fk, vendingName, version, averageMark, payload
         )
         
         cursor.execute(sql)
