@@ -15,6 +15,7 @@ class DataObject {
         this.health = [] 
         this.storeId_health="ok"
         this.machineId_health = "ok"
+        this.idReg_oneLetter_oneNumber = /^[A-Za-z][0-9]$/;
     }
 
     addSpool(row) {
@@ -89,7 +90,7 @@ class DataObject {
         // Do all the spools have the minimum of the proper values AND is the spool ID reasonible? 
         let isFine = true 
         let dataErrors = {} 
-        const idReg_oneLetter_oneNumber = /^[A-Za-z][0-9]$/;
+        // const idReg_oneLetter_oneNumber = /^[A-Za-z][0-9]$/;
         const spoolIds_dupeCheck = {} 
         this.spools.forEach((spool, j)=> {     
             this.health.push([])
@@ -114,7 +115,7 @@ class DataObject {
 
 
             // spools - See if missing OR if duplicated
-            if ( spoolId !== undefined && idReg_oneLetter_oneNumber.test(spoolId)) {
+            if ( spoolId !== undefined && this.idReg_oneLetter_oneNumber.test(spoolId)) {
                 // spoolId is well shaped! Something like 'B5' 
                 if ( ! spoolIds_dupeCheck.hasOwnProperty(spoolId)) {
                     spoolIds_dupeCheck[spoolId] = 1

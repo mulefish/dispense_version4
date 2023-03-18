@@ -2,7 +2,12 @@ const DataObject = require('./dataObject.js');
 const Reset = "\x1b[0m"
 const BgRed = "\x1b[41m"
 const BgGreen = "\x1b[42m"
-
+/**
+ * Fake Jest! 
+ * @param {*} a Do both a and b exactly match? Then pass! 
+ * @param {*} b else fail 
+ * @param {*} msg Is a msg about the test 
+ */
 function verify(a, b, msg) {
     if (JSON.stringify(a) === JSON.stringify(b)) {
         console.log(`${BgGreen}PASS:${Reset} ${msg}`)
@@ -10,7 +15,16 @@ function verify(a, b, msg) {
         console.log(`${BgRed}FAIL:${Reset} ${msg}`)
     }
 }
-
+/**
+ * Happypath! 
+ * Give it well formed data. 
+ * Note that capitalization does not matter. 
+ * Note that extra fields exist 
+ * Note that 'This is not a key' row get ignored 
+ * Note that the pointless colum 'COLUMN_NAME_THIS_DOES_NOT_MATTER' will be ignored 
+ *   because 'COLUMN_NAME_THIS_DOES_NOT_MATTER' is not in the system of things to care about
+ * Note that the extra field in the Spool, here with the value '"THIS WILL BE IGNORED" is ignored
+ */
 function dataObject_populateProperty_HAPPYPATH() {
     const dataObject = new DataObject() 
     const excel = [
@@ -18,9 +32,9 @@ function dataObject_populateProperty_HAPPYPATH() {
         ["store", "Test", undefined, undefined, "ignore"],
         ["machine", "888"], // The last machine will be picked up  
         ["machine", "999"],
-        ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD'],
+        ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD', "COLUMN_NAME_THIS_DOES_NOT_MATTER"],
         ['This is not a key', 'blah blah'],
-        ['SPOOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
+        ['SPOOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5, "THIS WILL BE IGNORED"],
     ]
     excel.forEach((row)=> { 
         dataObject.addInfo(row)
@@ -28,7 +42,9 @@ function dataObject_populateProperty_HAPPYPATH() {
     const shape = dataObject.checkTheShape()
     verify(shape["isOk"], true, "dataObject_populateProperty_HAPPYPATH")
 }
-
+/**
+ * Needs storeId and machineId! 
+ */
 function dataObject_populateProperty_SADPATH_missingStuff() {
     dataObject = new DataObject() 
     dataObject.isTesting = true // suppress annoying console.log
@@ -46,7 +62,10 @@ function dataObject_populateProperty_SADPATH_missingStuff() {
     verify(isOk, true, "dataObject_populateProperty_SADPATH_missingStore_and_machine")
 }
 
-
+/**
+ * Excel converts human readable dates like '01/05/23' into 'serial dates' under the hood. 
+ * Check that a serial date in re-converted into a more reasonible format
+ */
 function dataObject_populateProperty_serialDateConvertAndCheck() {
     const dataObject = new DataObject() 
     const good = "" + dataObject.getDate_fromExcelSerialDate(44932) // This is a 'serial date'
@@ -55,7 +74,9 @@ function dataObject_populateProperty_serialDateConvertAndCheck() {
 
     verify(isOk, true, "dataObject_populateProperty_serialDateConvertAndCheck")
 }
-
+/**
+ * Spoolids NEED to be unique! A1 is duplicated here
+ */
 function dataObject_populateProperty_SADPATH_DUPLICATED_spoolIds() {
     const dataObject = new DataObject() 
     const excel = [
@@ -78,7 +99,10 @@ function dataObject_populateProperty_SADPATH_DUPLICATED_spoolIds() {
     const isOk = shape["errors"]["spool duplicate A1"] === 2
     verify(isOk, true, "dataObject_populateProperty_SADPATH_DUPLICATED_spoolIds " )
 }
-
+/**
+ * The fields of ["spool","uid","count","price"] are mandatory! 
+ * Some of them are missing here. 
+ */
 function dataObject_populateProperty_SADPATH_missingMandatoryFields() {
     const dataObject = new DataObject() 
     const excel = [
@@ -98,7 +122,10 @@ function dataObject_populateProperty_SADPATH_missingMandatoryFields() {
     const isOk = expectedValues.every(val => errors.includes(val));
     verify(isOk, true, "dataObject_populateProperty_SADPATH_missingMandatoryFields")
 }
-
+/**
+ * The columns ["spool","uid","count","price"] are mandatory! 
+ * They are missing here. 
+ */
 function dataObject_populateProperty_SADPATH_missingAMandatoryColumns() {
     const dataObject = new DataObject() 
 
@@ -118,7 +145,9 @@ function dataObject_populateProperty_SADPATH_missingAMandatoryColumns() {
 
     verify(isOk, true, "dataObject_populateProperty_SADPATH_missingAMandatoryColumns")
 } 
-
+/** 
+ * All rows need to be fully left justified
+*/
 function dataObject_populateProperty_SADPATH_notLeftJustified() {
     const dataObject = new DataObject() 
     const excel = [
@@ -138,8 +167,60 @@ function dataObject_populateProperty_SADPATH_notLeftJustified() {
 
     verify(isOk, true, "dataObject_populateProperty_SADPATH_notLeftJustified")
 }
+/**
+ * There are only so many spools that a vending machine can have! 
+ * Here, the id is 'A20' but it must be one letter + one single digit number
+ */
+function dataObject_populateProperty_SADPATH_spoolIdIsInformed() { 
+    const dataObject = new DataObject() 
+    const excel = [
+        ["store", "Test"],
+        ["machine", "999"], // See? Leading empty element
+        ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD'],
+        ['SPOOL', 'A20', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
+    ]
+    // Spool IDs need to be 1Letter + 1 single digit number
+    excel.forEach((row)=> { 
+        dataObject.addInfo(row)
+    })
+    const shape = dataObject.checkTheShape()
 
+    const errors = Object.keys(shape['errors'])
+    const expectedValues = ["spool id error"]
+    const isOk = expectedValues.every(val => errors.includes(val));
+    verify(isOk, true, "dataObject_populateProperty_SADPATH_spoolIdIsInformed")
 
+}
+/**
+ * There are only so many spools that a vending machine can have! 
+ * Spool ids must be one letter + one single digit number
+ */
+function dataObject_regex_oneLetterOneNumber_spoolId() { 
+    const dataObject = new DataObject() 
+    const potentialSpoolIds = {
+        "dog":false,
+        "a1":true,
+        "a11":false,
+        "":false,
+        "1":false,
+        "a":false,
+        "aa":false,
+        "aaa":false
+    }
+    let isOk = true 
+    for ( let k in potentialSpoolIds ) {
+        const outghtToBe = potentialSpoolIds[k]
+        const howItIs = dataObject.idReg_oneLetter_oneNumber.test(k)
+        if ( howItIs !== outghtToBe ) {
+            isOk = false 
+        }
+    }    
+    verify(isOk, true, "dataObject_regex_oneLetterOneNumber_spoolId")
+}
+
+/**
+* Test runner
+*/
 if (require.main === module) {
     dataObject_populateProperty_HAPPYPATH()
     dataObject_populateProperty_SADPATH_missingStuff()
@@ -148,4 +229,6 @@ if (require.main === module) {
     dataObject_populateProperty_SADPATH_missingMandatoryFields()
     dataObject_populateProperty_SADPATH_missingAMandatoryColumns()
     dataObject_populateProperty_SADPATH_notLeftJustified()
+    dataObject_populateProperty_SADPATH_spoolIdIsInformed()
+    dataObject_regex_oneLetterOneNumber_spoolId() 
 }
