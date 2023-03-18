@@ -44,12 +44,12 @@ function dataObject_populateProperty_HAPPYPATH() {
 }
 /**
  * Needs storeId and machineId! 
- * Note: Here using the  dataObject.isTesting = true to 
+ * Note: Here using the 'dataObject.isTesting = true' to 
  * suppress annoying console.log that would otherwise complain
  */
 function dataObject_populateProperty_SADPATH_missingStuff() {
     dataObject = new DataObject() 
-    dataObject.isTesting = true // suppress annoying console.log
+    dataObject.isTesting = true
     const excel = [
         ['This is not a key', 'blah blah'],
     ]
@@ -67,11 +67,13 @@ function dataObject_populateProperty_SADPATH_missingStuff() {
 /**
  * Excel converts human readable dates like '01/05/23' into 'serial dates' under the hood. 
  * Check that a serial date in re-converted into a more reasonible format
+ * Note 44932 is a serial date
+ * Note Kittycat is not a serial date
  */
 function dataObject_populateProperty_serialDateConvertAndCheck() {
     const dataObject = new DataObject() 
-    const good = "" + dataObject.getDate_fromExcelSerialDate(44932) // This is a 'serial date'
-    const bad = "" + dataObject.getDate_fromExcelSerialDate("Kittycat") // This is not a 'serial date'
+    const good = "" + dataObject.getDate_fromExcelSerialDate(44932)
+    const bad = "" + dataObject.getDate_fromExcelSerialDate("Kittycat")
     const isOk = good === "01/05/23" && bad === "Invalid Date"
 
     verify(isOk, true, "dataObject_populateProperty_serialDateConvertAndCheck")
@@ -82,8 +84,6 @@ function dataObject_populateProperty_serialDateConvertAndCheck() {
 function dataObject_populateProperty_SADPATH_DUPLICATED_spoolIds() {
     const dataObject = new DataObject() 
     const excel = [
-        // See? Some slop is OK -  undefined to out of place things will be ignored
-        // See? Capitalization does not matter
         ["storE", "Test", undefined, undefined, "ignore"],
         ["machIne", "888"], // The last machine will be picked up  
         ["macHine", "999"],
@@ -108,7 +108,6 @@ function dataObject_populateProperty_SADPATH_DUPLICATED_spoolIds() {
 function dataObject_populateProperty_SADPATH_missingMandatoryFields() {
     const dataObject = new DataObject() 
     const excel = [
-        // See? Some slop is OK -  undefined to out of place things will be ignored
         ["store", "Test"],
         ["machine", "999"],
         ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD'],
@@ -177,11 +176,10 @@ function dataObject_populateProperty_SADPATH_spoolIdIsInformed() {
     const dataObject = new DataObject() 
     const excel = [
         ["store", "Test"],
-        ["machine", "999"], // See? Leading empty element
+        ["machine", "999"],
         ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD'],
         ['SPOOL', 'A20', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
     ]
-    // Spool IDs need to be 1Letter + 1 single digit number
     excel.forEach((row)=> { 
         dataObject.addInfo(row)
     })
