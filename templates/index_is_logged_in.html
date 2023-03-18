@@ -39,7 +39,7 @@
                 }
                 return response.json();
             }).then(data => {
-              log_blue(data);
+              log_obj(data);
               if ( data['status'] !== "Upserted") {
                 alert( data['status'])                
               }

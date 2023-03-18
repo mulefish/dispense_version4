@@ -1,6 +1,6 @@
 from common import yellow, cyan, log, green, verdict, getUsers
 # from newdatalayer.database_middle_layer import get_stores_for_user, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
-from newdatalayer.database_middle_layer import get_column_names_of_a_table, get_stores_for_user, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
 
 def get_column_names_of_a_table_test(): 
     table_name = "store"    
@@ -17,7 +17,7 @@ def get_column_names_of_a_table_test():
     
 
 def getStoresForUser_oughtToBeGood_test():
-    found = get_stores_for_user("kermitt")
+    found = get_stores_for_user_and_storeName("kermitt", "Kitty Buds")
     stores = [] 
     for obj in found:
         stores.append( obj["storeName"])
@@ -57,7 +57,7 @@ def get_vending_machines_of_stores_for_a_merchant_test():
     result = len(data)
     # result something like {58: [19, 20], 59: [21]} where '58' and '59' are storeIds and the [19, 20] and [21] are vendingId
     isOk = result > 0
-    verdict(isOk, True, "get_vending_machines_of_stores_for_a_merchant_test has {} stores ".format(result))
+    verdict(isOk, True, "get_vending_machines_of_stores_for_a_merchant_test got {}".format(data))
 
 def get_vending_machine_test():
     # Step 1: Get an ID of some vending machine - any one will do
@@ -118,6 +118,7 @@ if __name__ == "__main__":
     # get_merchantId_from_merchantName_test()
     # insert_new_product_test() 
     
-    getStoresForUser_oughtToBeGood_test() 
-    getStoresForUser_oughtToBeFail_withWrongName_test()
-    get_column_names_of_a_table_test()
+    # getStoresForUser_oughtToBeGood_test() 
+    # getStoresForUser_oughtToBeFail_withWrongName_test()
+    # get_column_names_of_a_table_test()
+    get_vending_machines_of_stores_for_a_merchant_test()

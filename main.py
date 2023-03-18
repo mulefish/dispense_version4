@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import get_stores_for_user, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
 
 from flask import jsonify
 
@@ -59,27 +59,32 @@ def merchant():
 
 
 @app.route('/upsert', methods=['POST'])
-@login_required
+@login_required 
 def upsert():
     cyan("upsert")
 
 
     username = current_user.name 
     merchantId = user_ids[username]
-
-    stores = get_stores_for_user(username)
+    storeName = incomingData["storeId"]
+    stores = get_stores_for_user_and_storeName(username, storeName)
     isOk = False 
-    data = request.get_json()
-    print(data['storeId'])
-
+    incomingData = request.get_json()
+    print(incomingData['storeId'])
+    print("stores")
+    print(stores)
     for obj in stores:
-        if obj["storeName"] == data["storeId"]: 
-            isOk = True 
+        if obj["storeName"] == incomingData["storeId"]: 
+            isOk_1 = True 
     # yellow(stores)
-    if isOk == True:
+    if isOk_1 == True:
+        vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
+        print("vendingMachines")
+        print(vendingMachines)
         result = {
             "status":"OK",
-            "username":current_user.name
+            "username":current_user.name, 
+            "vendingMachines":vendingMachines
         } 
         return jsonify(result)
     else: 
