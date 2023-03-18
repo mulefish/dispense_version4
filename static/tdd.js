@@ -60,15 +60,16 @@ function dataObject_populateProperty_SADPATH_DUPLICATED_spoolIds() {
     const dataObject = new DataObject() 
     const excel = [
         // See? Some slop is OK -  undefined to out of place things will be ignored
-        ["store", "Test", undefined, undefined, "ignore"],
-        ["machine", "888"], // The last machine will be picked up  
-        ["machine", "999"],
-        ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD'],
+        // See? Capitalization does not matter
+        ["storE", "Test", undefined, undefined, "ignore"],
+        ["machIne", "888"], // The last machine will be picked up  
+        ["macHine", "999"],
+        ['keyS', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD'],
         ['This is not a key', 'blah blah'],
-        ['SPOOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
+        ['SPoOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
         ['SPOOL', 'A2', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
         ['SPOOL', 'A3', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
-        ['SPOOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
+        ['SPOOl', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
     ]
     excel.forEach((row)=> { 
         dataObject.addInfo(row)
@@ -118,6 +119,27 @@ function dataObject_populateProperty_SADPATH_missingAMandatoryColumns() {
     verify(isOk, true, "dataObject_populateProperty_SADPATH_missingAMandatoryColumns")
 } 
 
+function dataObject_populateProperty_SADPATH_notLeftJustified() {
+    const dataObject = new DataObject() 
+    const excel = [
+        ["store", "Test"],
+        ["", "machine", "999"], // See? Leading empty element
+        ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD'],
+        ['SPOOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5],
+    ]
+    excel.forEach((row)=> { 
+        dataObject.addInfo(row)
+    })
+    const shape = dataObject.checkTheShape()
+
+    const errors = Object.keys(shape['errors'])
+    const expectedValues = ["machineId"]
+    const isOk = expectedValues.every(val => errors.includes(val));
+
+    verify(isOk, true, "dataObject_populateProperty_SADPATH_notLeftJustified")
+}
+
+
 if (require.main === module) {
     dataObject_populateProperty_HAPPYPATH()
     dataObject_populateProperty_SADPATH_missingStuff()
@@ -125,5 +147,5 @@ if (require.main === module) {
     dataObject_populateProperty_SADPATH_DUPLICATED_spoolIds()
     dataObject_populateProperty_SADPATH_missingMandatoryFields()
     dataObject_populateProperty_SADPATH_missingAMandatoryColumns()
-
+    dataObject_populateProperty_SADPATH_notLeftJustified()
 }

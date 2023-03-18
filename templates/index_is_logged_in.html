@@ -9,8 +9,6 @@
         <meta charset="UTF-8">
         <title>Dispense</title>
         <link rel="stylesheet" href="/static/style.css">
-        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-        <title>Dispense</title>
   </head>
   <body>
     {% include "headers/isLoggedinHeader.html" %}
@@ -44,7 +42,7 @@
                 alert( data['status'])                
               }
             }).catch(error => {
-              console.error('There was a problem with the fetch operation:', error);
+              console.error('There was a problem with the fetch operation!\n', error);
             });
         }
 
@@ -75,7 +73,7 @@
 
     const fileInput = document.getElementById('fileInput');
     fileInput.addEventListener('change', (event) => {
-        fileUpload(event)
+      step1_fileUpload(event)
     })
     </script> 
     <script src="/static/bag_of_functions.js"></script>
