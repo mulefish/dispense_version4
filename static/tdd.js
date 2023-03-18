@@ -3,7 +3,7 @@ const Reset = "\x1b[0m"
 const BgRed = "\x1b[41m"
 const BgGreen = "\x1b[42m"
 /**
- * Fake Jest! 
+ * Mini UnitTest
  * @param {*} a Do both a and b exactly match? Then pass! 
  * @param {*} b else fail 
  * @param {*} msg Is a msg about the test 
@@ -44,6 +44,8 @@ function dataObject_populateProperty_HAPPYPATH() {
 }
 /**
  * Needs storeId and machineId! 
+ * Note: Here using the  dataObject.isTesting = true to 
+ * suppress annoying console.log that would otherwise complain
  */
 function dataObject_populateProperty_SADPATH_missingStuff() {
     dataObject = new DataObject() 
