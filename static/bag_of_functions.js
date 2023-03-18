@@ -4,11 +4,10 @@ const DATA_IS_BAD = "is_bad"
 const HIDE_ME = "hideMe"
 const SHOW_ME = "showMe"
 const possibleCommands = ["machine", "store", "spool", "keys"];
-const mandatoryColumns = ["spool", "uid", "count", "price"];
+// const mandatoryColumns = ["spool", "uid", "count", "price"];
 let dataObject = null;
 const NILL = "NILL"
 
-//// commmon funcs 
 function log_info(msg) {
     console.log("%c" + msg, "background:lightgreen;")
 }
@@ -44,7 +43,6 @@ function indicateHowWellFormed(shapeOfTheData) {
                 saveButton.classList.remove(HIDE_ME)
                 saveButton.classList.add(SHOW_ME)
             }
-
             break;
         case false:
             let issues = "<table border='1'>"
@@ -66,9 +64,6 @@ function indicateHowWellFormed(shapeOfTheData) {
                 saveButton.classList.remove(SHOW_ME)
                 saveButton.classList.add(HIDE_ME)
             }
-
-
-
             break;
         default:
             if (colorDiv.classList.contains(DATA_IS_GOOD)) {
@@ -88,33 +83,32 @@ function indicateHowWellFormed(shapeOfTheData) {
     }
 }
 
-function getDate_fromExcelSerialDate(serialDate) {
-    // Dates like 01/01/23 are converted into a seriel date like '44937'. 
-    // getDate_fromExcelSerialDate will convert 44937 back to human friendly date 
-
-    function isValidDate(d) {
-        return d instanceof Date && !isNaN(d);
-      }
-      function zeroPad(n) {
-        return n.toString().padStart(2, '0');
-      }
+// function getDate_fromExcelSerialDate(serialDate) {
+//     // Dates like 01/01/23 are converted into a seriel date like '44937'. 
+//     // getDate_fromExcelSerialDate will convert 44937 back to human friendly date 
+//     function isValidDate(d) {
+//         return d instanceof Date && !isNaN(d);
+//       }
+//       function zeroPad(n) {
+//         return n.toString().padStart(2, '0');
+//       }
       
-      function formatDate(date) {
-        const month = zeroPad(date.getMonth() + 1);
-        const day = zeroPad(date.getDate());
-        const year = zeroPad(date.getFullYear() % 100);
-        return `${month}/${day}/${year}`;
-      }
+//       function formatDate(date) {
+//         const month = zeroPad(date.getMonth() + 1);
+//         const day = zeroPad(date.getDate());
+//         const year = zeroPad(date.getFullYear() % 100);
+//         return `${month}/${day}/${year}`;
+//       }
 
-    const unixTimestamp = (serialDate - 25569) * 86400000;
-    const d = new Date(unixTimestamp);
-    if ( isValidDate(d)) {
-        let prettyDate = formatDate(d)
-        return prettyDate
-    } else {
-        return d // it will say 'Invalid date'
-    }
-}
+//     const unixTimestamp = (serialDate - 25569) * 86400000;
+//     const d = new Date(unixTimestamp);
+//     if ( isValidDate(d)) {
+//         let prettyDate = formatDate(d)
+//         return prettyDate
+//     } else {
+//         return d // it will say 'Invalid date'
+//     }
+// }
 
 function makeTable(dataObject) {
     let table = "<table border='1' class='machineTable'>"
@@ -123,7 +117,6 @@ function makeTable(dataObject) {
     } else {
         table += `<tr><th>storeId</th><td class='is_bad'>${dataObject.storeId}</td></tr>`
     }
-
     if ( dataObject['machineId_health'] === "ok") {
         table += `<tr><th>machineId</th><td>${dataObject.machineId}</td></tr>`
     } else {
@@ -151,8 +144,8 @@ function makeTable(dataObject) {
     table += "</tbody></table>"
     return table 
 }
-
-function createDataObject(rows) {
+/* Called from step1_fileUpload */ 
+function step2_createDataObject(rows) {
     dataObject = new DataObject() 
     rows.forEach((row, i) => {
         if (row.length > 0) {
@@ -165,11 +158,11 @@ function createDataObject(rows) {
     document.getElementById("machineTable").innerHTML = theTable
 }
 
-
-function fileUpload(event) {
-    function isValidCommand(candidate) {
-        return possibleCommands.includes(candidate);
-    }
+/* Called from index_is_logged_in.html */ 
+function step1_fileUpload(event) {
+    // function isValidCommand(candidate) {
+    //     return possibleCommands.includes(candidate);
+    // }
     //const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { raw: true });
         
     const file = event.target.files[0];
@@ -187,7 +180,9 @@ function fileUpload(event) {
         // const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { raw: true });
         // const rows = XLSX.utils.sheet_to_json(worksheet, {raw: true});
 
-        createDataObject(rows ) // Broken out to make testing easy 
+        step2_createDataObject(rows ) // Broken out to make testing easy 
     };
     reader.readAsBinaryString(file);
 };
+
+

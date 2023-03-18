@@ -1,13 +1,16 @@
+
 class DataObject { 
 
     constructor() { 
+        this.isTesting = false 
+        this.mandatoryColumns = ["spool", "uid", "count", "price"];
+        this.NILL = "NILL"
         this.spools = [] 
         this.health = [] 
         this.columns = {} 
-        this.storeId = NILL
-        this.machineId = NILL 
+        this.storeId = this.NILL
+        this.machineId = this.NILL 
         this.errors = {
-
         }
         this.health = [] 
         this.storeId_health="ok"
@@ -19,10 +22,9 @@ class DataObject {
         this.spools.push(row)
     }
     setMachine(machineId) {
-        if ( machineId !== undefined && machineId.length > 0 ) { 
+        if ( machineId !== undefined ) { // && machineId.length > 0 ) {         
             this.machineId = machineId
         }
-
     }
     setStore(storeId) {
         if ( storeId !== undefined && storeId.length > 0 ) { 
@@ -58,26 +60,28 @@ class DataObject {
             if ( msg.includes("Cannot read properties of undefined")) {
                 // ignore it
             } else {
-                console.log(rowIsIllFormed.message + "   |" + row + "|")
+                if ( this.isTesting === false ) {
+                    console.log(rowIsIllFormed.message + "   |" + row + "|")
+                }
             }
         }
     }
 
     _checkTheShape() { 
         // Did we get a store id? 
-        if ( this.storeId !== NILL && this.storeId.length > 0 ) {
+        if ( this.storeId !== this.NILL && this.storeId.length > 0 ) {
         } else {
             this.errors["storeId"] = "is missing"
-            this.storeId_health = NILL
+            this.storeId_health = this.NILL
         }
         // Did we get a machine id? 
-        if ( this.machineId !== NILL && this.machineId.length > 0 ) {
+        if ( this.machineId !== this.NILL ) { // } && this.machineId.length > 0 ) {
         } else {
             this.errors["machineId"] = "is missing"
-            this.machineId_health = NILL
+            this.machineId_health = this.NILL
         }
         // Did we get the minimum of the proper keys? 
-        mandatoryColumns.forEach((col) => { 
+        this.mandatoryColumns.forEach((col) => { 
             if ( ! this.columns.hasOwnProperty(col)) {
                 this.errors[col] = "is missing"
             }
@@ -100,7 +104,7 @@ class DataObject {
             // Dates like 01/01/23 are converted into a seriel date like '44937'. 
             // getDate_fromExcelSerialDate will convert 44937 back to human friendly date 
             const harvest_index = this.columns["harvest"]
-            const pretty_date = getDate_fromExcelSerialDate( spool[harvest_index])
+            const pretty_date = this.getDate_fromExcelSerialDate( spool[harvest_index])
             spool[harvest_index] = pretty_date
 
             const spoolId = spool[spoolId_index]
@@ -120,8 +124,8 @@ class DataObject {
                     this.health[j][spoolId_index] = "dupe"
                 }
             } else {
-                dataErrors["spool id error"] = NILL
-                this.health[j][spoolId_index] = NILL
+                dataErrors["spool id error"] = this.NILL
+                this.health[j][spoolId_index] = this.NILL
             }
             // prices - See if missing OR if not a whole number
             if ( price !== undefined ) {
@@ -133,7 +137,7 @@ class DataObject {
                     this.health[j][price_index] = "NaN"
                 }
             } else {
-                this.health[j][price_index] = NILL
+                this.health[j][price_index] = this.NILL
                 dataErrors["price"] = "A price is missing"
             }
             // count - See if missing OR if not a whole number
@@ -147,14 +151,14 @@ class DataObject {
                 }
             } else {
                 dataErrors["count"] = "A count is missing"
-                this.health[j][count_index] = NILL
+                this.health[j][count_index] = this.NILL
             }
             // uid - See if missing or empty
             if ( uid !== undefined ) {
                 // GOOD!
             } else {
                 dataErrors["uid"] = "A uid is missing"
-                this.health[j][uid_index] = NILL
+                this.health[j][uid_index] = this.NILL
             }
         });
 
@@ -174,4 +178,37 @@ class DataObject {
         return result
     }
 
+    getDate_fromExcelSerialDate(serialDate) {
+        // Dates like 01/01/23 are converted into a seriel date like '44937'. 
+        // getDate_fromExcelSerialDate will convert 44937 back to human friendly date 
+        function isValidDate(d) {
+            return d instanceof Date && !isNaN(d);
+          }
+          function zeroPad(n) {
+            return n.toString().padStart(2, '0');
+          }
+          
+          function formatDate(date) {
+            const month = zeroPad(date.getMonth() + 1);
+            const day = zeroPad(date.getDate());
+            const year = zeroPad(date.getFullYear() % 100);
+            return `${month}/${day}/${year}`;
+          }
+    
+        const unixTimestamp = (serialDate - 25569) * 86400000;
+        const d = new Date(unixTimestamp);
+        if ( isValidDate(d)) {
+            let prettyDate = formatDate(d)
+            return prettyDate
+        } else {
+            return d // it will say 'Invalid date'
+        }
+    }
+    
+}
+try {
+    module.exports = DataObject
+} catch( ignore ) {
+        // This is here for TDD from the CLI. In a browser this would throw an error!
+        // Ignore it! 
 }
