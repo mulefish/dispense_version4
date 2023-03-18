@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
 
 from flask import jsonify
 
@@ -61,37 +61,78 @@ def merchant():
 @app.route('/upsert', methods=['POST'])
 @login_required 
 def upsert():
-    cyan("upsert")
-
-
+    # cyan("upsert")
     username = current_user.name 
     merchantId = user_ids[username]
-    storeName = incomingData["storeId"]
-    stores = get_stores_for_user_and_storeName(username, storeName)
-    isOk = False 
-    incomingData = request.get_json()
-    print(incomingData['storeId'])
-    print("stores")
-    print(stores)
-    for obj in stores:
-        if obj["storeName"] == incomingData["storeId"]: 
-            isOk_1 = True 
-    # yellow(stores)
-    if isOk_1 == True:
-        vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
-        print("vendingMachines")
-        print(vendingMachines)
-        result = {
-            "status":"OK",
-            "username":current_user.name, 
-            "vendingMachines":vendingMachines
-        } 
-        return jsonify(result)
-    else: 
-        result = {
-            "status":"The storename of " + data["storeId"] + " does not match any store for this user. No upsert happened."
+    cyan("upsert() username {} and merchantId {}".format(username, merchantId))
+    data = request.get_json()
+
+    storeId = data["storeId"]
+    machineId = data["machineId"]
+    spools = data["spools"]
+
+    stores = getStore_where_merchantIdAndStoreName(merchantId, storeId) 
+
+    spoolCount = getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineId)
+    magenta("spoolCount {}".format(spoolCount))
+    result= {}
+
+    if len(stores) == 1 and spoolCount > 0 :
+
+        result= {
+            "status":"ok",
+            "storeId":storeId,
+            "machineId":machineId,
+            "storeCount":len(stores),
+            "spoolCount":spoolCount
         }
-        return jsonify(result)
+    else:
+        result= {
+            "status":"Fail",
+            "storeId":storeId,
+            "machineId":machineId,
+            "storeCount":len(stores),
+            "spoolCount":spoolCount
+        }
+
+
+    # listOfLists = request.get_json()
+    # for row in listOfLists:
+    #     print(row)
+    
+    
+    # storeName = incomingData["storeId"]
+    # stores = get_stores_for_user_and_storeName(username, storeName)
+    # isOk = False 
+    # incomingData = request.get_json()
+    # print(incomingData['storeId'])
+    # print("stores")
+    # print(stores)
+    # for obj in stores:
+    #     if obj["storeName"] == incomingData["storeId"]: 
+    #         isOk_1 = True 
+    # # yellow(stores)
+    # if isOk_1 == True:
+    #     vendingMachines 
+    # 
+    # = get_vending_machines_of_stores_for_a_merchant(username)
+    #     print("vendingMachines")
+    #     print(vendingMachines)
+    #     result = {
+    #         "status":"OK",
+    #         "username":current_user.name, 
+    #         "vendingMachines":vendingMachines
+    #     } 
+    #     return jsonify(result)
+    # else: 
+    #     result = {
+    #         "status":"The storename of " + data["storeId"] + " does not match any store for this user. No upsert happened."
+    #     }
+    #     return jsonify(result)
+    return jsonify(result)
+
+
+
 
 @app.route('/bulk_insert')
 @login_required

@@ -12,6 +12,34 @@ def get_column_names_of_a_table(table_name):
     conn.close()
     return column_names
 
+def getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineName):
+    sqlfetch = f'select count(*) from portlandVendingMachine where merchantId_fk = 1 and machineId = "WarmMoon";'
+    spoolCount = do_select(sqlfetch)
+    return spoolCount[0][0]
+
+def getStore_where_merchantIdAndStoreName(merchantId, storeName):
+    sqlfetch = f'select * from store where merchantId_fk = {merchantId} and name = "{storeName}";'
+    stores = do_select(sqlfetch)
+    columns = {
+        "storeId":0,
+        "storeName":1,
+        "storeAddress":2, 
+        "lat":3,
+        "lon":4,
+        "phone":5
+    }
+    found = []
+    for ary in stores: 
+        obj = {} 
+        for k in columns: 
+            index = columns[k]
+            obj[k] = ary[index]
+        found.append(obj)
+    return found
+
+
+
+
 def get_stores_for_user_and_storeName(username, storeName): 
     # sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
     sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}" and a.name = "{storeName}"'

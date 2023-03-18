@@ -2,7 +2,7 @@ import sqlite3
 
 conn = sqlite3.connect("new_dispense.db")
 cursor = conn.cursor()
-tables = ["Item","Merchant", "Store", "vendingMachine", "Associate", "Item2"]
+tables = ["Item","Merchant", "Store", "vendingMachine", "Associate", "Item2", "portlandVendingMachine"]
 def count_the_rows():
     print("count_the_rows")
     for table in tables:
@@ -294,61 +294,50 @@ def insert_vending_machines():
 
 
 
-def insert_associates():
-    print("insert_associates()")
-    merchants = []
-    sqlfetch = "select merchantId from merchant"; 
+
+
+
+
+#### 
+
+
+def insert_portlandVendingMachine(): 
+    machines = []
+    sqlfetch = "select storeId, merchantId_fk from Store;"; 
     cursor.execute(sqlfetch)
     row = cursor.fetchall()
     for x in row:
-        merchantId = x[0]
-        merchants.append(x[0])
-    print("merchants")
-    print( merchants)
-
-    associates = [
-      {
-        "merchantId_fk":merchants[0],
-        "name":"Adam"      
-      }, 
-      {
-        "merchantId_fk":merchants[0],
-        "name":"Becky"      
-      }, 
-      {
-        "merchantId_fk":merchants[0],
-        "name":"Charlie"      
-      }, 
-      {
-        "merchantId_fk":merchants[1],
-        "name":"Donna"      
-      }, 
-      {
-        "merchantId_fk":merchants[1],
-        "name":"Eric"      
-      }, 
-      {
-        "merchantId_fk":merchants[1],
-        "name":"Fredricka"      
-      }, 
-      {
-        "merchantId_fk":merchants[1],
-        "name":"Gage"      
-      }, 
-      {
-        "merchantId_fk":merchants[1],
-        "name":"Hillary"      
-      }
-
+        storeId_fk = x[0]
+        merchantId_fk = x[1]
+        fk = {
+          "storeId_fk":storeId_fk,
+          "merchantId_fk":merchantId_fk
+        }
+        machines.append(fk)
+    machineName = [
+       "Jupiter", "WarmMoon", "PepsiCoke", "FlightyDirt"
     ]
+    spoolIds = ['A1', 'A2', 'A3', 'A4', 'A5', 'B1', 'B2', 'B3', 'B4', 'B5', 'C1', 'C2', 'C3', 'C4', 'C5', 'D1', 'D2', 'D3', 'D4', 'D5', 'E1', 'E2', 'E3', 'E4', 'E5']
 
-    for associate in associates:
-        merchantId_fk = associate["merchantId_fk"]
-        name = associate["name"]
-        sql = "insert into Associate(merchantId_fk, name) values ({},'{}');".format(merchantId_fk, name)
-        
+
+    index = 0 
+    for row in machines: 
+      index += 1
+      storeId_fk = row['storeId_fk']
+      merchantId_fk = row['merchantId_fk']
+      machineId = machineName[index]
+      blankJson = {} 
+      for spool in spoolIds: 
+        # count is blank 
+        # uid is blank 
+        # json is empty
+        sql = "insert into portlandVendingMachine(storeId_fk,merchantId_fk,machineId, spoolId, JSON) values ({},{},'{}','{}','{}' );".format(storeId_fk,merchantId_fk,machineId,spool, blankJson)
+        # print(sql)
         cursor.execute(sql)
     conn.commit()
+
+
+
 
 
 
@@ -360,7 +349,8 @@ insert_into_item_table()
 insert_merchants()
 insert_stores()
 insert_vending_machines()
-insert_associates()
+
 insert_into_item2_table()
 count_the_rows()
+insert_portlandVendingMachine() 
 conn.close()

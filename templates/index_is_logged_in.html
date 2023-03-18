@@ -38,14 +38,15 @@
                 return response.json();
             }).then(data => {
               log_obj(data);
-              if ( data['status'] !== "Upserted") {
-                alert( data['status'])                
-              }
+              // if ( data['status'] !== "Upserted") {
+              //   //alert( JSON.stringify(data))                
+              // }
+                console.log("%c " + JSON.stringify( data, null, 2),"background:yellow"); 
+                alert( data["status"])
             }).catch(error => {
               console.error('There was a problem with the fetch operation!\n', error);
             });
         }
-
     </script>
     <table border='1'>
         <tr>

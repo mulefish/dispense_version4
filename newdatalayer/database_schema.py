@@ -257,6 +257,34 @@ def create_vendingMachine():
     conn.commit()
 
 
+def create_portlandVendingMachine(): 
+    table_name = "portlandVendingMachine"
+    cursor = conn.cursor()
+
+    table = """CREATE TABLE portlandVendingMachine (
+            rowId INTEGER PRIMARY KEY AUTOINCREMENT,
+            storeId_fk INTEGER,
+            merchantId_fk INTEGER,
+            machineId VARCHAR(30),
+            spoolId VARCHAR(2),
+            uid VARCHAR(20),
+            instock INTEGER, 
+            price REAL,
+            JSON BLOB
+
+        ); """
+
+    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+    cursor.execute(table)
+
+ 
+    print("Created the table '{}'".format(table_name))
+
+    conn.commit()
+
+
+
+
 if __name__ == "__main__":
     create_orders()
     create_order_item()
@@ -268,4 +296,5 @@ if __name__ == "__main__":
     create_stock()
     create_vendingMachine()
     create_item2()
+    create_portlandVendingMachine() 
     conn.close()
