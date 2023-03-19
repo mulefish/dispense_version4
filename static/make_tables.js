@@ -26,12 +26,8 @@ function makeInventoryTable(inventory, domNodeToPopulate) {
         keys.forEach((k)=>{
             if ( k === "deploy") {
                 tr += `<td><button onClick="makeThisRowActive_inventoryTable(${row['itemId']}, ${i})">Select ${row['itemId']} </button></td>`      
-            // } else if ( k === "save") {
-            //     tr += `<td><button onClic   k="saveChanges_toProduct(${row['itemId']}, ${i})">Save ${row['itemId']} </button></td>`      
             } else {
                 const v = row[k]
-                // const clazz = getType(v)   
-                // tr += `<td class='${clazz}'>${v}</td>`                    
                 const t = getType(v) 
                 if ( t === "string" || t === "date") {
                     //tr += `<td><input type='text' value='${v}' class='rc_string' ></input></td>`

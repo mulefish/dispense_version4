@@ -3,7 +3,7 @@ class DataObject {
 
     constructor() {
         this.isTesting = false
-        this.mandatoryColumns = ["spool", "uid", "count", "price"];
+        this.mandatoryColumns = ["keys", "spool", "uid", "count", "price"];
         this.NILL = "NILL"
         this.spools = []
         this.health = []
