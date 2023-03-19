@@ -287,7 +287,7 @@ function dataObject_harvest() {
         dataObject.addInfo(row)
     })
     const shape = dataObject.checkTheShape()
-    verify(shape["isOk"], true, "dataObject_populateProperty_HAPPYPATH")
+    verify(shape["isOk"], true, "dataObject_harvest")
 }
 
 
