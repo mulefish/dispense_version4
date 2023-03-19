@@ -39,8 +39,6 @@ function dataObject_populateProperty_HAPPYPATH() {
     excel.forEach((row)=> { 
         dataObject.addInfo(row)
     })
-    const x = dataObject.getSpools() 
-    console.log(x )
     const shape = dataObject.checkTheShape()
     verify(shape["isOk"], true, "dataObject_populateProperty_HAPPYPATH")
 }
@@ -251,16 +249,47 @@ function dataObject_getSpools_whichIsWhatIsSubmittedToBackend() {
           strain: 'Green Arrow',
           classification: 'Sativa',
           batchinfo: 'KLT - 685115300',
-          harvest: 'dinoblank',
+          harvest: '01/05/23',
           canabinoids: 21,
           'thc-a': 4,
           delta_9: 9,
           cbd: 5
         }
       }
-      console.log( actual )
+      //console.log( actual )
       verify(actual, expected, "dataObject_getSpools_whichIsWhatIsSubmittedToBackend")
 }
+
+
+/**
+ * Harvest has a complex lifecycle
+ * Honestly, I sort of forget it...
+ * BUT! 
+ * Part of it is 'what gets to the web page'
+ * and another part of it is 'what gets sent to the backend'. 
+ * Now, these two things ought to be the same but...  ...it is not the same. 
+ * This is a test to make sure things are synced up. 
+ * 
+ * TODO: Make 'syncing up' unneeded!  
+*/
+function dataObject_harvest() {
+    const dataObject = new DataObject() 
+    const excel = [
+        // See? Some slop is OK -  undefined to out of place things will be ignored
+        ["store", "Test", undefined, undefined, "ignore"],
+        ["machine", "888"], // The last machine will be picked up  
+        ["machine", "999"],
+        ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD', "COLUMN_NAME_THIS_DOES_NOT_MATTER"],
+        ['This is not a key', 'blah blah'],
+        ['SPOOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 44932, 21, 4, 9, 5, "THIS WILL BE IGNORED"],
+    ]
+    excel.forEach((row)=> { 
+        dataObject.addInfo(row)
+    })
+    const shape = dataObject.checkTheShape()
+    verify(shape["isOk"], true, "dataObject_populateProperty_HAPPYPATH")
+}
+
 
 /**
 * Test runner
@@ -275,5 +304,7 @@ if (require.main === module) {
     dataObject_populateProperty_SADPATH_notLeftJustified()
     dataObject_populateProperty_SADPATH_spoolIdIsInformed()
     dataObject_regex_oneLetterOneNumber_spoolId() 
-//    dataObject_getSpools_whichIsWhatIsSubmittedToBackend()
+    dataObject_getSpools_whichIsWhatIsSubmittedToBackend()
+    dataObject_harvest()
 }
+
