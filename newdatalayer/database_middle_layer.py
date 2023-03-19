@@ -23,6 +23,7 @@ def updatePortlandVendingMachine(storeId, merchantId,spools):
 def getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineName):
     sqlfetch = f'select count(*) from portlandVendingMachine where merchantId_fk = 1 and machineId = "WarmMoon";'
     spoolCount = do_select(sqlfetch)
+    # print("getVendingMachine_fromMerchantIdAndMachineId = {}".format(spoolCount[0][0] )) 
     return spoolCount[0][0]
 
 def getStore_where_merchantIdAndStoreName(merchantId, storeName):

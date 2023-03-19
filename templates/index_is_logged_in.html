@@ -17,11 +17,15 @@
         const stores = JSON.parse('{{ stores | tojson }}')
 
         function save() { 
+            const spools = dataObject.getSpools() 
             const dataToUpsert = {
                 storeId: dataObject.storeId, 
                 machineId: dataObject.machineId, 
-                spools:dataObject.getSpools()
+                spools:spools
             }
+            console.log( JSON.stringify( spools, null , 2 ) )
+
+ 
             fetch('/update', {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
@@ -41,6 +45,7 @@
             }).catch(error => {
               console.error('There was a problem with the fetch operation!\n', error);
             });
+
         }
     </script>
     <table border='1'>

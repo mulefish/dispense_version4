@@ -1,9 +1,9 @@
 ﻿store,Kitty Buds,spool,       uid   ,count,, price,,,,,,,,,
-machine,WarmMoon,,,,,,,,,,,,,,
+machine,gaot,,,,,,,,,,,,,,
 keys,spool,count, price,Type,Harvest,grams,Producer,Strain,Classification,BatchInfo,Canabinoids,THC-A,uid,Delta_9,CBD
 SPOOL,A1,9,$25.00 ,Flower,dinoblank,3.5,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,21,4,15643151 - A1,9,5
 SPOOL,A2,10,$50.00 ,Flower,6/23/23,7,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,21,4,15643151 - A2,9,5
-SPOOL,A3,10,$100.00 ,Flower,,14,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,21,4,15643151 - A3,9,5
+SPOOL,A3,10,$11.00 ,Flower,,14,Paddle Creek Cannabis,Green Arrow,Sativa,KLT - 685115300,21,4,15643151 - A3,9,5
 SPOOL,A4,10,$25.00 ,Flower,,3.5,Ballys collective,Kimbo Kush,Indica,MER - 55788596,28,8,1545615-J5,12,3
 SPOOL,A5,10,$45.00 ,Flower,44927,7,Ballys collective,Kimbo Kush,Indica,MER - 55788596,28,8,1545615-J6,12,3
 SPOOL,B1,10,$85.00 ,Flower,44927,14,Ballys collective,Kimbo Kush,Indica,MER - 55788596,28,8,1545615-J7,12,3

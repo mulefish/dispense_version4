@@ -20,6 +20,50 @@ class User(UserMixin):
 users = {}
 user_ids = {} 
 
+@app.route('/update', methods=['POST'])
+@login_required 
+def update():
+    # cyan("update")
+    username = current_user.name 
+    merchantId = user_ids[username]
+    cyan("update() username {} and merchantId {}".format(username, merchantId))
+    data = request.get_json()
+
+    storeId = data["storeId"]
+    machineId = data["machineId"]
+    spools = data["spools"]
+
+    stores = getStore_where_merchantIdAndStoreName(merchantId, storeId) 
+    spoolCount = getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineId)
+
+    magenta("!! stores={} spoolCount = {} ".format( len(stores),spoolCount ))
+    # print(data)
+    result = {}
+    if spoolCount > 0 and len(stores) == 1:
+        result= {
+            "status":"GOOD",
+            "storeId":storeId,
+            "machineId":machineId,
+            "storeCount":len(stores),
+            "spoolCount":spoolCount,
+            "gotspools":spools
+        }
+    else:
+        result= {
+            "status":"NOPE",
+            "storeId":storeId,
+            "machineId":machineId,
+            "storeCount":len(stores),
+            "spoolCount":spoolCount,
+            "gotspools":spools
+        }
+
+
+    return jsonify(result)
+
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     cyan("login")
@@ -36,6 +80,9 @@ def login():
             login_user(users[username])
             return redirect(url_for('merchant'))
     return render_template('index_not_logged_in.html')
+
+
+
 
 
 @app.route('/merchant')
@@ -56,84 +103,6 @@ def merchant():
 
     return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
-
-
-@app.route('/update', methods=['POST'])
-@login_required 
-def update():
-    # cyan("update")
-    username = current_user.name 
-    merchantId = user_ids[username]
-    cyan("update() username {} and merchantId {}".format(username, merchantId))
-    data = request.get_json()
-
-    storeId = data["storeId"]
-    machineId = data["machineId"]
-    spools = data["spools"]
-
-    stores = getStore_where_merchantIdAndStoreName(merchantId, storeId) 
-
-    spoolCount = getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineId)
-    magenta("spoolCount {}".format(spoolCount))
-    result= {}
-
-    if len(stores) == 1 and spoolCount > 0:
-
-        updateIsOk = updatePortlandVendingMachine(storeId, merchantId,spools )
-
-
-
-        result= {
-            "status":"ok",
-            "storeId":storeId,
-            "machineId":machineId,
-            "storeCount":len(stores),
-            "spoolCount":spoolCount
-        }
-    else:
-        result= {
-            "status":"Fail",
-            "storeId":storeId,
-            "machineId":machineId,
-            "storeCount":len(stores),
-            "spoolCount":spoolCount
-        }
-
-
-    # listOfLists = request.get_json()
-    # for row in listOfLists:
-    #     print(row)
-    
-    
-    # storeName = incomingData["storeId"]
-    # stores = get_stores_for_user_and_storeName(username, storeName)
-    # isOk = False 
-    # incomingData = request.get_json()
-    # print(incomingData['storeId'])
-    # print("stores")
-    # print(stores)
-    # for obj in stores:
-    #     if obj["storeName"] == incomingData["storeId"]: 
-    #         isOk_1 = True 
-    # # yellow(stores)
-    # if isOk_1 == True:
-    #     vendingMachines 
-    # 
-    # = get_vending_machines_of_stores_for_a_merchant(username)
-    #     print("vendingMachines")
-    #     print(vendingMachines)
-    #     result = {
-    #         "status":"OK",
-    #         "username":current_user.name, 
-    #         "vendingMachines":vendingMachines
-    #     } 
-    #     return jsonify(result)
-    # else: 
-    #     result = {
-    #         "status":"The storename of " + data["storeId"] + " does not match any store for this user. No update happened."
-    #     }
-    #     return jsonify(result)
-    return jsonify(result)
 
 
 
