@@ -17,9 +17,30 @@ class DataObject {
         this.machineId_health = "ok"
         this.idReg_oneLetter_oneNumber = /^[A-Za-z][0-9]$/;
     }
-
+    getSpools() { 
+        let LoH = []
+        this.spools.forEach((row, i)=> { 
+            if ( i === 0 ) {
+                // Skip it! This is just the 
+            }
+            let mandatory = {}
+            let optional = {} 
+            for ( let k in this.columns) {
+                    const index = this.columns[k]
+                    const v = row[index]
+                    if ( this.mandatoryColumns.includes(k)) {
+                        mandatory[k] = v
+                    } else {
+                        optional[k] = v
+                    }
+            }
+            LoH.push({mandatory, optional})  
+        })
+        //console.log( LoH)
+        return LoH
+    }
     addSpool(row) {
-
+        // spool = row 
         this.spools.push(row)
     }
     setMachine(machineId) {

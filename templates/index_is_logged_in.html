@@ -15,19 +15,14 @@
     <script>
         const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')  
         const stores = JSON.parse('{{ stores | tojson }}')
-        // console.log("vendingMachines")
-        // console.log(vendingMachines)
-        // console.log("stores")
-        // console.log(stores)
 
         function save() { 
             const dataToUpsert = {
                 storeId: dataObject.storeId, 
                 machineId: dataObject.machineId, 
-                spools:dataObject.spools
+                spools:dataObject.getSpools()
             }
-            // console.log( JSON.stringify( dataToUpsert))
-            fetch('/upsert', {
+            fetch('/update', {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify(dataToUpsert)
@@ -37,10 +32,6 @@
                 }
                 return response.json();
             }).then(data => {
-              log_obj(data);
-              // if ( data['status'] !== "Upserted") {
-              //   //alert( JSON.stringify(data))                
-              // }
                 console.log("%c " + JSON.stringify( data, null, 2),"background:yellow"); 
                 alert( data["status"])
             }).catch(error => {

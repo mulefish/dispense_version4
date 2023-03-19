@@ -12,6 +12,14 @@ def get_column_names_of_a_table(table_name):
     conn.close()
     return column_names
 
+def updatePortlandVendingMachine(storeId, merchantId,spools):
+    print( " {}    {}   ".format( storeId, merchantId))
+    print(spools[0])
+
+    return True 
+
+
+
 def getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineName):
     sqlfetch = f'select count(*) from portlandVendingMachine where merchantId_fk = 1 and machineId = "WarmMoon";'
     spoolCount = do_select(sqlfetch)

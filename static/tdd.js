@@ -34,11 +34,13 @@ function dataObject_populateProperty_HAPPYPATH() {
         ["machine", "999"],
         ['keys', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD', "COLUMN_NAME_THIS_DOES_NOT_MATTER"],
         ['This is not a key', 'blah blah'],
-        ['SPOOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 'dinoblank', 21, 4, 9, 5, "THIS WILL BE IGNORED"],
+        ['SPOOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', 44932, 21, 4, 9, 5, "THIS WILL BE IGNORED"],
     ]
     excel.forEach((row)=> { 
         dataObject.addInfo(row)
     })
+    const x = dataObject.getSpools() 
+    console.log(x )
     const shape = dataObject.checkTheShape()
     verify(shape["isOk"], true, "dataObject_populateProperty_HAPPYPATH")
 }
@@ -219,6 +221,48 @@ function dataObject_regex_oneLetterOneNumber_spoolId() {
 }
 
 /**
+ * The backend will expect a LoH 
+ * Double check that the shape is good
+ * 
+ * TODO! In the dataObject force all keys to UPPER or LOWER case!! 
+ */
+function dataObject_getSpools_whichIsWhatIsSubmittedToBackend() { 
+    const dataObject = new DataObject() 
+    const excel = [
+        ["storE", "Test"],
+        ["macHine", "999"],
+        ['keyS', 'spool', 'uid', 'count', ' price', 'Type', 'grams', 'Producer', 'Strain', 'Classification', 'BatchInfo', 'Harvest', 'Canabinoids', 'THC-A', 'Delta_9', 'CBD'],
+        ['SPoOL', 'A1', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', '44932', 21, 4, 9, 5],
+        ['SPOOL', 'A2', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', '44932', 21, 4, 9, 5],
+        ['SPOOL', 'A3', '15643151 - A1', 9, 25, 'Flower', 3.5, 'Paddle Creek Cannabis', 'Green Arrow', 'Sativa', 'KLT - 685115300', '44932', 21, 4, 9, 5],
+    ]
+    excel.forEach((row)=> { 
+        dataObject.addInfo(row)
+    })
+    const LoH = dataObject.getSpools() 
+    const actual = LoH[0]
+    const expected = {
+        mandatory: { spool: 'A1', uid: '15643151 - A1', count: 9, price: 25 },
+        optional: {
+          keys: 'SPoOL',
+          type: 'Flower',
+          grams: 3.5,
+          producer: 'Paddle Creek Cannabis',
+          strain: 'Green Arrow',
+          classification: 'Sativa',
+          batchinfo: 'KLT - 685115300',
+          harvest: 'dinoblank',
+          canabinoids: 21,
+          'thc-a': 4,
+          delta_9: 9,
+          cbd: 5
+        }
+      }
+      console.log( actual )
+      verify(actual, expected, "dataObject_getSpools_whichIsWhatIsSubmittedToBackend")
+}
+
+/**
 * Test runner
 */
 if (require.main === module) {
@@ -231,4 +275,5 @@ if (require.main === module) {
     dataObject_populateProperty_SADPATH_notLeftJustified()
     dataObject_populateProperty_SADPATH_spoolIdIsInformed()
     dataObject_regex_oneLetterOneNumber_spoolId() 
+//    dataObject_getSpools_whichIsWhatIsSubmittedToBackend()
 }
