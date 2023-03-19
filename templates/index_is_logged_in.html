@@ -33,7 +33,11 @@
                 return response.json();
             }).then(data => {
                 console.log("%c " + JSON.stringify( data, null, 2),"background:yellow"); 
-                alert( data["status"])
+                if ( data["status"] === "ok") {
+                  alert( "The data has been uploaded.")
+                } else { 
+                  alert( data["status"])
+                }
             }).catch(error => {
               console.error('There was a problem with the fetch operation!\n', error);
             });
