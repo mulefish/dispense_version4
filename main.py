@@ -1,10 +1,12 @@
 
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, redirect, url_for, request, render_template, send_file
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
 from newdatalayer.database_middle_layer import updateSpools, updatePortlandVendingMachine, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
+# pip install qrcode
+import qrcode
 
 from flask import jsonify
 
@@ -19,6 +21,40 @@ class User(UserMixin):
         self.password = password
 users = {}
 user_ids = {} 
+
+# @app.route('/qrcode/<data>')
+@app.route('/qrcode', methods=['GET', 'POST'])
+def generate_qrcode():
+    # create qr code instance
+    qr = qrcode.QRCode(version=1, box_size=10, border=5)
+
+    # select * from portlandVendingMachine where storeId_fk = 1 and machineId = "WarmMoon" and spoolId = "A1"; 
+    itemToReach = {}
+    itemToReach['storeId_fk']=1
+    itemToReach['machineId']="WarmMoon"
+    itemToReach['spoolId']="A1"
+
+
+
+    qr.add_data(itemToReach)
+    qr.make(fit=True)
+    
+    # generate qr code image
+    img = qr.make_image(fill_color='black', back_color='white')
+
+    # # save qr code image to a buffer
+    # buffer = io.BytesIO()
+    # img.save(buffer, format='PNG')
+    # buffer.seek(0)
+
+    # # send qr code image as a file
+    # return send_file(buffer, mimetype='image/png')
+    # save qr code image to a temporary file
+    img_file = 'temp_qrcode.png'
+    img.save(img_file)
+    
+    # send qr code image as a file
+    return send_file(img_file, mimetype='image/png')
 
 @app.route('/update', methods=['POST'])
 @login_required 
