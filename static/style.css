@@ -9,6 +9,12 @@
 .is_good {
   background-color: lightgreen;
 }
+.mandatory {
+  background-color: yellow;
+}
+.harvest {
+  background-color: lightgreen;
+}
 /* end color to indicated OK or not*/
 
 /* Needed and is OK vs not Ok */ 

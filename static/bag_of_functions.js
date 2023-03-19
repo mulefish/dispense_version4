@@ -83,32 +83,7 @@ function indicateHowWellFormed(shapeOfTheData) {
     }
 }
 
-// function getDate_fromExcelSerialDate(serialDate) {
-//     // Dates like 01/01/23 are converted into a seriel date like '44937'. 
-//     // getDate_fromExcelSerialDate will convert 44937 back to human friendly date 
-//     function isValidDate(d) {
-//         return d instanceof Date && !isNaN(d);
-//       }
-//       function zeroPad(n) {
-//         return n.toString().padStart(2, '0');
-//       }
-      
-//       function formatDate(date) {
-//         const month = zeroPad(date.getMonth() + 1);
-//         const day = zeroPad(date.getDate());
-//         const year = zeroPad(date.getFullYear() % 100);
-//         return `${month}/${day}/${year}`;
-//       }
 
-//     const unixTimestamp = (serialDate - 25569) * 86400000;
-//     const d = new Date(unixTimestamp);
-//     if ( isValidDate(d)) {
-//         let prettyDate = formatDate(d)
-//         return prettyDate
-//     } else {
-//         return d // it will say 'Invalid date'
-//     }
-// }
 
 function makeTable(dataObject) {
     let table = "<table border='1' class='machineTable'>"
@@ -125,7 +100,14 @@ function makeTable(dataObject) {
     table += "<tbody><tr>"
     for ( let k in dataObject['columns']) { 
         const v = dataObject['columns'][k]
-        table += `<th>${k}</th>`
+        if ( dataObject.mandatoryColumns.includes(k)) {
+            table += `<th class='mandatory'>${k}</th>`
+        } else if ( k.toLowerCase() === "harvest") {
+            table += `<th class='harvest'>${k}</th>`
+        } else {
+            table += `<th>${k}</th>`
+
+        }
     }
     table += "</tr>"
     dataObject.spools.forEach((spool, i )=> { 
