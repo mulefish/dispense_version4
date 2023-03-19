@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import updateSpool, updatePortlandVendingMachine, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import updateSpools, updatePortlandVendingMachine, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
 
 from flask import jsonify
 
@@ -44,25 +44,26 @@ def update():
     result = {}
     if spoolCount > 0 and len(stores) == 1:
 
-        for row in data['spools']:
-            mandatory = row['mandatory']
-            optional = row['optional']
-            spoolId = mandatory["spool"]
+        # for row in data['spools']:
+        #     mandatory = row['mandatory']
+        #     optional = row['optional']
+        #     spoolId = mandatory["spool"]
 
-            # yellow("storeId={} merchandId={} spoolId={}".format( storeId, merchantId, spoolId )) 
-            # magenta(mandatory )
-            # green(optional)
-            updateSpool(storeId, merchantId, spoolId,mandatory, optional )                
-
+        #     # yellow("storeId={} merchandId={} spoolId={}".format( storeId, merchantId, spoolId )) 
+        #     # magenta(mandatory )
+        #     # green(optional)
+        #     updateSpool(storeId, merchantId, spoolId,mandatory, optional )                
+        receipt = updateSpools(storeId, merchantId, machineId, spools )  
 
 
         result= {
-            "status":"GOOD",
+            "status":receipt["status"],
+            "updated":receipt["rowsUpdated"],
             "storeId":storeId,
             "machineId":machineId,
             "storeCount":len(stores),
             "spoolCount":spoolCount,
-            "gotspools":spools
+            # "gotspools":spools
         }
     else:
         result= {

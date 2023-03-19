@@ -2,16 +2,47 @@
 import sqlite3
 import json
 
+# Remember! While yes is does seem funny to have the directory here in the name
+# because this very file is a sibling to 'new_dispense.db' but remember!
+# When flask runs these functions it will run from the flask context, therefore 
+# have the path here DOES make sense. Odd but true. 
+databasePathAndName='./newdatalayer/new_dispense.db'
 
-def updateSpool(storeId, merchantId, spoolId,mandatoryJson, optionalJson):
+def updateSpools(storeId, merchantId, machineId, spools):
+    counter = 0 
+    conn = sqlite3.connect(databasePathAndName)
+    cursor = conn.cursor()
+    status="tbd"
+    try:
+        for row in spools:  
+            mandatory = row['mandatory']
+            optional = row['optional']
+            keys=mandatory['keys']
+            spoolId = mandatory["spool"]
+            uid=mandatory["uid"]
+            instock=mandatory["count"]
+            price=mandatory['price']
+ 
+            sql="UPDATE portlandVendingMachine SET price={}, uid='{}', instock={}, JSON='{}' WHERE machineId='{}' and spoolId='{}';".format(price,uid, instock, json.dumps(optional), machineId, spoolId)
+            # print(sql)
+            counter += 1 
+            cursor.execute(sql)
+        conn.commit()
+        status="OK"
+    except Exception as e:
+        conn.rollback()
+        print('Error:', e)
+        status=e
+    finally:
+        conn.close()
 
-    print( "{} {} {} {} {} ".format( storeId, merchantId, spoolId,mandatoryJson, optionalJson) )
-
-
-
+    result = {}
+    result["rowsUpdated"]=counter
+    result["status"]=status
+    return result
 
 def get_column_names_of_a_table(table_name):
-    conn = sqlite3.connect('./newdatalayer/new_dispense.db')
+    conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
     cursor.execute(f"PRAGMA table_info({table_name})")
     column_names = [row[1] for row in cursor.fetchall()]
@@ -80,7 +111,7 @@ def get_stores_for_user_and_storeName(username, storeName):
     return found
 
 def do_select(sqlfetch):
-    conn = sqlite3.connect('./newdatalayer/new_dispense.db')
+    conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
     cursor.execute(sqlfetch)
     rows = cursor.fetchall()
@@ -165,7 +196,7 @@ def line94(merchantName):
 
 
 def insert_new_product(row_to_insert): 
-    conn = sqlite3.connect('./newdatalayer/new_dispense.db')
+    conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
     result = "NILL"
     try: 
@@ -194,7 +225,7 @@ def insert_new_product(row_to_insert):
 
 def delete_Items_for_given_merchantId_fk(merchantId_fk): 
     # This is to clean up a test from the tdd.py
-    conn = sqlite3.connect('./newdatalayer/new_dispense.db')
+    conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
     try: 
         sql = "delete from Item where merchantId_fk = {}".format(merchantId_fk)

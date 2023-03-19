@@ -23,8 +23,6 @@
                 machineId: dataObject.machineId, 
                 spools:spools
             }
-            console.log( JSON.stringify( spools, null , 2 ) )
-
  
             fetch('/update', {
               method: 'POST',
