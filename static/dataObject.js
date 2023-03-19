@@ -33,8 +33,9 @@ class DataObject {
 
                     if (k.toLowerCase() === "harvest") {
 
-                        const pretty_date = this.getDate_fromExcelSerialDate(v)
-                        optional[k] = pretty_date
+                        // const pretty_date = this.getDate_fromExcelSerialDate(v)
+                        // optional[k] = pretty_date
+                        optional[k] = v
 
                     } else {
                         optional[k] = v
