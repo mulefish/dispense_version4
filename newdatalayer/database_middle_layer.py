@@ -2,6 +2,14 @@
 import sqlite3
 import json
 
+
+def updateSpool(storeId, merchantId, spoolId,mandatoryJson, optionalJson):
+
+    print( "{} {} {} {} {} ".format( storeId, merchantId, spoolId,mandatoryJson, optionalJson) )
+
+
+
+
 def get_column_names_of_a_table(table_name):
     conn = sqlite3.connect('./newdatalayer/new_dispense.db')
     cursor = conn.cursor()
