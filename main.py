@@ -115,6 +115,10 @@ def update():
     return jsonify(result)
 
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    cyan("search")
+    return render_template('search.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
