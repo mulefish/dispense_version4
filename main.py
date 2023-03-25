@@ -149,13 +149,39 @@ def upsertVendingMachine():
     merchantId = user_ids[username]
     green("username {} and merchantId {} " . format( username, merchantId ))
 
-    # store info
     storeInfoFetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
     stores = do_select(storeInfoFetch)
-    # vending machines this merchant has 
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
 
     return render_template('upsertVendingMachine.html', stores=stores, vendingMachines=vendingMachines )
+
+
+
+@app.route('/get_inventory', methods=['POST'])
+@login_required
+def get_inventory():
+
+    data = request.get_json()
+    storeid_fk = data["storeid_fk"]
+    merchantId_fk = data["merchantId_fk"]
+    machineId = data["machineId"]
+    cyan("get_inventory storeid_fk={} merchantId_fk={} machineId={}".format( storeid_fk, merchantId_fk, machineId))
+    # username = current_user.name 
+    # merchantId = user_ids[username]
+    # green("username {} and merchantId {} " . format( username, merchantId ))
+
+    # storeInfoFetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
+    # stores = do_select(storeInfoFetch)
+    # vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
+
+    # return render_template('upsertVendingMachine.html', stores=stores, vendingMachines=vendingMachines )
+    obj = { 
+        "status": "OK",
+        "data":"hello"
+    } 
+
+    return jsonify(obj)
+
 
 
 
@@ -168,11 +194,8 @@ def merchant():
     green("username {} and merchantId {} " . format( username, merchantId ))
 
     stores = selectStores_forGivenUser(username)
-    #  = get_vending_machines_of_stores_for_a_merchant(username)
     vendingMachines = selectVendingMachines_ofStores_forGivenUser(username)
     magenta(vendingMachines)
-    # inventory
-    # inventory = get_inventory_for_a_merchant_as_json(username)
 
     return render_template('merchant.html', stores=stores, vendingMachines=vendingMachines )
 

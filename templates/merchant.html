@@ -18,7 +18,32 @@
     <script>
 
         function getInventory( storeid_fk, merchantId_fk,machineId ) { 
-            alert( storeid_fk + "  " +  merchantId_fk + "    " + machineId )
+            // alert( storeid_fk + "  " +  merchantId_fk + "    " + machineId )
+            const obj = {
+                storeid_fk, merchantId_fk,machineId
+            }
+            fetch('/get_inventory', { 
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(obj)
+            }).then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                console.log("%c " + JSON.stringify( data, null, 2),"background:yellow"); 
+                if ( data["status"] === "ok") {
+                  alert( "LINE 37 ")
+                } else { 
+                  alert( data["status"])
+                }
+            }).catch(error => {
+              console.error('There was a problem with the fetch operation!\n', error);
+            });
+
+
+
         }
 
         function makeStoreAndVendingMachineTable(stores, vendingMachines) {
@@ -50,24 +75,14 @@
                 btns.forEach((btn)=> { 
                     table += "<tr><td colspan='2' style='background:white'>"  + btn + "</td></tr>"
                 })
-
-
             })
             table += "</table>"
             document.getElementById("storesTable").innerHTML = table
         }
 
-
         const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')  
         const stores = JSON.parse('{{ stores | tojson }}')
-
-        console.log("vendingMachine")
-       //  console.log(vendingMachines )
-        //console.log("sotres")
         makeStoreAndVendingMachineTable(stores, vendingMachines)
-
-
-//        console.log( JSON.stringify(stores, null, 2 ) )
     </script>
     <script src="/static/bag_of_functions.js"></script>
   </body>
