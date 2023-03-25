@@ -141,11 +141,10 @@ def login():
 
 
 
-
-@app.route('/merchant')
+@app.route('/upsertVendingMachine')
 @login_required
-def merchant():
-    cyan("merchant")
+def upsertVendingMachine():
+    cyan("upsertVendingMachine upsertVendingMachine.html")
     username = current_user.name 
     merchantId = user_ids[username]
     green("username {} and merchantId {} " . format( username, merchantId ))
@@ -158,7 +157,27 @@ def merchant():
     # inventory
     inventory = get_inventory_for_a_merchant_as_json(username)
 
-    return render_template('index_is_logged_in.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
+    return render_template('upsertVendingMachine.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
+
+
+
+@app.route('/merchant')
+@login_required
+def merchant():
+    cyan("merchant upsertVendingMachine.html")
+    username = current_user.name 
+    merchantId = user_ids[username]
+    green("username {} and merchantId {} " . format( username, merchantId ))
+
+    # store info
+    storeInfoFetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
+    stores = do_select(storeInfoFetch)
+    # vending machines this merchant has 
+    vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
+    # inventory
+    inventory = get_inventory_for_a_merchant_as_json(username)
+
+    return render_template('upsertVendingMachine.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
 
 
 

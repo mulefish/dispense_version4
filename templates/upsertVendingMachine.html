@@ -1,0 +1,81 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      </style>
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <meta charset="UTF-8">
+        <title>Dispense</title>
+        <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    {% include "headers/isLoggedinHeader.html" %}
+    upsertVendingMachine
+    <script>
+        const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')  
+        const stores = JSON.parse('{{ stores | tojson }}')
+
+        function save() { 
+            const spools = dataObject.getSpools() 
+            const dataToUpsert = {
+                storeId: dataObject.storeId, 
+                machineId: dataObject.machineId, 
+                spools:spools
+            }
+ 
+            fetch('/update', { 
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(dataToUpsert)
+            }).then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                console.log("%c " + JSON.stringify( data, null, 2),"background:yellow"); 
+                if ( data["status"] === "ok") {
+                  alert( "The data has been uploaded.")
+                } else { 
+                  alert( data["status"])
+                }
+            }).catch(error => {
+              console.error('There was a problem with the fetch operation!\n', error);
+            });
+
+        }
+    </script>
+    <table border='1'>
+        <tr>
+            <td align='center' valign='top'>Well formed?</td>
+            <td id="isItWellFormed" class="no_opinion" align="center"></td>
+            <td align='center'><button class='hideMe' id='saveButton' onClick="save()">save</td>
+
+        </tr>
+        <tr >
+            <td colspan='3'>
+                <input type="file" id="fileInput">
+            </td>
+        </tr>
+    </table>
+    <hr/>
+    <div id='machineTable'>
+
+    </div>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script> -->
+    <!-- This local lib is the same as the CDN one. I pulled it down so I would work without a network -->
+    <script src="/static/dataObject.js"></script>
+    <script src="/static/external_scripts/xlsx_0.16.8_full_min.js"></script>
+
+    <script>
+
+    const fileInput = document.getElementById('fileInput');
+    fileInput.addEventListener('change', (event) => {
+      step1_fileUpload(event)
+    })
+    </script> 
+    <script src="/static/bag_of_functions.js"></script>
+  </body>
+</html>
