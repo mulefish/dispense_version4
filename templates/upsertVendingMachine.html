@@ -12,7 +12,7 @@
   </head>
   <body>
     {% include "headers/isLoggedinHeader.html" %}
-    upsertVendingMachine
+    upsertVendingMachine.html
     <script>
         const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')  
         const stores = JSON.parse('{{ stores | tojson }}')

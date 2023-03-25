@@ -12,12 +12,49 @@
   </head>
   <body>
     {% include "headers/isLoggedinHeader.html" %}
+    merchant.html
     <div id="storesTable"></div>
     <script>
 
-        function makeStoreAndVendingMachineTable(stores, vendingMachine) {
-            console.log( vendingMachine)
-            let table = "<table border='1'><tr>"
+        function makeStoreAndVendingMachineTable(stores, vendingMachines) {
+            const columns = ["machineId", "merchantId_fk","storeid_fk"]
+            function findStoreById(storeId) {
+                for (let i = 0; i < vendingMachines.length; i++) {
+                    if (vendingMachines[i].storeid_fk === storeId) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            function createVendingMachineTBody(storeId) { 
+                let x = ""
+                if ( findStoreById(storeId) === true ) { 
+                    x = "<tbody class='childTable'><tr><th class='skip'></th>"
+                    columns.forEach((column)=> { 
+                        x += `<th>${column}</th>`
+                    })
+                    x += "</tr>"
+                    // 
+                    vendingMachines.forEach((vm)=> { 
+                        if ( vm.storeid_fk == storeId ) {
+                        x += "<tr><td class='skip'></td>" 
+                        columns.forEach((column)=> {
+                            const v = vm[column] 
+                            x += `<td>${v}</td>`
+                        })                            
+                        x += "</tr>"
+                    }
+                    })
+                    x += "</tbody>"
+                }
+                return x
+            }
+
+
+
+
+
+            let table = "<table border='10' class='storeTable'><tr>"
             let keys = Object.keys(stores[0])
             keys.forEach((column)=>{
                 table += "<th>" + column + "</th>"
@@ -25,12 +62,12 @@
             table += "</tr>"
             stores.forEach((store)=> { 
                 table += "<tr>"
-                    // console.log(store)
                 keys.forEach((k)=> {
                     const v = store[k]
                     table += `<td>${v}</td>`
                 })
                 table += "</tr>"
+                table += createVendingMachineTBody(store["storeId"])
             })
             table += "</table>"
             document.getElementById("storesTable").innerHTML = table
