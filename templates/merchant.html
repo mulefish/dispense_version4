@@ -1,0 +1,53 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      </style>
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <meta charset="UTF-8">
+        <title>Dispense</title>
+        <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    {% include "headers/isLoggedinHeader.html" %}
+    <div id="storesTable"></div>
+    <script>
+
+        function makeStoreAndVendingMachineTable(stores, vendingMachine) {
+            console.log( vendingMachine)
+            let table = "<table border='1'><tr>"
+            let keys = Object.keys(stores[0])
+            keys.forEach((column)=>{
+                table += "<th>" + column + "</th>"
+            })
+            table += "</tr>"
+            stores.forEach((store)=> { 
+                table += "<tr>"
+                    // console.log(store)
+                keys.forEach((k)=> {
+                    const v = store[k]
+                    table += `<td>${v}</td>`
+                })
+                table += "</tr>"
+            })
+            table += "</table>"
+            document.getElementById("storesTable").innerHTML = table
+        }
+
+
+        const vendingMachines = JSON.parse('{{ vendingMachines | tojson }}')  
+        const stores = JSON.parse('{{ stores | tojson }}')
+
+        console.log("vendingMachine")
+       //  console.log(vendingMachines )
+        //console.log("sotres")
+        makeStoreAndVendingMachineTable(stores, vendingMachines)
+
+
+//        console.log( JSON.stringify(stores, null, 2 ) )
+    </script>
+    <script src="/static/bag_of_functions.js"></script>
+  </body>
+</html>

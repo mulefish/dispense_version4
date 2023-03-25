@@ -4,13 +4,13 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import updateSpools, updatePortlandVendingMachine, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, updateSpools, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
 # pip install qrcode
 import qrcode
 
 from flask import jsonify
 
-
+# updatePortlandVendingMachine
 app = Flask(__name__)
 login_manager = LoginManager(app)
 
@@ -164,20 +164,19 @@ def upsertVendingMachine():
 @app.route('/merchant')
 @login_required
 def merchant():
-    cyan("merchant upsertVendingMachine.html")
+    cyan("merchant merchant.html")
     username = current_user.name 
     merchantId = user_ids[username]
     green("username {} and merchantId {} " . format( username, merchantId ))
 
-    # store info
-    storeInfoFetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
-    stores = do_select(storeInfoFetch)
-    # vending machines this merchant has 
-    vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
+    stores = selectStores_forGivenUser(username)
+    #  = get_vending_machines_of_stores_for_a_merchant(username)
+    vendingMachines = selectVendingMachines_ofStores_forGivenUser(username)
+    print(vendingMachines)
     # inventory
-    inventory = get_inventory_for_a_merchant_as_json(username)
+    # inventory = get_inventory_for_a_merchant_as_json(username)
 
-    return render_template('upsertVendingMachine.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
+    return render_template('merchant.html', stores=stores, vendingMachines=vendingMachines )
 
 
 
@@ -213,11 +212,10 @@ def fill_vending_machines():
     # store info
     storeInfoFetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
     stores = do_select(storeInfoFetch)
-    # vending machines this merchant has 
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
-    # inventory
-    # inventory = get_inventory_for_a_merchant_as_json(username)
-    inventory2 = line94(username)
+    # # inventory
+    # # inventory = get_inventory_for_a_merchant_as_json(username)
+    # inventory2 = line94(username)
 
     return render_template('fill_vending_machines.html', stores=stores, vendingMachines=vendingMachines, inventory2=inventory2 )
 

@@ -1,6 +1,7 @@
 from common import yellow, cyan, log, green, verdict, getUsers
 # from newdatalayer.database_middle_layer import get_stores_for_user, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
-from newdatalayer.database_middle_layer import get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+import json
 
 def get_column_names_of_a_table_test(): 
     table_name = "store"    
@@ -59,20 +60,20 @@ def get_vending_machines_of_stores_for_a_merchant_test():
     isOk = result > 0
     verdict(isOk, True, "get_vending_machines_of_stores_for_a_merchant_test got {}".format(data))
 
-def get_vending_machine_test():
-    # Step 1: Get an ID of some vending machine - any one will do
-    sql = "select * from vendingMachine where vendingId = 1"
-    raw = do_select(sql)
-    #                  select * from vendingMachine where vendingId = 1
-    # vendingId = raw[-1][-1] 
-    # Step 2: Use the vendingId to get the info of that machine.
-    print(raw)
-    # query = "select * from vendingMachine where vendingId = {}".format(vendingId)
-    # result = do_select(query)
-    # print(result)
-    # n = len(result)
-    # isOk = n > 0
-    # verdict(isOk, True, "get_vending_machine_test got results of len {} back".format(n))
+# def get_vending_machine_test():
+#     # Step 1: Get an ID of some vending machine - any one will do
+#     sql = "select * from vendingMachine where vendingId = 1"
+#     raw = do_select(sql)
+#     #                  select * from vendingMachine where vendingId = 1
+#     # vendingId = raw[-1][-1] 
+#     # Step 2: Use the vendingId to get the info of that machine.
+#     print(raw)
+#     # query = "select * from vendingMachine where vendingId = {}".format(vendingId)
+#     # result = do_select(query)
+#     # print(result)
+#     # n = len(result)
+#     # isOk = n > 0
+#     # verdict(isOk, True, "get_vending_machine_test got results of len {} back".format(n))
 
 
 
@@ -116,6 +117,29 @@ def select_star_from_portlandVendingMachine():
     print(raw)
 
 
+def selectStores_forGivenUser_test(merchantName): 
+    LoH = selectStores_forGivenUser(merchantName)
+    isOk = True
+    for store in LoH:
+        if len(store) != 7:
+            isOk = False
+    verdict(isOk, True, "selectStores_forGivenUser_test for uses {}".format(merchantName))
+
+
+def selectVendingMachines_ofStores_forGivenUser_test(merchantName):
+    LoH = selectVendingMachines_ofStores_forGivenUser(merchantName)
+    #     columns = ["machineId", "storeid_fk", "merchantId_fk" ]
+    isOk = True
+    for store in LoH:
+        for c in store:
+            print( c )
+        if len(store) != 3:
+            isOk = False
+    verdict(isOk, True, "selectVendingMachines_ofStores_forGivenUser_test for uses {}".format(merchantName))
+
+
+
+
 if __name__ == "__main__":
     get_stores_test()
     get_vending_machines_of_stores_for_a_merchant_test()
@@ -128,3 +152,5 @@ if __name__ == "__main__":
     get_column_names_of_a_table_test()
     get_vending_machines_of_stores_for_a_merchant_test()
     select_star_from_portlandVendingMachine()
+    selectStores_forGivenUser_test("kermitt")
+    selectVendingMachines_ofStores_forGivenUser_test("kermitt")

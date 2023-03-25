@@ -24,7 +24,6 @@ def updateSpools(storeId, merchantId, machineId, spools):
             price=mandatory['price']
  
             sql="UPDATE portlandVendingMachine SET price={}, uid='{}', instock={}, JSON='{}' WHERE machineId='{}' and spoolId='{}';".format(price,uid, instock, json.dumps(optional), machineId, spoolId)
-            # print(sql)
             counter += 1 
             cursor.execute(sql)
         conn.commit()
@@ -46,23 +45,21 @@ def get_column_names_of_a_table(table_name):
     cursor = conn.cursor()
     cursor.execute(f"PRAGMA table_info({table_name})")
     column_names = [row[1] for row in cursor.fetchall()]
-    # print(column_names)
     cursor.close()
     conn.close()
     return column_names
 
-def updatePortlandVendingMachine(storeId, merchantId,spools):
-    print( " {}    {}   ".format( storeId, merchantId))
-    print(spools[0])
+# def updatePortlandVendingMachine(storeId, merchantId,spools):
+#     print( " {}    {}   ".format( storeId, merchantId))
+#     print(spools[0])
 
-    return True 
+#     return True 
 
 
 
 def getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineName):
     sqlfetch = f'select count(*) from portlandVendingMachine where merchantId_fk = 1 and machineId = "WarmMoon";'
     spoolCount = do_select(sqlfetch)
-    # print("getVendingMachine_fromMerchantIdAndMachineId = {}".format(spoolCount[0][0] )) 
     return spoolCount[0][0]
 
 def getStore_where_merchantIdAndStoreName(merchantId, storeName):
@@ -117,6 +114,52 @@ def do_select(sqlfetch):
     rows = cursor.fetchall()
     conn.close()
     return rows
+
+# def selectStoresForGivenUser(username):
+def selectStores_forGivenUser(username):
+    """Return an List of Hashes"""
+
+    sql = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
+    conn = sqlite3.connect(databasePathAndName)
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+
+    columns = ["merchantId", "storeId", "storeName", "storeAddress", "merchantName", "billing_address", "phone" ]
+    LoH = []
+    for row in rows:
+        H = {} 
+        for i in range(len(columns)):
+            k = columns[i]
+            v = row[i]
+            H[k] = v
+        LoH.append(H)
+
+    conn.close()
+    return LoH
+
+def selectVendingMachines_ofStores_forGivenUser(nameOfTheMerchant): 
+    """Return an List of Hashes"""
+
+    sql = f'select  distinct a.machineId, a.storeid_fk, a.merchantId_fk from portlandVendingMachine a, merchant b where  b.merchantId == a.merchantId_fk and b.name = "{nameOfTheMerchant}"'
+
+    conn = sqlite3.connect(databasePathAndName)
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    columns = ["machineId", "storeid_fk", "merchantId_fk" ]
+    LoH = []
+    for row in rows:
+        H = {} 
+        for i in range(len(columns)):
+            k = columns[i]
+            v = row[i]
+            H[k] = v
+        LoH.append(H)
+    conn.close()
+    return []
+
+
     
 if __name__ == "__main__":
     # self test
@@ -206,10 +249,10 @@ def insert_new_product(row_to_insert):
         instock = row_to_insert[2]
         deployed = row_to_insert[3]
         json = row_to_insert[4]
+
         sql = "insert into Item(merchantId_fk, price, instock, deployed, JSON) values ({}, {},{},{}, '{}');".format(
              merchantId_fk, price, instock, deployed, json
         )
-        print(sql)
         cursor.execute(sql)
         conn.commit() 
         result = "OK"
@@ -229,7 +272,6 @@ def delete_Items_for_given_merchantId_fk(merchantId_fk):
     cursor = conn.cursor()
     try: 
         sql = "delete from Item where merchantId_fk = {}".format(merchantId_fk)
-        print(sql)
         cursor.execute(sql)
         conn.commit() 
         result = "OK"
