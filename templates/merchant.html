@@ -14,47 +14,26 @@
     {% include "headers/isLoggedinHeader.html" %}
     merchant.html
     <div id="storesTable"></div>
+    <hr/>
     <script>
 
+        function getInventory( storeid_fk, merchantId_fk,machineId ) { 
+            alert( storeid_fk + "  " +  merchantId_fk + "    " + machineId )
+        }
+
         function makeStoreAndVendingMachineTable(stores, vendingMachines) {
-            const columns = ["machineId", "merchantId_fk","storeid_fk"]
-            function findStoreById(storeId) {
-                for (let i = 0; i < vendingMachines.length; i++) {
-                    if (vendingMachines[i].storeid_fk === storeId) {
-                        return true;
-                    }
-                }
-                return false;
-            }
             function createVendingMachineTBody(storeId) { 
-                let x = ""
-                if ( findStoreById(storeId) === true ) { 
-                    x = "<tbody class='childTable'><tr><th class='skip'></th>"
-                    columns.forEach((column)=> { 
-                        x += `<th>${column}</th>`
-                    })
-                    x += "</tr>"
-                    // 
-                    vendingMachines.forEach((vm)=> { 
-                        if ( vm.storeid_fk == storeId ) {
-                        x += "<tr><td class='skip'></td>" 
-                        columns.forEach((column)=> {
-                            const v = vm[column] 
-                            x += `<td>${v}</td>`
-                        })                            
-                        x += "</tr>"
+                let btns = [] 
+                vendingMachines.forEach((vm)=> { 
+                    if ( vm.storeid_fk === storeId ) {
+                         const btn = `<button onClick='getInventory(${vm.storeid_fk}, ${vm.merchantId_fk}, "${vm.machineId}")'>merchantId=${vm.merchantId_fk}, storeId=${vm.storeid_fk}, id=${vm.machineId}</button>`                          
+                         btns.push(btn)
                     }
-                    })
-                    x += "</tbody>"
-                }
-                return x
+                })
+                return btns
             }
 
-
-
-
-
-            let table = "<table border='10' class='storeTable'><tr>"
+            let table = "<table border='1' class='storeTable'><tr>"
             let keys = Object.keys(stores[0])
             keys.forEach((column)=>{
                 table += "<th>" + column + "</th>"
@@ -67,7 +46,12 @@
                     table += `<td>${v}</td>`
                 })
                 table += "</tr>"
-                table += createVendingMachineTBody(store["storeId"])
+                let btns = createVendingMachineTBody(store["storeId"])
+                btns.forEach((btn)=> { 
+                    table += "<tr><td colspan='2' style='background:white'>"  + btn + "</td></tr>"
+                })
+
+
             })
             table += "</table>"
             document.getElementById("storesTable").innerHTML = table
