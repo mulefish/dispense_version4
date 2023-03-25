@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, updateSpools, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant,get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, updateSpools, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant
 # pip install qrcode
 import qrcode
 
@@ -154,10 +154,8 @@ def upsertVendingMachine():
     stores = do_select(storeInfoFetch)
     # vending machines this merchant has 
     vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
-    # inventory
-    inventory = get_inventory_for_a_merchant_as_json(username)
 
-    return render_template('upsertVendingMachine.html', stores=stores, vendingMachines=vendingMachines, inventory=inventory )
+    return render_template('upsertVendingMachine.html', stores=stores, vendingMachines=vendingMachines )
 
 
 
@@ -172,7 +170,7 @@ def merchant():
     stores = selectStores_forGivenUser(username)
     #  = get_vending_machines_of_stores_for_a_merchant(username)
     vendingMachines = selectVendingMachines_ofStores_forGivenUser(username)
-    print(vendingMachines)
+    magenta(vendingMachines)
     # inventory
     # inventory = get_inventory_for_a_merchant_as_json(username)
 

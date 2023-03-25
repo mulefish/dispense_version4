@@ -157,7 +157,7 @@ def selectVendingMachines_ofStores_forGivenUser(nameOfTheMerchant):
             H[k] = v
         LoH.append(H)
     conn.close()
-    return []
+    return LoH
 
 
     
@@ -199,29 +199,29 @@ def get_merchantId_from_merchantName(merchantName):
 
 
 
-def get_inventory_for_a_merchant_as_json(merchantName): 
-    merchantId = get_merchantId_from_merchantName(merchantName)
-    # Mixed JSON + SQLite is a pain.
-    # Convert everything into JSON and send that. 
-    # Downside? On the over 'ingestion' side of the house I will need to remember this goof-around
-    ary = [] 
-    sqlfetch = f'select itemId, price, instock, deployed, json from Item where merchantId_fk == {merchantId}'
+# def get_inventory_for_a_merchant_as_json(merchantName): 
+#     merchantId = get_merchantId_from_merchantName(merchantName)
+#     # Mixed JSON + SQLite is a pain.
+#     # Convert everything into JSON and send that. 
+#     # Downside? On the over 'ingestion' side of the house I will need to remember this goof-around
+#     ary = [] 
+#     sqlfetch = f'select itemId, price, instock, deployed, json from Item where merchantId_fk == {merchantId}'
 
-    rows = do_select(sqlfetch)
-    for row in rows:
-        itemId = row[0]
-        price = row[1]
-        instock = row[2]
-        deployed = row[3]
-        j = json.loads(row[4])
-        j['itemId'] = itemId
-        j['price'] = price
-        j['instock'] = instock
-        j['deployed'] = deployed
+#     rows = do_select(sqlfetch)
+#     for row in rows:
+#         itemId = row[0]
+#         price = row[1]
+#         instock = row[2]
+#         deployed = row[3]
+#         j = json.loads(row[4])
+#         j['itemId'] = itemId
+#         j['price'] = price
+#         j['instock'] = instock
+#         j['deployed'] = deployed
 
 
-        ary.append(j)
-    return ary
+#         ary.append(j)
+#     return ary
 
 
 def line94(merchantName): 

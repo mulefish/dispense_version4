@@ -1,6 +1,6 @@
 from common import yellow, cyan, log, green, verdict, getUsers
 # from newdatalayer.database_middle_layer import get_stores_for_user, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
-from newdatalayer.database_middle_layer import selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant, get_inventory_for_a_merchant_as_json
+from newdatalayer.database_middle_layer import selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, insert_new_product, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant
 import json
 
 def get_column_names_of_a_table_test(): 
@@ -77,15 +77,15 @@ def get_vending_machines_of_stores_for_a_merchant_test():
 
 
 
-def get_inventory_for_a_merchant_as_json_test():
+# def get_inventory_for_a_merchant_as_json_test():
 
-    # The table has rows of ints and strings with a ball of json. 
-    # Looking for a result set that is entirely JSONifiable for the client side of the house
-    x = get_inventory_for_a_merchant_as_json("admin")
-    isJsonified = isinstance(x, list)
-    isPopulated = len(x) > 0
-    isOk = True and isPopulated == True
-    verdict(isOk, True, "get_inventory_for_a_merchant_as_json_test got type {} and a count of {} ".format(type(x), len(x)))
+#     # The table has rows of ints and strings with a ball of json. 
+#     # Looking for a result set that is entirely JSONifiable for the client side of the house
+#     x = get_inventory_for_a_merchant_as_json("admin")
+#     isJsonified = isinstance(x, list)
+#     isPopulated = len(x) > 0
+#     isOk = True and isPopulated == True
+#     verdict(isOk, True, "get_inventory_for_a_merchant_as_json_test got type {} and a count of {} ".format(type(x), len(x)))
 
 
 def get_merchantId_from_merchantName_test():
@@ -131,8 +131,6 @@ def selectVendingMachines_ofStores_forGivenUser_test(merchantName):
     #     columns = ["machineId", "storeid_fk", "merchantId_fk" ]
     isOk = True
     for store in LoH:
-        for c in store:
-            print( c )
         if len(store) != 3:
             isOk = False
     verdict(isOk, True, "selectVendingMachines_ofStores_forGivenUser_test for uses {}".format(merchantName))
@@ -143,7 +141,7 @@ def selectVendingMachines_ofStores_forGivenUser_test(merchantName):
 if __name__ == "__main__":
     get_stores_test()
     get_vending_machines_of_stores_for_a_merchant_test()
-    get_inventory_for_a_merchant_as_json_test()
+    # get_inventory_for_a_merchant_as_json_test()
     get_merchantId_from_merchantName_test()
     insert_new_product_test() 
     
