@@ -49,13 +49,13 @@ def get_column_names_of_a_table(table_name):
     conn.close()
     return column_names
 
-# def updatePortlandVendingMachine(storeId, merchantId,spools):
-#     print( " {}    {}   ".format( storeId, merchantId))
-#     print(spools[0])
-
-#     return True 
-
-
+def get_entire_inventory_of_a_table(storeId_fk, merchantId_fk, machineId):
+    sql = f'select * from portlandVendingMachine where storeId_fk={storeId_fk} and merchantId_fk={merchantId_fk} and machineid="{machineId}"'
+    conn = sqlite3.connect(databasePathAndName)
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    return rows
 
 def getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineName):
     sqlfetch = f'select count(*) from portlandVendingMachine where merchantId_fk = 1 and machineId = "WarmMoon";'
@@ -199,29 +199,7 @@ def get_merchantId_from_merchantName(merchantName):
 
 
 
-# def get_inventory_for_a_merchant_as_json(merchantName): 
-#     merchantId = get_merchantId_from_merchantName(merchantName)
-#     # Mixed JSON + SQLite is a pain.
-#     # Convert everything into JSON and send that. 
-#     # Downside? On the over 'ingestion' side of the house I will need to remember this goof-around
-#     ary = [] 
-#     sqlfetch = f'select itemId, price, instock, deployed, json from Item where merchantId_fk == {merchantId}'
 
-#     rows = do_select(sqlfetch)
-#     for row in rows:
-#         itemId = row[0]
-#         price = row[1]
-#         instock = row[2]
-#         deployed = row[3]
-#         j = json.loads(row[4])
-#         j['itemId'] = itemId
-#         j['price'] = price
-#         j['instock'] = instock
-#         j['deployed'] = deployed
-
-
-#         ary.append(j)
-#     return ary
 
 
 def line94(merchantName): 
@@ -238,33 +216,6 @@ def line94(merchantName):
     return ary
 
 
-def insert_new_product(row_to_insert): 
-    conn = sqlite3.connect(databasePathAndName)
-    cursor = conn.cursor()
-    result = "NILL"
-    try: 
-        # row_to_insert = [-1,99,88,77,'{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}']
-        merchantId_fk = row_to_insert[0]
-        price = row_to_insert[1]
-        instock = row_to_insert[2]
-        deployed = row_to_insert[3]
-        json = row_to_insert[4]
-
-        sql = "insert into Item(merchantId_fk, price, instock, deployed, JSON) values ({}, {},{},{}, '{}');".format(
-             merchantId_fk, price, instock, deployed, json
-        )
-        cursor.execute(sql)
-        conn.commit() 
-        result = "OK"
-    except sqlite3.Error as er:
-        print('SQLite error: %s' % (' '.join(er.args)))
-        print("Exception class is: ", er.__class__)
-        print('SQLite traceback: ')
-        exc_type, exc_value, exc_tb = sys.exc_info()
-        print(traceback.format_exception(exc_type, exc_value, exc_tb))
-        result = er
-    conn.close()   
-    return result     
 
 def delete_Items_for_given_merchantId_fk(merchantId_fk): 
     # This is to clean up a test from the tdd.py

@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, updateSpools, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, insert_new_product, do_select, get_vending_machines_of_stores_for_a_merchant
+from newdatalayer.database_middle_layer import get_entire_inventory_of_a_table, selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, updateSpools, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, do_select, get_vending_machines_of_stores_for_a_merchant
 # pip install qrcode
 import qrcode
 
@@ -165,20 +165,15 @@ def get_inventory():
     storeid_fk = data["storeid_fk"]
     merchantId_fk = data["merchantId_fk"]
     machineId = data["machineId"]
-    cyan("get_inventory storeid_fk={} merchantId_fk={} machineId={}".format( storeid_fk, merchantId_fk, machineId))
-    # username = current_user.name 
-    # merchantId = user_ids[username]
-    # green("username {} and merchantId {} " . format( username, merchantId ))
 
-    # storeInfoFetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{username}"'
-    # stores = do_select(storeInfoFetch)
-    # vendingMachines = get_vending_machines_of_stores_for_a_merchant(username)
 
-    # return render_template('upsertVendingMachine.html', stores=stores, vendingMachines=vendingMachines )
+    rows = get_entire_inventory_of_a_table(storeid_fk, merchantId_fk, machineId)
+    n = len(rows)
     obj = { 
-        "status": "OK",
-        "data":"hello"
+        "status": n,
+        "data":rows
     } 
+    cyan("get_inventory storeid_fk={} merchantId_fk={} machineId={} n={}".format( storeid_fk, merchantId_fk, machineId, n))
 
     return jsonify(obj)
 
@@ -246,66 +241,6 @@ def fill_vending_machines():
 def lulu():
     cyan("index")
     return render_template('index_not_logged_in.html')
-
-
-
-# @app.route('/add_new_product_for_a_merchant', methods=['POST'])
-# @login_required
-# def add_new_product_for_a_merchant():
-#     cyan("add_new_product_for_a_merchant")
-#     obj = {
-#         "status":"Missing information"
-#     }
-
-#     # insert into Item(merchantId_fk, price, instock, deployed, JSON) values (-1, 99,88,77, '{"brand":"brand","cbd":0,"desc":"this is a description","farm":"some farm","harvest":"01/01/1900","name":"name test","strain":"strain test","thc":99.99,"type":"test","Wt_Num":99,"product":"test product"}');
-
-#     obj = request.get_json()
-#     username = current_user.name 
-#     merchantId = user_ids[username]
-#     obj["username"] = username
-#     obj["merchantId"] = merchantId
-#     # print( obj )
-
-#     collection = obj["json"]
-#     price = obj["price"]
-#     deployed = obj["deployed"]
-#     instock = obj["instock"]
-
-#     cyan("username {} ".format( username ))
-#     cyan("merchantId {} ".format( merchantId ))
-#     json_as_string = json.dumps(collection)
-#     objectToInsert = [merchantId,price,instock,0,json_as_string]
-
-
-#     cyan( objectToInsert)
-
-#     result = insert_new_product(objectToInsert)
-
-#     return jsonify(result)
-    
-# @app.route('/get_vending_machine', methods=['POST'])
-# def get_vending_machine():
-#     obj = {
-#         "status":"Missing information"
-#     }
-#     x = request.get_json()
-#     if "vendingId" in x:
-#         vendingId = x["vendingId"]
-#         cyan("get_vending_machine for vendingId {}".format( vendingId))
-#         query = "select * from vendingMachine where vendingId = {}".format(vendingId)
-#         cyan(query)
-#         result = do_select(query)
-#         # print(result)
-#         obj["status"] = "OK"
-#         obj["data"] = result
-
-#     else: 
-#         cyan("get_vending_machine is missing a parameter")
-#         obj["status"] = "Missing parameter"
-
-
-#     return jsonify(obj)
-    
 
 
 
