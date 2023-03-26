@@ -1,4 +1,4 @@
-
+from common import yellow, cyan, log, green, verdict, getUsers
 import sqlite3
 import json
 
@@ -49,13 +49,6 @@ def get_column_names_of_a_table(table_name):
     conn.close()
     return column_names
 
-def get_entire_inventory_of_a_table(storeId_fk, merchantId_fk, machineId):
-    sql = f'select * from portlandVendingMachine where storeId_fk={storeId_fk} and merchantId_fk={merchantId_fk} and machineid="{machineId}"'
-    conn = sqlite3.connect(databasePathAndName)
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    rows = cursor.fetchall()
-    return rows
 
 def getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineName):
     sqlfetch = f'select count(*) from portlandVendingMachine where merchantId_fk = 1 and machineId = "WarmMoon";'
@@ -238,4 +231,27 @@ def delete_Items_for_given_merchantId_fk(merchantId_fk):
 
 
 
+def get_entire_inventory_of_a_table(storeId_fk, merchantId_fk, machineId):
+    sql = f'select spoolId, uid, instock, price, JSON from portlandVendingMachine where storeId_fk={storeId_fk} and merchantId_fk={merchantId_fk} and machineid="{machineId}"'
+    # green(sql)
+    conn = sqlite3.connect(databasePathAndName)
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    LoH = [] 
+    for row in rows:
+        mandatory = {
+            "spoolId":row[0],
+            "uid":row[1],
+            "instock":row[2],
+            "price":row[3]
+        } 
+        optional = json.loads(row[4]) 
+        obj = {
+            "mandatory":mandatory, 
+            "optional":optional
+        }
+        LoH.append(obj)
 
+
+    return LoH

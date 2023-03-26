@@ -165,17 +165,15 @@ def get_inventory():
     storeid_fk = data["storeid_fk"]
     merchantId_fk = data["merchantId_fk"]
     machineId = data["machineId"]
+    inventory = get_entire_inventory_of_a_table(storeid_fk, merchantId_fk, machineId)
 
+    for product in inventory: 
+        m = len(product["mandatory"])
+        o = len(product["optional"])
+        print("mandatory={} optional={}".format(m, o ))
+    cyan("get_inventory storeid_fk={} merchantId_fk={} machineId={} ".format( storeid_fk, merchantId_fk, machineId))
 
-    rows = get_entire_inventory_of_a_table(storeid_fk, merchantId_fk, machineId)
-    n = len(rows)
-    obj = { 
-        "status": n,
-        "data":rows
-    } 
-    cyan("get_inventory storeid_fk={} merchantId_fk={} machineId={} n={}".format( storeid_fk, merchantId_fk, machineId, n))
-
-    return jsonify(obj)
+    return jsonify(inventory)
 
 
 

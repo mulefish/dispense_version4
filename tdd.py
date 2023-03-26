@@ -80,7 +80,7 @@ def cleanup_dummy_insert():
 def select_star_from_portlandVendingMachine(): 
     sql="select price from portlandVendingMachine where price is not null;"
     raw = do_select(sql)
-    print(raw)
+    # print(raw)
 
 
 def selectStores_forGivenUser_test(merchantName): 
@@ -103,10 +103,17 @@ def selectVendingMachines_ofStores_forGivenUser_test(merchantName):
 
 
 def get_entire_inventory_of_a_table_test(merchantId_fk):
-    rows = get_entire_inventory_of_a_table(1, merchantId_fk, "WarmMoon")
-    n = len(rows)
-    isOk = n > 0 
-    verdict(isOk, True, "get_entire_inventory_of_a_table_test row count {}".format(n))
+    inventory = get_entire_inventory_of_a_table(1, merchantId_fk, "WarmMoon")
+    isOk = True 
+    for product in inventory: 
+        m = len(product["mandatory"])
+        o = len(product["optional"])
+        # print("len(mandatory={} len(optional)={}".format( m , o ))
+        if m < 1:
+            isOk = False 
+        if o < 1:
+            isOk = False 
+    verdict(isOk, True, "get_entire_inventory_of_a_table_test")
 
 
 if __name__ == "__main__":
@@ -120,5 +127,5 @@ if __name__ == "__main__":
     selectStores_forGivenUser_test("kermitt")
     selectVendingMachines_ofStores_forGivenUser_test("kermitt")
     merchantIdForKermitt = get_merchantId_from_merchantName("kermitt")
-    # # yellow(merchantIdForKermitt)
+
     get_entire_inventory_of_a_table_test(merchantIdForKermitt)

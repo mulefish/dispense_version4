@@ -32,12 +32,13 @@
                 }
                 return response.json();
             }).then(data => {
-                console.log("%c " + JSON.stringify( data, null, 2),"background:yellow"); 
-                if ( data["status"] === "ok") {
-                  alert( "LINE 37 ")
-                } else { 
-                  alert( data["status"])
-                }
+                // console.log("%c " + JSON.stringify( data, null, 2),"background:tan"); 
+                console.log("%c " + JSON.stringify( data, null, 2),"background:tan"); 
+                // if ( data["status"] === "ok") {
+                //   alert( "LINE 37 ")
+                // } else { 
+                //   alert( data["status"])
+                // }
             }).catch(error => {
               console.error('There was a problem with the fetch operation!\n', error);
             });
