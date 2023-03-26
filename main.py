@@ -170,7 +170,7 @@ def get_inventory():
     for product in inventory: 
         m = len(product["mandatory"])
         o = len(product["optional"])
-        print("mandatory={} optional={}".format(m, o ))
+        # print("mandatory={} optional={}".format(m, o ))
     cyan("get_inventory storeid_fk={} merchantId_fk={} machineId={} ".format( storeid_fk, merchantId_fk, machineId))
 
     return jsonify(inventory)

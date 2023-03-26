@@ -15,8 +15,69 @@
     merchant.html
     <div id="storesTable"></div>
     <hr/>
+    <div id="inventory"></div>
     <script>
+        function showInventory(inventory) {
+            columns = Object.keys(inventory[0]["mandatory"]) 
+            let seen = {} 
+            inventory.forEach((product)=> { 
+                for ( let k in product["optional"] ) { 
+                    if ( ! seen.hasOwnProperty(k)) {
+                        seen[k]=1
+                    }
+                }
+            })
 
+            let table = "<table border='1'><tr>"
+            let header = "<tr>"
+            columns.forEach((column)=> { 
+                header += "<th>" + column + "</th>"
+            })
+            Object.keys(seen).forEach((column)=>{
+                header += "<th>" + column + "</th>"
+            })
+            header += "</tr>"
+            table += header
+
+            inventory.forEach((product)=> { 
+                try { 
+                let row = "<tr>"
+                columns.forEach((key)=> { 
+                    if ( product["mandatory"].hasOwnProperty(key)) {
+                        const v =  product["mandatory"][key]
+                        row += "<td>" + v + "</td>"
+                    }
+                })
+                Object.keys(seen).forEach((key)=> { 
+                    if ( product["optional"].hasOwnProperty(key)) {
+                        const v =  product["optional"][key]
+                        row += "<td>" + v + "</td>"
+                    } else {
+                        row += "<td>nill</td>"
+                    }
+                })
+                
+
+
+
+                row += "</tr>"
+                table += row 
+                } catch (boom )  {
+                    console.log( boom )
+                }
+            })
+
+
+
+
+
+            table += "</table>"
+
+
+
+            document.getElementById("inventory").innerHTML = table 
+
+        }
         function getInventory( storeid_fk, merchantId_fk,machineId ) { 
             // alert( storeid_fk + "  " +  merchantId_fk + "    " + machineId )
             const obj = {
@@ -39,6 +100,7 @@
                 // } else { 
                 //   alert( data["status"])
                 // }
+                showInventory( data )
             }).catch(error => {
               console.error('There was a problem with the fetch operation!\n', error);
             });
