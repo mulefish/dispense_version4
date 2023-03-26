@@ -62,12 +62,14 @@ def update():
     # cyan("update")
     username = current_user.name 
     merchantId = user_ids[username]
-    cyan("update() username {} and merchantId {}".format(username, merchantId))
     data = request.get_json()
 
     storeId = data["storeId"]
     machineId = data["machineId"]
     spools = data["spools"]
+
+
+
 
     stores = getStore_where_merchantIdAndStoreName(merchantId, storeId) 
     spoolCount = getVendingMachine_fromMerchantIdAndMachineId(merchantId, machineId)
@@ -75,7 +77,8 @@ def update():
     #magenta("!! stores={} spoolCount = {} ".format( len(stores),spoolCount ))
     #magenta(data)
 
-
+    yellow("update() username {} and merchantId {} storeId {}  machineId {} spoolCount {} ".format(username, merchantId, storeId, machineId, spoolCount))
+    yellow(stores)
 
     result = {}
     if spoolCount > 0 and len(stores) == 1:

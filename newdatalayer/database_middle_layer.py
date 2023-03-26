@@ -9,6 +9,7 @@ import json
 databasePathAndName='./newdatalayer/new_dispense.db'
 
 def updateSpools(storeId, merchantId, machineId, spools):
+    green("storeId={} merchantId={} machineId={} ".format(storeId, merchantId, machineId))
     counter = 0 
     conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
