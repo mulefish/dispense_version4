@@ -109,6 +109,9 @@ def do_select(sqlfetch):
     conn.close()
     return rows
 
+
+
+
 # def selectStoresForGivenUser(username):
 def selectStores_forGivenUser(username):
     """Return an List of Hashes"""

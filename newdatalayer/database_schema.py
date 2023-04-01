@@ -282,6 +282,24 @@ def create_portlandVendingMachine():
 
     conn.commit()
 
+def create_portlandProducts(): 
+    table_name = "portlandProducts"
+    cursor = conn.cursor()
+
+    table = """CREATE TABLE {} (
+            rowId INTEGER PRIMARY KEY AUTOINCREMENT,
+            uid VARCHAR(30) NOT NULL,
+            desc VARCHAR(100) NOT NULL,
+            img_path VARCHAR(200) NOT NULL
+        ); """.format(table_name)
+
+    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+    cursor.execute(table)
+
+ 
+    print("Created the table '{}'".format(table_name))
+
+    conn.commit()
 
 
 
@@ -297,4 +315,5 @@ if __name__ == "__main__":
     create_vendingMachine()
     create_item2()
     create_portlandVendingMachine() 
+    create_portlandProducts()
     conn.close()

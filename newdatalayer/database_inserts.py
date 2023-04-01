@@ -2,7 +2,7 @@ import sqlite3
 
 conn = sqlite3.connect("new_dispense.db")
 cursor = conn.cursor()
-tables = ["Item","Merchant", "Store", "vendingMachine", "Associate", "Item2", "portlandVendingMachine"]
+tables = ["Item","Merchant", "Store", "vendingMachine", "Associate", "Item2", "portlandVendingMachine", "portlandProducts"]
 def count_the_rows():
     print("count_the_rows")
     for table in tables:
@@ -302,45 +302,77 @@ def insert_vending_machines():
 
 
 def insert_portlandVendingMachine(): 
-    machines = []
-    sqlfetch = "select storeId, merchantId_fk from Store;"; 
-    cursor.execute(sqlfetch)
-    row = cursor.fetchall()
-    for x in row:
-        storeId_fk = x[0]
-        merchantId_fk = x[1]
-        fk = {
-          "storeId_fk":storeId_fk,
-          "merchantId_fk":merchantId_fk
-        }
-        machines.append(fk)
-    machineName = [
-       "Jupiter", "WarmMoon", "PepsiCoke", "FlightyDirt"
+    vendingMachines = [
+      {
+        "storeId_fk":1,
+        "merchantId_fk":1,
+        "machineId":"WarmMoon"
+      },
+      {
+        "storeId_fk":1,
+        "merchantId_fk":1,
+        "machineId":"Jupiter"
+      },
+      {
+        "storeId_fk":2,
+        "merchantId_fk":1,
+        "machineId":"PepsiCoke"
+      },
+      {
+        "storeId_fk":3,
+        "merchantId_fk":2,
+        "machineId":"FlightyDirt"
+      }
     ]
+
     spoolIds = ['A1', 'A2', 'A3', 'A4', 'A5', 'B1', 'B2', 'B3', 'B4', 'B5', 'C1', 'C2', 'C3', 'C4', 'C5', 'D1', 'D2', 'D3', 'D4', 'D5', 'E1', 'E2', 'E3', 'E4', 'E5']
 
-
-    index = 0 
-    for row in machines: 
-      index += 1
-      storeId_fk = row['storeId_fk']
-      merchantId_fk = row['merchantId_fk']
-      machineId = machineName[index]
+    for machine in vendingMachines: 
+      storeId_fk = machine["storeId_fk"]
+      merchantId_fk = machine["merchantId_fk"]
+      machineId = machine["machineId"]
       blankJson = {} 
-      for spool in spoolIds: 
-        # count is blank 
-        # uid is blank 
-        # json is empty
+      for spool in spoolIds:
         sql = "insert into portlandVendingMachine(storeId_fk,merchantId_fk,machineId, spoolId, JSON) values ({},{},'{}','{}','{}' );".format(storeId_fk,merchantId_fk,machineId,spool, blankJson)
-        # print(sql)
+        # print(sql )
         cursor.execute(sql)
     conn.commit()
 
-
-
-
-
-
+def insert_uid_products(): 
+  products = [
+    ['15643151 - A1', 'Tincture Indica Highly | relaxation, energy, calm', '#'],
+    ['15643151 - A2', 'Pre-roll Flower Indica | happy, relax, laughter', '#'],
+    ['15643151 - A3', 'Pre-roll Flower Sativa | vivid Colors, spacey, relax', '#'],
+    ['1545615-J5', 'Pre-roll Flower Hybrid | introspection, hungery, creative', '#'],
+    ['1545615-J6', 'Pre-roll Flower Ruderalis | hungery, relaxation, energy', '#'],
+    ['1545615-J7', 'Edibel THC | energy, energy, vivid Colors', '#'],
+    ['54845613-J5', 'Edibel Gummies | introspection, spacey, relaxation', '#'],
+    ['54845613-J6', 'Edibel Gummies | introspection, laughter, introspection', '#'],
+    ['54845613-J7', 'Edibel Gummies | laughter, relaxation, energy', '#'],
+    ['coke candy', 'concentrate crumble | laughter, creative, energy', '#'],
+    ['7845364-J6', 'concentrate | relax, energy, energy', '#'],
+    ['7845364-J7', 'concentrate | laughter, creative, slow time', '#'],
+    ['85413165-A1', 'Tincture Indica | hungery, hungery, relaxation', '#'],
+    ['85413165-A2', 'Tincture Indica | laughter, calm, euphoria', '#'],
+    ['85413165-A3', 'Tincture Indica | relaxation, spacey, euphoria', '#'],
+    ['489465 - B1', 'Tincture Sativa | hungery, euphoria, euphoria', '#'],
+    ['489465 - B2', 'Tincture Sativa | creative, relax, energy', '#'],
+    ['84612313 - B1', 'Tincture Sativa | euphoria, hungery, spacey', '#'],
+    ['84612313 - B2', 'Tincture Sativa | introspection, creative, vivid Colors', '#'],
+    ['41418561', 'Tincture Sativa | euphoria, happy, happy', '#'],
+    ['1849815', 'concentrate  shatter | creative, relax, happy', '#'],
+    ['9416115', 'concentrate shatter | relaxation, energy, vivid Colors', '#'],
+    ['87984156 - C1', 'concentrate shatter | laughter, vivid Colors, relax', '#'],
+    ['87984156 - C2', 'concentrate shatter | creative, happy, relaxation', '#'],
+    ['151601561 - C1', 'concentrate shatter | happy, calm, happy', '#']
+  ]
+  for p in products: 
+    uid = p[0]
+    desc = p[1]
+    imgPath = p[2]
+    sql = "insert into portlandProducts(uid, desc, img_path) values ('{}','{}','{}');".format(uid, desc, imgPath)
+    cursor.execute(sql)
+  conn.commit()
 
 
 
@@ -349,8 +381,8 @@ insert_into_item_table()
 insert_merchants()
 insert_stores()
 insert_vending_machines()
-
 insert_into_item2_table()
-count_the_rows()
 insert_portlandVendingMachine() 
+insert_uid_products()
+count_the_rows()
 conn.close()
