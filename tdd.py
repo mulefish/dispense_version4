@@ -113,6 +113,8 @@ def get_entire_inventory_of_a_table_test(merchantId_fk):
             isOk = False 
         if o < 1:
             isOk = False 
+    if isOk == False: 
+        print("To populate the table in the first place, use the Excel/Browser mechanism")
     verdict(isOk, True, "get_entire_inventory_of_a_table_test")
 
 
