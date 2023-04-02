@@ -1,0 +1,24 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      </style>
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <meta charset="UTF-8">
+        <title>Dispense</title>
+        <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    {% include "headers/isLoggedinHeader.html" %}
+    <script>
+        function makeProductsTable(products) {
+            console.log(products)
+        }
+        const products = JSON.parse('{{ products | tojson }}')  
+        makeProductsTable(products)
+    </script>
+    <!-- <script src="/static/bag_of_functions.js"></script> -->
+  </body>
+</html>

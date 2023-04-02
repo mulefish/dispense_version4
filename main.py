@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from common import yellow, cyan, green, magenta
 import sqlite3
 import json
-from newdatalayer.database_middle_layer import get_entire_inventory_of_a_table, selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, updateSpools, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, do_select, get_vending_machines_of_stores_for_a_merchant
+from newdatalayer.database_middle_layer import getAllProducts, get_entire_inventory_of_a_table, selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, updateSpools, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, do_select, get_vending_machines_of_stores_for_a_merchant
 # pip install qrcode
 import qrcode
 
@@ -178,6 +178,14 @@ def get_inventory():
 
     return jsonify(inventory)
 
+
+
+@app.route('/seeProducts')
+@login_required
+def seeProducts():
+    cyan("seeProducts.html")
+    products = getAllProducts()
+    return render_template('seeProducts.html', products=products )
 
 
 

@@ -109,6 +109,22 @@ def do_select(sqlfetch):
     conn.close()
     return rows
 
+def getAllProducts():
+    """Return an List of Lists of the products """
+    sql = "select uid, desc, img_path from portlandProducts"; 
+    conn = sqlite3.connect(databasePathAndName)
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    LoL = []
+    for row in rows:
+        uid = row[0]
+        desc = row[1]
+        img_path = row[2]
+        L = [ uid, desc, img_path]
+        LoL.append(L)
+    conn.close()
+    return LoL
 
 
 

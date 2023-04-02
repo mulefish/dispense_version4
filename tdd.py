@@ -1,6 +1,6 @@
 
 from common import yellow, cyan, log, green, verdict, getUsers
-from newdatalayer.database_middle_layer import get_entire_inventory_of_a_table, selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant
+from newdatalayer.database_middle_layer import getAllProducts, get_entire_inventory_of_a_table, selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant
 
 def get_column_names_of_a_table_test(): 
     table_name = "store"    
@@ -117,6 +117,13 @@ def get_entire_inventory_of_a_table_test(merchantId_fk):
         print("To populate the table in the first place, use the Excel/Browser mechanism")
     verdict(isOk, True, "get_entire_inventory_of_a_table_test")
 
+def getAllProducts_test(): 
+    products = getAllProducts()
+    n = len(products)
+    isOk = n > 0 
+    verdict(isOk, True, "getAllProducts_test got {} ".format(n))
+
+
 
 if __name__ == "__main__":
     get_stores_test()
@@ -129,5 +136,5 @@ if __name__ == "__main__":
     selectStores_forGivenUser_test("kermitt")
     selectVendingMachines_ofStores_forGivenUser_test("kermitt")
     merchantIdForKermitt = get_merchantId_from_merchantName("kermitt")
-
     get_entire_inventory_of_a_table_test(merchantIdForKermitt)
+    getAllProducts_test()
