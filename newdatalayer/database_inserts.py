@@ -376,6 +376,28 @@ def insert_uid_products():
 
 
 
+def insert_uid_product_image(): 
+  products = [
+    ["concentrate_shatter_100x_46.png",46],
+    ["concentrate_shatter_100x_50.png",50],
+    ["edibel_100x_29.png",27],
+    ["edibel_100x_31.png",31],
+    ["preroll_100x_30.png",30],
+    ["preroll_indica_100x_27.png",27],
+    ["preroll_sativa_100x_28.png",28],
+    ["tincture_100x_26.png",26],
+    ["tinture_sativa_100x_45.png",45]
+  ]
+  for p in products: 
+    file_name = p[0]
+    rowId = p[1]
+    sql = "update portlandProducts set img_path = '{}' where rowId = {}".format(file_name, rowId)
+    cursor.execute(sql)
+  conn.commit()
+
+
+
+
 truncate_tables()
 insert_into_item_table()
 insert_merchants()
@@ -384,5 +406,6 @@ insert_vending_machines()
 insert_into_item2_table()
 insert_portlandVendingMachine() 
 insert_uid_products()
+insert_uid_product_image()
 count_the_rows()
 conn.close()
