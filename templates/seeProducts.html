@@ -11,13 +11,55 @@
         <link rel="stylesheet" href="/static/style.css">
   </head>
   <body>
-    {% include "headers/isLoggedinHeader.html" %}
+
+    {% include "headers/notLoggedinHeader.html" %}
+    <div id="productsTable"></div>
+    <hr/>
+
     <script>
-        function makeProductsTable(products) {
-            console.log(products)
+
+        function sortByInnerList(list, index) {
+          return list.sort((a, b) => a[index].localeCompare(b[index]));
         }
-        const products = JSON.parse('{{ products | tojson }}')  
-        makeProductsTable(products)
+        function sortTheProducts(index) {
+          /*
+            0 is uid 
+            1 is description
+            2 is image 
+          */
+          products = sortByInnerList(products, index)
+          makeProductsTable(products)
+        }
+        function makeProductsTable(products) {
+
+            let table = "<table border='1' class='productTable'>"
+            table += `<tr><th><a href="javascript:sortTheProducts(0)">id</a></th><th><a href="javascript:sortTheProducts(1)">UID</a></th><th><a href="javascript:sortTheProducts(2)">DESC</a></th><th><a href="javascript:sortTheProducts(3)">IMAGE</a></th></tr>`
+
+              products.forEach((product)=> { 
+                table += "<tr>"
+                   table += `<td class="theRight">${product[0]}</td>`
+                    table += `<td class="theRight">${product[1]}</td>`
+                    table += `<td class="theRight">${product[2]}!!</td>`
+                    const img = product[3]
+                    if ( img === "#") {
+                      table += `<td class="theCenter">TODO</td><td></td>`
+                    } else {
+                      table += `<td class="theCenter"><img src="static/images/${img}"></img></td>`
+                      table += `<td>${img}</td>`
+ 
+                    }
+                    // console.log( product[3])
+                table += "</tr>"
+
+            })
+            table += "</table>"
+            document.getElementById("productsTable").innerHTML = table
+        }
+
+
+        let products = JSON.parse('{{ products | tojson }}')  
+        sortTheProducts(1)
+        // makeProductsTable(products)
     </script>
     <!-- <script src="/static/bag_of_functions.js"></script> -->
   </body>

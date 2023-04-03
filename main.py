@@ -181,7 +181,6 @@ def get_inventory():
 
 
 @app.route('/seeProducts')
-@login_required
 def seeProducts():
     cyan("seeProducts.html")
     products = getAllProducts()

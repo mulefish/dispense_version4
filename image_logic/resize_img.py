@@ -1,39 +1,39 @@
-# from PIL import Image
-
-# # Open the image file
-# img = Image.open('concentrate_shatter_1 copy.jpg')
-
-# # Calculate the aspect ratio
-# aspect_ratio = img.size[0] / img.size[1]
-
-# # Calculate the new height based on the aspect ratio and target width of 100
-# new_height = int(100 / aspect_ratio)
-
-# # Resize the image using the new width and height
-# resized_img = img.resize((100, new_height))
-
-# # Crop the image to 100x100, clipping any extra height
-# resized_img = resized_img.crop((0, 0, 100, 100))
-
-# # Save the resized image
-# resized_img.save('output_image.jpg')
-
 from PIL import Image
+import sqlite3
 
-# Open the image file
-img = Image.open('concentrate_shatter_1 copy.png')
+def updateDB(name, rowId):
+    databasePathAndName='../newdatalayer/new_dispense.db'
+    conn = sqlite3.connect(databasePathAndName)
+    cursor = conn.cursor()
+    try:
+        sql = "update portlandProducts set img_path = '{}' where rowId = {}".format(name, rowId)
+        print(sql)
+        cursor.execute(sql)
+        conn.commit()
 
+    except Exception as e:
+        conn.rollback()
+        print('Error:', e)
 
+    finally:
+        conn.close()
 
-# Determine the smaller dimension of the image
-width, height = img.size
-smaller_dim = min(width, height)
+def resizeImg():
+    name = input("Enter the picture name: ")
+    rowId = input("Enter the row: ")
 
-# Resize the image to a square with the smaller dimension as the length
-resized_img = img.resize((smaller_dim, smaller_dim))
+    img = Image.open(name)
+    width, height = img.size
+    smaller_dim = min(width, height)
 
-# Resize the square image to have a length of 100 pixels
-resized_img = resized_img.resize((100, 100))
+    resized_img = img.resize((smaller_dim, smaller_dim))
+    resized_img = resized_img.resize((100, 100))
 
-# Save the resized image
-resized_img.save('output_image2.png')
+    newName = "../static/images/{}".format(name) 
+    print("Wrote to {}".format(newName ))
+    resized_img.save(newName)
+
+    updateDB(name, rowId)
+
+resizeImg()
+

@@ -31,6 +31,22 @@
   display:inline;
 }
 
+/* .productTable td {
+  text-align:center
+} */
+
+.theCenter { 
+  text-align:center
+}
+.theRight { 
+  text-align:right
+}
+
+.productTable tr:nth-child(odd){
+  background-color: #e9e9e9;
+}
+
+
 /* machineTable css */ 
 .machineTable td {
   text-align:center
