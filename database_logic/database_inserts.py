@@ -1,5 +1,4 @@
 import sqlite3
-import json
 import csv
 import sys
 import os
@@ -227,30 +226,38 @@ def insert_uid_product_image():
 
 
 def insert_portlandVendingMachine_step2(): 
-  with open('portlandVendingMachine.csv', 'r') as file:
+  with open('portlandVendingMachines2.csv', 'r') as file:
     i = 0 
+    isGood = True 
     reader = csv.DictReader(file, delimiter='|')
-    try:
-        for row in reader:
+    for row in reader:
+      if isGood == True:
+        rowId = row["rowId"]
+        storeId_fk = row["storeId_fk"]
+        merchantId_fk = row["merchantId_fk"]
+        machineId = row["machineId"]
+        spoolId = row["spoolId"]
+        instock = row["instock"]
+        price = row["price"]
+        uid = row["uid"]
+        JSON = row["JSON"]
+        sql="UPDATE portlandVendingMachine SET price={}, uid='{}', instock={}, JSON='{}' WHERE machineId='{}' and spoolId='{}';".format(price,uid, instock, JSON, machineId, spoolId)
+        try:
           i += 1 
-          rowId = row["rowId"]
-          storeId_fk = row["storeId_fk"]
-          merchantId_fk = row["merchantId_fk"]
-          machineId = row["machineId"]
-          spoolId = row["spoolId"]
-          instock = row["instock"]
-          price = row["price"]
-          uid = row["uid"]
-          JSON = row["JSON"]
-          sql="UPDATE portlandVendingMachine SET price={}, uid='{}', instock={}, JSON='{}' WHERE machineId='{}' and spoolId='{}';".format(price,uid, instock, JSON, machineId, spoolId)
-          cursor.execute(sql)
+          if isGood == True:
+            cursor.execute(sql)
+            # print(sql)
+          else: 
+            print( " {} POISON on {}".format( i , row))
+          conn.commit()
+        except Exception as e:
+          # conn.rollback()
+          print('Error:', e)
+          print(" {}   {} ".format(i, sql)) 
+          isGood = False
 
-        conn.commit()
-    except Exception as e:
-        conn.rollback()
-        print('Error:', e)
-    finally:
-        cyan("insert_portlandVendingMachine_step2() updated {} rows".format(i))
+    # finally:
+    #     cyan("insert_portlandVendingMachine_step2() updated {} rows".format(i))
 
 
 truncate_tables()

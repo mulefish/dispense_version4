@@ -1,7 +1,7 @@
 
 from common import yellow, cyan, log, green, verdict, getUsers
-from newdatalayer.database_middle_layer import getAllProducts, get_entire_inventory_of_a_table, selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant
-
+from database_logic.database_middle_layer import get_entire_inventory_of_a_table, getAllProducts, get_entire_inventory_of_a_table, selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, get_column_names_of_a_table, get_stores_for_user_and_storeName, delete_Items_for_given_merchantId_fk, get_merchantId_from_merchantName, do_select, get_vending_machines_of_stores_for_a_merchant
+import json
 def get_column_names_of_a_table_test(): 
     table_name = "store"    
     column_names = get_column_names_of_a_table(table_name)
@@ -98,7 +98,11 @@ def getAllProducts_test():
     isOk = n > 0 
     verdict(isOk, True, "getAllProducts_test got {} ".format(n))
 
-
+def checkTheShapeOfSomeEntry(): 
+    pepsiCoke = get_entire_inventory_of_a_table(2,1,"PepsiCoke")
+    obj = pepsiCoke[0]
+    isOk = "type" in obj["optional"] and "grams" in obj["optional"] and "spoolId" in obj["mandatory"]    
+    verdict(isOk, True, "checkTheShapeOfSomeEntry ")
 
 if __name__ == "__main__":
     get_stores_test()
@@ -113,3 +117,4 @@ if __name__ == "__main__":
     merchantIdForKermitt = get_merchantId_from_merchantName("kermitt")
     get_entire_inventory_of_a_table_test(merchantIdForKermitt)
     getAllProducts_test()
+    checkTheShapeOfSomeEntry()

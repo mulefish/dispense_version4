@@ -258,25 +258,33 @@ def delete_Items_for_given_merchantId_fk(merchantId_fk):
 
 def get_entire_inventory_of_a_table(storeId_fk, merchantId_fk, machineId):
     sql = f'select spoolId, uid, instock, price, JSON from portlandVendingMachine where storeId_fk={storeId_fk} and merchantId_fk={merchantId_fk} and machineid="{machineId}"'
-    green(sql)
-    conn = sqlite3.connect(databasePathAndName)
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    rows = cursor.fetchall()
+    # green(sql)
     LoH = [] 
-    for row in rows:
-        mandatory = {
-            "spoolId":row[0],
-            "uid":row[1],
-            "instock":row[2],
-            "price":row[3]
-        } 
-        optional = json.loads(row[4]) 
-        obj = {
-            "mandatory":mandatory, 
-            "optional":optional
-        }
-        LoH.append(obj)
+    try: 
+        conn = sqlite3.connect(databasePathAndName)
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        for row in rows:
+            mandatory = {
+                "spoolId":row[0],
+                "uid":row[1],
+                "instock":row[2],
+                "price":row[3]
+            } 
+            optional = json.loads(row[4]) 
+            obj = {
+                "mandatory":mandatory, 
+                "optional":optional
+            }
+            LoH.append(obj)
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        print("Exception class is: ", er.__class__)
+        print('SQLite traceback: ')
+        exc_type, exc_value, exc_tb = sys.exc_info()
+        print(traceback.format_exception(exc_type, exc_value, exc_tb))
+    conn.close()   
+    return LoH     
 
 
-    return LoH
