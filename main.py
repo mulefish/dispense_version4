@@ -14,6 +14,8 @@ from flask import jsonify
 app = Flask(__name__)
 login_manager = LoginManager(app)
 
+
+
 class User(UserMixin):
     def __init__(self, id, password):
         self.id = id
@@ -266,8 +268,8 @@ def load_user(user_id):
     return users.get(user_id)
 
 def setUsers():
-    green("setUsers using new_dispense.db")
-    conn = sqlite3.connect('newdatalayer/new_dispense.db')
+    green("setUsers using /database/april.db")
+    conn = sqlite3.connect('database/april.db')
     cursor = conn.cursor()
     sqlfetch = "select merchantId, name, password from Merchant"; 
     cursor.execute(sqlfetch)
@@ -288,7 +290,7 @@ if __name__ == '__main__':
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True # REMOVE THIS ONCE IN PRODUCTION
-    cyan("http://34.82.219.228:8080 with database at data/dispense.db")
+    cyan("http://34.82.219.228:8080 with database at database/april.db")
     # cyan("http://localhost:4040 with database at data/dispense.db")
 
     from waitress import serve

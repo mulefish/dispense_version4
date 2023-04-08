@@ -1,50 +1,59 @@
 import sqlite3
-conn = sqlite3.connect('new_dispense.db')
+import sys
+import os
+current_path = os.getcwd()
+parent_path = os.path.dirname(current_path)
+sys.path.append(parent_path)
+from common import cyan
+
+pathToDatabase="../database/april.db"
+conn = sqlite3.connect(pathToDatabase)
+cyan("Writing to {}".format(pathToDatabase))
 
 cursor = conn.cursor()
 
-def create_orders():
-    table_name = "Orders"
+# def create_orders():
+#     table_name = "Orders"
 
-    table = """CREATE TABLE Orders (
-            orderId_pk INTEGER PRIMARY KEY AUTOINCREMENT,
-            storeId_fk INTEGER,
-            vendingId_fk INTEGER,
-            customerId_fk VARCHAR(255),
-            orderTime INTEGER,
-            qrCode VARCHAR(255) 
-        ); """
+#     table = """CREATE TABLE Orders (
+#             orderId_pk INTEGER PRIMARY KEY AUTOINCREMENT,
+#             storeId_fk INTEGER,
+#             vendingId_fk INTEGER,
+#             customerId_fk VARCHAR(255),
+#             orderTime INTEGER,
+#             qrCode VARCHAR(255) 
+#         ); """
 
-    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-    cursor.execute(table)
-
-
-    print("Created the table '{}'".format(table_name))
-
-    conn.commit()
+#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+#     cursor.execute(table)
 
 
+#     print("Created the table '{}'".format(table_name))
+
+#     conn.commit()
 
 
 
-def create_order_item():
-    table_name = "OrderItem"
-    cursor = conn.cursor()
-
-    table = """CREATE TABLE OrderItem (
-            order_item_pk INTEGER PRIMARY KEY AUTOINCREMENT,
-            itemId_fk INTEGER,
-            orderId_fk INTEGER,
-            quantity INTEGER
-        ); """
-
-    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-    cursor.execute(table)
 
 
-    print("Created the table '{}'".format(table_name))
+# def create_order_item():
+#     table_name = "OrderItem"
+#     cursor = conn.cursor()
 
-    conn.commit()
+#     table = """CREATE TABLE OrderItem (
+#             order_item_pk INTEGER PRIMARY KEY AUTOINCREMENT,
+#             itemId_fk INTEGER,
+#             orderId_fk INTEGER,
+#             quantity INTEGER
+#         ); """
+
+#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+#     cursor.execute(table)
+
+
+#     print("Created the table '{}'".format(table_name))
+
+#     conn.commit()
 
 
 def create_customer(): 
@@ -87,9 +96,9 @@ def create_store():
     cursor.execute(table)
 
 
-    print("Created the table '{}'".format(table_name))
+#     print("Created the table '{}'".format(table_name))
 
-    conn.commit()
+#     conn.commit()
 
 
 def create_merchant(): 
@@ -156,105 +165,105 @@ def create_associate():
 
 
 
-def create_item2(): 
-    table_name = "Item2"
-    cursor = conn.cursor()
+# def create_item2(): 
+#     table_name = "Item2"
+#     cursor = conn.cursor()
 
-    table = """CREATE TABLE Item2 (
-            itemId INTEGER PRIMARY KEY AUTOINCREMENT,
-            merchantId_fk INTEGER,
-            price REAL, 
-            instock INTEGER,
-            deployed INTEGER,
-            brand VARCHAR(20),
-            cbd REAL, 
-            desc VARCHAR(40),
-            farm VARCHAR(20),
-            harvest VARCHAR(9),
-            name VARCHAR(20),
-            strain VARCHAR(20),
-            thc REAL,
-            type VARCHAR(20),
-            weight REAL, 
-            count INTEGER,
-            product VARCHAR(20)
-        ); """
-
-
-    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-    cursor.execute(table)
+#     table = """CREATE TABLE Item2 (
+#             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+#             merchantId_fk INTEGER,
+#             price REAL, 
+#             instock INTEGER,
+#             deployed INTEGER,
+#             brand VARCHAR(20),
+#             cbd REAL, 
+#             desc VARCHAR(40),
+#             farm VARCHAR(20),
+#             harvest VARCHAR(9),
+#             name VARCHAR(20),
+#             strain VARCHAR(20),
+#             thc REAL,
+#             type VARCHAR(20),
+#             weight REAL, 
+#             count INTEGER,
+#             product VARCHAR(20)
+#         ); """
 
 
-    print("Created the table '{}'".format(table_name))
-
-    conn.commit()
-
+#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+#     cursor.execute(table)
 
 
-def create_item(): 
-    table_name = "Item"
-    cursor = conn.cursor()
+#     print("Created the table '{}'".format(table_name))
 
-    table = """CREATE TABLE Item (
-            itemId INTEGER PRIMARY KEY AUTOINCREMENT,
-            merchantId_fk INTEGER,
-            price REAL, 
-            instock INTEGER,
-            deployed INTEGER,
-            JSON BLOB
-        ); """
-
-    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-    cursor.execute(table)
+#     conn.commit()
 
 
-    print("Created the table '{}'".format(table_name))
 
-    conn.commit()
+# def create_item(): 
+#     table_name = "Item"
+#     cursor = conn.cursor()
 
-def create_stock(): 
-    table_name = "stock"
-    cursor = conn.cursor()
+#     table = """CREATE TABLE Item (
+#             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+#             merchantId_fk INTEGER,
+#             price REAL, 
+#             instock INTEGER,
+#             deployed INTEGER,
+#             JSON BLOB
+#         ); """
 
-    table = """CREATE TABLE stock (
-            stockId INTEGER PRIMARY KEY AUTOINCREMENT,
-            itemId_fk INTEGER,
-            vendingId_fk INTEGER,
-            row INTEGER(2),
-            col INTEGER(2),
-            quantity INTEGER(2)
-        ); """
-
-    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-    cursor.execute(table)
+#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+#     cursor.execute(table)
 
 
-    print("Created the table '{}'".format(table_name))
+#     print("Created the table '{}'".format(table_name))
 
-    conn.commit()
+#     conn.commit()
 
-def create_vendingMachine(): 
-    table_name = "vendingMachine"
-    cursor = conn.cursor()
+# def create_stock(): 
+#     table_name = "stock"
+#     cursor = conn.cursor()
 
-    table = """CREATE TABLE vendingMachine (
-            vendingId INTEGER PRIMARY KEY AUTOINCREMENT,
-            storeId_fk INTEGER,
-            vendingName VARCHAR(20),
-            merchantId_fk INTEGER,
-            version VARCHAR(10),
-            averageMark REAL,
-            JSON BLOB
+#     table = """CREATE TABLE stock (
+#             stockId INTEGER PRIMARY KEY AUTOINCREMENT,
+#             itemId_fk INTEGER,
+#             vendingId_fk INTEGER,
+#             row INTEGER(2),
+#             col INTEGER(2),
+#             quantity INTEGER(2)
+#         ); """
 
-        ); """
+#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+#     cursor.execute(table)
 
-    cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-    cursor.execute(table)
+
+#     print("Created the table '{}'".format(table_name))
+
+#     conn.commit()
+
+# def create_vendingMachine(): 
+#     table_name = "vendingMachine"
+#     cursor = conn.cursor()
+
+#     table = """CREATE TABLE vendingMachine (
+#             vendingId INTEGER PRIMARY KEY AUTOINCREMENT,
+#             storeId_fk INTEGER,
+#             vendingName VARCHAR(20),
+#             merchantId_fk INTEGER,
+#             version VARCHAR(10),
+#             averageMark REAL,
+#             JSON BLOB
+
+#         ); """
+
+#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
+#     cursor.execute(table)
 
  
-    print("Created the table '{}'".format(table_name))
+#     print("Created the table '{}'".format(table_name))
 
-    conn.commit()
+#     conn.commit()
 
 
 def create_portlandVendingMachine(): 
@@ -304,16 +313,16 @@ def create_portlandProducts():
 
 
 if __name__ == "__main__":
-    create_orders()
-    create_order_item()
+    # create_orders()
+    # create_order_item()
     create_customer()
     create_store()
     create_merchant()
     create_associate()
-    create_item()
-    create_stock()
-    create_vendingMachine()
-    create_item2()
+    # create_item()
+    # create_stock()
+    # create_vendingMachine()
+    # create_item2()
     create_portlandVendingMachine() 
     create_portlandProducts()
     conn.close()

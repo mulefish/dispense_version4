@@ -2,7 +2,8 @@ from PIL import Image
 import sqlite3
 
 def updateDB(name, rowId):
-    databasePathAndName='../newdatalayer/new_dispense.db'
+    april
+    databasePathAndName='../database/april.db'
     conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
     try:

@@ -1,6 +1,7 @@
 import sqlite3
 
-conn = sqlite3.connect("new_dispense.db")
+conn = sqlite3.connect("../database/april.db")
+
 cursor = conn.cursor()
 
 

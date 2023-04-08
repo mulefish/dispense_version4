@@ -3,10 +3,11 @@ import sqlite3
 import json
 
 # Remember! While yes is does seem funny to have the directory here in the name
-# because this very file is a sibling to 'new_dispense.db' but remember!
+# because this very file is a sibling to 'april.db' but remember!
 # When flask runs these functions it will run from the flask context, therefore 
 # have the path here DOES make sense. Odd but true. 
-databasePathAndName='./newdatalayer/new_dispense.db'
+databasePathAndName = "database/april.db"
+
 
 def updateSpools(storeId, merchantId, machineId, spools):
     green("storeId={} merchantId={} machineId={} ".format(storeId, merchantId, machineId))
@@ -102,6 +103,8 @@ def get_stores_for_user_and_storeName(username, storeName):
     return found
 
 def do_select(sqlfetch):
+    green("do_select {} ".format( sqlfetch) )
+
     conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
     cursor.execute(sqlfetch)
@@ -185,7 +188,7 @@ if __name__ == "__main__":
     
 
 def get_vending_machines_of_stores_for_a_merchant(nameOfTheMerchant): 
-    sqlfetch = f'select b.merchantId, a.vendingId, a.storeId_fk from vendingMachine a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{nameOfTheMerchant}"'
+    sqlfetch = f'select b.merchantId, a.machineId, a.storeId_fk from portlandVendingMachine a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{nameOfTheMerchant}"'
     data = do_select(sqlfetch)
     machines_by_store = {}
     for row in data:
@@ -254,7 +257,7 @@ def delete_Items_for_given_merchantId_fk(merchantId_fk):
 
 def get_entire_inventory_of_a_table(storeId_fk, merchantId_fk, machineId):
     sql = f'select spoolId, uid, instock, price, JSON from portlandVendingMachine where storeId_fk={storeId_fk} and merchantId_fk={merchantId_fk} and machineid="{machineId}"'
-    # green(sql)
+    green(sql)
     conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
     cursor.execute(sql)

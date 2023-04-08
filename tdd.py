@@ -11,11 +11,6 @@ def get_column_names_of_a_table_test():
         isOk = True
     verdict(isOk, True, "get_column_names_of_a_table_test got {} ".format(column_names))
 
-
-
-
-    
-
 def getStoresForUser_oughtToBeGood_test():
     found = get_stores_for_user_and_storeName("kermitt", "Kitty Buds")
     stores = [] 
@@ -28,20 +23,6 @@ def getStoresForUser_oughtToBeGood_test():
 
     verdict(isOk, True, "getStoresForUser_oughtToBeGood_test got {} ".format(stores))
 
-# def getStoresForUser_oughtToBeFail_withWrongName_test():
-#     found = get_stores_for_user("This name is not in the database")
-
-#     stores = [] 
-#     for obj in found:
-#         stores.append( obj["storeName"])
-
-#     isOk = len(stores) == 0 
-#     verdict(isOk, True, "getStoresForUser_oughtToBeFail_withWrongName_test got {} ".format(stores))
-
-
-
-
-
 def get_stores_test():
     name = "kermitt"
     # sqlfetch = f'select b.merchantId, a.storeId, a.name as storeName, a.address as storeAddress, b.name as merchantName, b.billing_address, b.phone from store a, merchant b where b.merchantId == a.merchantId_fk and b.name = "{name}"'
@@ -51,14 +32,11 @@ def get_stores_test():
     isOk = actualLength > 0
     verdict(isOk, True, "get_users_test got {} results ".format(len(stores)))
 
-
 def get_vending_machines_of_stores_for_a_merchant_test(): 
     data = get_vending_machines_of_stores_for_a_merchant("kermitt")
     result = len(data)
-    # result something like {58: [19, 20], 59: [21]} where '58' and '59' are storeIds and the [19, 20] and [21] are vendingId
     isOk = result > 0
     verdict(isOk, True, "get_vending_machines_of_stores_for_a_merchant_test got {}".format(data))
-
 
 def get_merchantId_from_merchantName_test():
     name = "admin"
@@ -75,13 +53,10 @@ def cleanup_dummy_insert():
     isOk = result == "OK"
     verdict(isOk, True, "cleanup_dummy_insert for merchantId_fk {}".format(merchantId_fk))
 
-
-
 def select_star_from_portlandVendingMachine(): 
     sql="select price from portlandVendingMachine where price is not null;"
     raw = do_select(sql)
     # print(raw)
-
 
 def selectStores_forGivenUser_test(merchantName): 
     LoH = selectStores_forGivenUser(merchantName)
