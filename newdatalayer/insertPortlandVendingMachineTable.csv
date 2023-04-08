@@ -1,0 +1,15 @@
+
+import csv
+
+with open('portlandVendingMachine.csv', 'r') as file:
+    reader = csv.DictReader(file, delimiter='|')
+    for row in reader:
+        rowId = row["rowId"]
+        storeId_fk = row["storeId_fk"]
+        merchantId_fk = row["merchantId_fk"]
+        machineId = row["machineId"]
+        spoolId = row["spoolId"]
+        instock = row["spoolId"]
+        price = row["price"]
+        uid = row["uid"]
+        JSON = row["JSON"]

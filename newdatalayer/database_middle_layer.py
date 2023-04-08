@@ -103,7 +103,8 @@ def get_stores_for_user_and_storeName(username, storeName):
     return found
 
 def do_select(sqlfetch):
-    green("do_select {} ".format( sqlfetch) )
+    # Nice debug, but NOISY
+    # green("do_select {} ".format( sqlfetch) )
 
     conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
