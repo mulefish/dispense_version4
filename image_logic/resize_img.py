@@ -1,40 +1,27 @@
 from PIL import Image
-import sqlite3
 
-def updateDB(name, rowId):
-    april
-    databasePathAndName='../database/april.db'
-    conn = sqlite3.connect(databasePathAndName)
-    cursor = conn.cursor()
-    try:
-        sql = "update portlandProducts set img_path = '{}' where rowId = {}".format(name, rowId)
-        print(sql)
-        cursor.execute(sql)
-        conn.commit()
+def resizeImg(origImage, newName):
 
-    except Exception as e:
-        conn.rollback()
-        print('Error:', e)
-
-    finally:
-        conn.close()
-
-def resizeImg():
-    name = input("Enter the picture name: ")
-    rowId = input("Enter the row: ")
-
-    img = Image.open(name)
+    img = Image.open(origImage)
     width, height = img.size
     smaller_dim = min(width, height)
 
     resized_img = img.resize((smaller_dim, smaller_dim))
     resized_img = resized_img.resize((100, 100))
 
-    newName = "../static/images/{}".format(name) 
+    newName = "../static/images/{}".format(newName) 
     print("Wrote to {}".format(newName ))
     resized_img.save(newName)
 
-    updateDB(name, rowId)
 
-resizeImg()
 
+### Assumption: first filename points to a file right here in this directory. The second is what it will be renamed to ( and moved ) 
+
+orig = [
+["concentrate_shatter_100x_46.png","concentrate_shatter_100x_46.png"], 
+["preroll_sativa_100x_28.png","preroll_sativa_100x_28.png"],
+["tinture_sativa_100x_45.png","tinture_sativa_100x_45.png"]
+]
+
+for o in orig: 
+    resizeImg(o[0], o[1])
