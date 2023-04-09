@@ -283,6 +283,66 @@ function split_string() {
     verify(actual, expected, "split_string: " + actual)
 }
 
+function multidimensionalsort_test() { 
+
+    const products = [
+        {id:0,"desc":"Pre-roll flower hybrid | introspection, hungery, creative",score:0},
+        {id:1,"desc":"Pre-roll flower ruderalis | hungery, relaxation, energy",score:0},
+        {id:2,"desc":"edibel thc | energy, energy, vivid colors",score:0},
+        {id:3,"desc":"tincture indica highly | relaxation, energy, calm",score:0},
+        {id:4,"desc":"Pre-roll flower indica | happy, relax, laughter",score:0},
+        {id:5,"desc":"Pre-roll flower sativa | vivid colors, spacey, relax",score:0},
+        {id:6,"desc":"concentrate  shatter | creative, relax, happy",score:0},
+        {id:7,"desc":"tincture sativa | euphoria, happy, happy",score:0},
+        {id:8,"desc":"tincture sativa | hungery, euphoria, euphoria",score:0},
+        {id:9,"desc":"tincture sativa | creative, relax, energy",score:0},
+        {id:10,"desc":"edibel gummies | introspection, spacey, relaxation",score:0},
+        {id:11,"desc":"edibel gummies | introspection, laughter, introspection",score:0},
+        {id:12,"desc":"edibel gummies | laughter, relaxation, energy",score:0},
+        {id:13,"desc":"concentrate | relax, energy, energy",score:0},
+        {id:14,"desc":"concentrate | laughter, creative, slow time",score:0},
+        {id:15,"desc":"tincture sativa | euphoria, hungery, spacey",score:0},
+        {id:16,"desc":"tincture sativa | introspection, creative, vivid colors",score:0},
+        {id:17,"desc":"tincture indica | hungery, hungery, relaxation",score:0},
+        {id:18,"desc":"tincture indica | laughter, calm, euphoria",score:0},
+        {id:19,"desc":"tincture indica | relaxation, spacey, euphoria",score:0},
+        {id:20,"desc":"concentrate shatter | laughter, vivid colors, relax",score:0},
+        {id:21,"desc":"concentrate shatter | creative, happy, relaxation",score:0},
+        {id:22,"desc":"concentrate shatter | relaxation, energy, vivid colors",score:0},
+        {id:23,"desc":"concentrate crumble | laughter, creative, energy",score:0}
+    ]
+    const list_of_words_from_input_field = ["tincture", "sativa", "happy", "someword"]
+    const HIGH_VALUE_WORDS = ["pre-roll", "hybrid", "oil", "sativa", "tincture", "calm", "edibel", "gummie", "gummy", "concentrate", "wax"]
+    let t1 = new Date().getTime()
+    products.forEach((product)=> { 
+        product.score = 0 
+    })
+    products.forEach((product)=> { 
+        list_of_words_from_input_field.forEach((word) => { 
+            if ( product.desc.includes(word)) {
+                product.score += 1
+                if ( HIGH_VALUE_WORDS.includes(word)) {
+                    product.score += 10
+                }
+            }
+        }) 
+    })
+    products.sort((a, b) => b.score -  a.score );
+
+    // products.forEach((product, i )=> { 
+    //     console.log( i + "   " + product.id + "   score=" + product.score + "   " + product.desc ) 
+    // })
+    const milsec = new Date().getTime() - t1; 
+    let isOk = milsec < 10 && products[0].score === 23 && products[1].score === 22 && products[products.length - 1].score === 0
+    verify(isOk, true, "multidimensionalsort_test milsec=" + milsec)
+
+
+
+
+
+}
+
+
 /**
 * Test runner
 */
@@ -299,5 +359,6 @@ if (require.main === module) {
     dataObject_harvest()
     dataObject_getSpools_whichIsWhatIsSubmittedToBackend()
     split_string()
+    multidimensionalsort_test()
 }
 
