@@ -1,66 +1,101 @@
-
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      </style>
-        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-        <meta charset="UTF-8">
-        <title>Dispense</title>
-        <link rel="stylesheet" href="/static/style.css">
-  </head>
-  <body>
 
-    {% include "headers/notLoggedinHeader.html" %}
-    <div id="productsTable"></div>
-    <hr/>
+<head>
+  <style>
+  </style>
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <meta charset="UTF-8">
+  <title>Dispense</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
 
-    <script>
+<body>
 
-        function sortByInnerList(list, index) {
-          return list.sort((a, b) => a[index].localeCompare(b[index]));
+  {% include "headers/notLoggedinHeader.html" %}
+  <input type="text" id="search" value="" placeholder="Search"> <button onClick="doSearch()">search doSearch </button>
+  <div id="productsTable"></div>
+  <hr />
+
+  <script>
+    const SCORE_INDEX = 4
+
+    function doSearch() {
+      let text = document.getElementById("search").value
+      if( text !== undefined && text.length > 0 ) {
+        text = text.toLowerCase();
+        const words = text.split(/\W+/).filter(Boolean);
+        console.log( JSON.stringify(words , null, 2 ))
+
+        // products.forEach((product)=> { 
+        //   product.score = Math.random() 
+
+        // }) 
+        // for ( let k in products ) {
+        for ( let i = 0 ; i < products.length; i++ ) {
+          products[i][SCORE_INDEX] = Math.random() 
+          // console.log( products[i].score  )
         }
-        function sortTheProducts(index) {
-          /*
-            0 is uid 
-            1 is description
-            2 is image 
-          */
-          products = sortByInnerList(products, index)
-          makeProductsTable(products)
+        products.sort((a, b) => a[SCORE_INDEX] - b[SCORE_INDEX]);
+      } 
+      makeProductsTable()
+    }
+  </script>
+
+
+  <script>
+    const UID = 0
+    const IMAGE = 1 
+    const DESCRIPTION = 2
+
+    function sortByInnerList(list, index) {
+      return list.sort((a, b) => a[index].localeCompare(b[index]));
+    }
+
+    function sortTheProducts(index) {
+      products = sortByInnerList(products, index)
+      makeProductsTable()
+    }
+
+    function makeProductsTable() {
+
+      let table = "<table border='1' class='productTable'>"
+      table += "<tr>"
+      
+      table += `<th>id</th>`
+      table += `<th><a href="javascript:sortTheProducts(UID)">uid</a></th>`
+      table += `<th><a href="javascript:sortTheProducts(DESCRIPTION)">DESC</a></th>`
+      table += `<th><a href="javascript:sortTheProducts(IMAGE)">IMAGE</a></th>`
+      table += `<th >Score</th>`
+      table += "</tr>"
+
+
+      products.forEach((product) => {
+        table += "<tr>"
+        table += `<td class="theRight">${product[0]}</td>`
+        table += `<td class="theRight">${product[1]}</td>`
+        table += `<td class="theRight">${product[2]}</td>`
+
+        const img = product[3]
+        if (img === "#") {
+          table += `<td class="theCenter">TODO</td><td></td>`
+        } else {
+          table += `<td class="theCenter"><img src="static/images/${img}"></img></td>`
         }
-        function makeProductsTable(products) {
-
-            let table = "<table border='1' class='productTable'>"
-            table += `<tr><th><a href="javascript:sortTheProducts(0)">id</a></th><th><a href="javascript:sortTheProducts(1)">UID</a></th><th><a href="javascript:sortTheProducts(2)">DESC</a></th><th><a href="javascript:sortTheProducts(3)">IMAGE</a></th></tr>`
-
-              products.forEach((product)=> { 
-                table += "<tr>"
-                   table += `<td class="theRight">${product[0]}</td>`
-                    table += `<td class="theRight">${product[1]}</td>`
-                    table += `<td class="theRight">${product[2]}!!</td>`
-                    const img = product[3]
-                    if ( img === "#") {
-                      table += `<td class="theCenter">TODO</td><td></td>`
-                    } else {
-                      table += `<td class="theCenter"><img src="static/images/${img}"></img></td>`
-                      table += `<td>${img}</td>`
- 
-                    }
-                    // console.log( product[3])
-                table += "</tr>"
-
-            })
-            table += "</table>"
-            document.getElementById("productsTable").innerHTML = table
-        }
+        table += `<td class="theRight">${product[SCORE_INDEX]}</td>`
+        table += "</tr>"
+      })
+      table += "</table>"
+      document.getElementById("productsTable").innerHTML = table
+    }
 
 
-        let products = JSON.parse('{{ products | tojson }}')  
-        sortTheProducts(1)
+    let products = JSON.parse('{{ products | tojson }}')
+    
+    sortTheProducts(1)
         // makeProductsTable(products)
-    </script>
-    <!-- <script src="/static/bag_of_functions.js"></script> -->
-  </body>
+  </script>
+  <!-- <script src="/static/bag_of_functions.js"></script> -->
+</body>
+
 </html>

@@ -115,21 +115,31 @@ def do_select(sqlfetch):
 
 def getAllProducts():
     """Return an List of Lists of the products """
-    sql = "select rowId, uid, desc, img_path from portlandProducts"; 
+    sql = "select rowId, uid, desc, img_path, score from portlandProducts"; 
     conn = sqlite3.connect(databasePathAndName)
     cursor = conn.cursor()
     cursor.execute(sql)
     rows = cursor.fetchall()
-    LoL = []
+    LoH = []
     for row in rows:
         rowId = row[0]
         uid = row[1]
         desc = row[2]
         img_path = row[3]
-        L = [ rowId, uid, desc, img_path]
-        LoL.append(L)
+        score = row[4]
+
+        # H = {
+        #     "rowId":rowId, 
+        #     "uid":uid, 
+        #     "desc":desc, 
+        #     "img_path":img_path,
+        #     "score":score
+        # }
+        # LoH.append(H)
+        L = [rowId, uid, desc, img_path, score]
+        LoH.append(L)
     conn.close()
-    return LoL
+    return LoH
 
 
 

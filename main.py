@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for, request, render_template, send_file
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 from common import yellow, cyan, green, magenta
 import sqlite3
-import json
+# import json
 from database_logic.database_middle_layer import getAllProducts, get_entire_inventory_of_a_table, selectVendingMachines_ofStores_forGivenUser, selectStores_forGivenUser, updateSpools, getVendingMachine_fromMerchantIdAndMachineId, getStore_where_merchantIdAndStoreName, get_stores_for_user_and_storeName, line94, do_select, get_vending_machines_of_stores_for_a_merchant
 # pip install qrcode
 import qrcode
@@ -196,17 +196,10 @@ def merchant():
     cyan("merchant merchant.html")
     username = current_user.name 
     merchantId = user_ids[username]
-    green("username {} and merchantId {} " . format( username, merchantId ))
-
     stores = selectStores_forGivenUser(username)
     vendingMachines = selectVendingMachines_ofStores_forGivenUser(username)
-    magenta(vendingMachines)
-
+ 
     return render_template('merchant.html', stores=stores, vendingMachines=vendingMachines )
-
-
-
-
 
 @app.route('/bulk_insert')
 @login_required
@@ -294,4 +287,9 @@ if __name__ == '__main__':
     # cyan("http://localhost:4040 with database at data/dispense.db")
 
     from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
+    # 'backlog' or 'threads' to avoid 'WARNING:waitress.queue:Task queue depth is 1' warnings.
+    # serve(app, host="0.0.0.0", port=8080, backlog=10)
+    serve(app, host="0.0.0.0", port=8080, threads=100)
+
+
+    

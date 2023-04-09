@@ -167,31 +167,31 @@ def insert_portlandVendingMachine_step1():
 
 def insert_uid_products(): 
   products = [
-    ['15643151 - A1', 'tincture indica highly | relaxation, energy, calm', '#'],
-    ['15643151 - A2', 'Pre-roll flower indica | happy, relax, laughter', '#'],
-    ['15643151 - A3', 'Pre-roll flower sativa | vivid Colors, spacey, relax', '#'],
-    ['1545615-J5', 'Pre-roll flower Hybrid | introspection, hungery, creative', '#'],
-    ['1545615-J6', 'Pre-roll flower Ruderalis | hungery, relaxation, energy', '#'],
-    ['1545615-J7', 'edibel THC | energy, energy, vivid Colors', '#'],
-    ['54845613-J5', 'edibel gummies | introspection, spacey, relaxation', '#'],
-    ['54845613-J6', 'edibel gummies | introspection, laughter, introspection', '#'],
-    ['54845613-J7', 'edibel gummies | laughter, relaxation, energy', '#'],
-    ['coke candy', 'concentrate crumble | laughter, creative, energy', '#'],
-    ['7845364-J6', 'concentrate | relax, energy, energy', '#'],
-    ['7845364-J7', 'concentrate | laughter, creative, slow time', '#'],
-    ['85413165-A1', 'tincture indica | hungery, hungery, relaxation', '#'],
-    ['85413165-A2', 'tincture indica | laughter, calm, euphoria', '#'],
-    ['85413165-A3', 'tincture indica | relaxation, spacey, euphoria', '#'],
-    ['489465 - B1', 'tincture sativa | hungery, euphoria, euphoria', '#'],
-    ['489465 - B2', 'tincture sativa | creative, relax, energy', '#'],
-    ['84612313 - B1', 'tincture sativa | euphoria, hungery, spacey', '#'],
-    ['84612313 - B2', 'tincture sativa | introspection, creative, vivid Colors', '#'],
-    ['41418561', 'tincture sativa | euphoria, happy, happy', '#'],
-    ['1849815', 'concentrate  shatter | creative, relax, happy', '#'],
-    ['9416115', 'concentrate shatter | relaxation, energy, vivid Colors', '#'],
-    ['87984156 - C1', 'concentrate shatter | laughter, vivid Colors, relax', '#'],
-    ['87984156 - C2', 'concentrate shatter | creative, happy, relaxation', '#'],
-    ['151601561 - C1', 'concentrate shatter | happy, calm, happy', '#']
+    ['15643151 - A1', 'tincture indica highly | relaxation, energy, calm', 'c_100x.png'],
+    ['15643151 - A2', 'Pre-roll flower indica | happy, relax, laughter', 'concentrate_shatter_100x_46.png'],
+    ['15643151 - A3', 'Pre-roll flower sativa | vivid Colors, spacey, relax', 'concentrate_shatter_100x_50.png'],
+    ['1545615-J5', 'Pre-roll flower Hybrid | introspection, hungery, creative', 'd_100x.png'],
+    ['1545615-J6', 'Pre-roll flower Ruderalis | hungery, relaxation, energy', 'e_100x.png'],
+    ['1545615-J7', 'edibel THC | energy, energy, vivid Colors', 'edibel_100x_29.png'],
+    ['54845613-J5', 'edibel gummies | introspection, spacey, relaxation', 'edibel_100x_31.png'],
+    ['54845613-J6', 'edibel gummies | introspection, laughter, introspection', 'f_100x.png'],
+    ['54845613-J7', 'edibel gummies | laughter, relaxation, energy', 'g_100x.png'],
+    ['coke candy', 'concentrate crumble | laughter, creative, energy', 'h_100x.png'],
+    ['7845364-J6', 'concentrate | relax, energy, energy', 'i_100x.png'],
+    ['7845364-J7', 'concentrate | laughter, creative, slow time', 'j_100x.png'],
+    ['85413165-A1', 'tincture indica | hungery, hungery, relaxation', 'k_100x.png'],
+    ['85413165-A2', 'tincture indica | laughter, calm, euphoria', 'l_100x.png'],
+    ['85413165-A3', 'tincture indica | relaxation, spacey, euphoria', 'm_100x.png'],
+    ['489465 - B1', 'tincture sativa | hungery, euphoria, euphoria', 'n_100x.png'],
+    ['489465 - B2', 'tincture sativa | creative, relax, energy', 'o_100x.png'],
+    ['84612313 - B1', 'tincture sativa | euphoria, hungery, spacey', 'p_100x.png'],
+    ['84612313 - B2', 'tincture sativa | introspection, creative, vivid Colors', 'preroll_100x_30.png'],
+    ['41418561', 'tincture sativa | euphoria, happy, happy', 'preroll_indica_100x_27.png'],
+    ['1849815', 'concentrate  shatter | creative, relax, happy', 'preroll_sativa_100x_28.png'],
+    ['9416115', 'concentrate shatter | relaxation, energy, vivid Colors', 'q_100x.png'],
+    ['87984156 - C1', 'concentrate shatter | laughter, vivid Colors, relax', 'r_100x.png'],
+    ['87984156 - C2', 'concentrate shatter | creative, happy, relaxation', 'tincture_100x_26.png'],
+    ['151601561 - C1', 'concentrate shatter | happy, calm, happy', 'tinture_sativa_100x_45.png']
   ]
   for p in products: 
     uid = p[0]
@@ -200,30 +200,6 @@ def insert_uid_products():
     sql = "insert into portlandProducts(uid, desc, img_path) values ('{}','{}','{}');".format(uid, desc, imgPath)
     cursor.execute(sql)
   conn.commit()
-
-
-
-def insert_uid_product_image(): 
-  products = [
-    ["concentrate_shatter_100x_46.png",46],
-    ["concentrate_shatter_100x_50.png",50],
-    ["edibel_100x_29.png",27],
-    ["edibel_100x_31.png",31],
-    ["preroll_100x_30.png",30],
-    ["preroll_indica_100x_27.png",27],
-    ["preroll_sativa_100x_28.png",28],
-    ["tincture_100x_26.png",26],
-    ["tinture_sativa_100x_45.png",45]
-  ]
-  for p in products: 
-    file_name = p[0]
-    rowId = p[1]
-    sql = "update portlandProducts set img_path = '{}' where rowId = {}".format(file_name, rowId)
-    cursor.execute(sql)
-  conn.commit()
-
-
-
 
 def insert_portlandVendingMachine_step2(): 
   with open('portlandVendingMachines2.csv', 'r') as file:
@@ -266,6 +242,6 @@ insert_stores()
 insert_portlandVendingMachine_step1() 
 insert_portlandVendingMachine_step2()
 insert_uid_products()
-insert_uid_product_image()
+
 count_the_rows()
 conn.close()

@@ -12,49 +12,6 @@ cyan("Writing to {}".format(pathToDatabase))
 
 cursor = conn.cursor()
 
-# def create_orders():
-#     table_name = "Orders"
-
-#     table = """CREATE TABLE Orders (
-#             orderId_pk INTEGER PRIMARY KEY AUTOINCREMENT,
-#             storeId_fk INTEGER,
-#             vendingId_fk INTEGER,
-#             customerId_fk VARCHAR(255),
-#             orderTime INTEGER,
-#             qrCode VARCHAR(255) 
-#         ); """
-
-#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-#     cursor.execute(table)
-
-
-#     print("Created the table '{}'".format(table_name))
-
-#     conn.commit()
-
-
-
-
-
-# def create_order_item():
-#     table_name = "OrderItem"
-#     cursor = conn.cursor()
-
-#     table = """CREATE TABLE OrderItem (
-#             order_item_pk INTEGER PRIMARY KEY AUTOINCREMENT,
-#             itemId_fk INTEGER,
-#             orderId_fk INTEGER,
-#             quantity INTEGER
-#         ); """
-
-#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-#     cursor.execute(table)
-
-
-#     print("Created the table '{}'".format(table_name))
-
-#     conn.commit()
-
 
 def create_customer(): 
     table_name = "Customer"
@@ -143,128 +100,6 @@ def create_associate():
     conn.commit()
 
 
-# def create_item(): 
-#     table_name = "Item"
-#     cursor = conn.cursor()
-
-#     table = """CREATE TABLE Item (
-#             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
-#             merchantId_fk INTEGER,
-#             name VARCHAR(255),
-#             brand VARCHAR(255),
-#             JSON BLOB
-#         ); """
-
-#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-#     cursor.execute(table)
-
-
-#     print("Created the table '{}'".format(table_name))
-
-#     conn.commit()
-
-
-
-# def create_item2(): 
-#     table_name = "Item2"
-#     cursor = conn.cursor()
-
-#     table = """CREATE TABLE Item2 (
-#             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
-#             merchantId_fk INTEGER,
-#             price REAL, 
-#             instock INTEGER,
-#             deployed INTEGER,
-#             brand VARCHAR(20),
-#             cbd REAL, 
-#             desc VARCHAR(40),
-#             farm VARCHAR(20),
-#             harvest VARCHAR(9),
-#             name VARCHAR(20),
-#             strain VARCHAR(20),
-#             thc REAL,
-#             type VARCHAR(20),
-#             weight REAL, 
-#             count INTEGER,
-#             product VARCHAR(20)
-#         ); """
-
-
-#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-#     cursor.execute(table)
-
-
-#     print("Created the table '{}'".format(table_name))
-
-#     conn.commit()
-
-
-
-# def create_item(): 
-#     table_name = "Item"
-#     cursor = conn.cursor()
-
-#     table = """CREATE TABLE Item (
-#             itemId INTEGER PRIMARY KEY AUTOINCREMENT,
-#             merchantId_fk INTEGER,
-#             price REAL, 
-#             instock INTEGER,
-#             deployed INTEGER,
-#             JSON BLOB
-#         ); """
-
-#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-#     cursor.execute(table)
-
-
-#     print("Created the table '{}'".format(table_name))
-
-#     conn.commit()
-
-# def create_stock(): 
-#     table_name = "stock"
-#     cursor = conn.cursor()
-
-#     table = """CREATE TABLE stock (
-#             stockId INTEGER PRIMARY KEY AUTOINCREMENT,
-#             itemId_fk INTEGER,
-#             vendingId_fk INTEGER,
-#             row INTEGER(2),
-#             col INTEGER(2),
-#             quantity INTEGER(2)
-#         ); """
-
-#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-#     cursor.execute(table)
-
-
-#     print("Created the table '{}'".format(table_name))
-
-#     conn.commit()
-
-# def create_vendingMachine(): 
-#     table_name = "vendingMachine"
-#     cursor = conn.cursor()
-
-#     table = """CREATE TABLE vendingMachine (
-#             vendingId INTEGER PRIMARY KEY AUTOINCREMENT,
-#             storeId_fk INTEGER,
-#             vendingName VARCHAR(20),
-#             merchantId_fk INTEGER,
-#             version VARCHAR(10),
-#             averageMark REAL,
-#             JSON BLOB
-
-#         ); """
-
-#     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
-#     cursor.execute(table)
-
- 
-#     print("Created the table '{}'".format(table_name))
-
-#     conn.commit()
-
 
 def create_portlandVendingMachine(): 
     table_name = "portlandVendingMachine"
@@ -299,7 +134,8 @@ def create_portlandProducts():
             rowId INTEGER PRIMARY KEY AUTOINCREMENT,
             uid VARCHAR(30) NOT NULL,
             desc VARCHAR(100) NOT NULL,
-            img_path VARCHAR(200) NOT NULL
+            img_path VARCHAR(200) NOT NULL,
+            score INTEGER DEFAULT 0
         ); """.format(table_name)
 
     cursor.execute("DROP TABLE IF EXISTS {}".format(table_name))
@@ -313,16 +149,10 @@ def create_portlandProducts():
 
 
 if __name__ == "__main__":
-    # create_orders()
-    # create_order_item()
     create_customer()
     create_store()
     create_merchant()
     create_associate()
-    # create_item()
-    # create_stock()
-    # create_vendingMachine()
-    # create_item2()
     create_portlandVendingMachine() 
     create_portlandProducts()
     conn.close()
