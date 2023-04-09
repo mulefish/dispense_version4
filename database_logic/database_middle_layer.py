@@ -128,16 +128,16 @@ def getAllProducts():
         img_path = row[3]
         score = row[4]
 
-        # H = {
-        #     "rowId":rowId, 
-        #     "uid":uid, 
-        #     "desc":desc, 
-        #     "img_path":img_path,
-        #     "score":score
-        # }
-        # LoH.append(H)
-        L = [rowId, uid, desc, img_path, score]
-        LoH.append(L)
+        H = {
+            "rowId":rowId, 
+            "uid":uid, 
+            "desc":desc, 
+            "img_path":img_path,
+            "score":score
+        }
+        LoH.append(H)
+        #L = [rowId, uid, desc, img_path, score]
+        # LoH.append(L)
     conn.close()
     return LoH
 

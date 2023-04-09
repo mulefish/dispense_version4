@@ -16,46 +16,103 @@
   <input type="text" id="search" value="" placeholder="Search"> <button onClick="doSearch()">search doSearch </button>
   <div id="productsTable"></div>
   <hr />
-
   <script>
-    const SCORE_INDEX = 4
+    const HIGH_VALUE_WORDS = ["pre-roll", "hybrid", "oil", "sativa", "tincture", "calm", "edibel", "gummie", "gummy", "concentrate", "wax"]
+
+
+  </script>
+  <script>
+//     const DESC_INDEX = 2
+//     const SCORE_INDEX = 4
+//     function doSearch() {
+//       let text = document.getElementById("search").value
+//       if( text !== undefined && text.length > 0 ) {
+//         const t1 = new Date().getTime()
+//         text = text.toLowerCase();
+//         const words = text.split(/\W+/).filter(Boolean);
+//         for ( let i = 0 ; i < products.length; i++ ) {
+//           products[i][SCORE_INDEX] = 0 
+//         }
+// console.log( HIGH_VALUE_WORDS )
+//         products.forEach((product)=> { 
+//           words.forEach((word) => { 
+//             if ( product[DESC_INDEX].includes(word)) {
+//               product[SCORE_INDEX] += 1
+//               console.log("score " + word )
+//               if ( HIGH_VALUE_WORDS.includes(word)) {
+//                 console.log("HVW! " + word )
+//                 product[SCORE_INDEX] += 10
+//               }
+//             }
+//           }) 
+//         })
+//       // products.sort((a, b) => b.score -  a.score );
+//       products.sort((a, b) => b[SCORE_INDEX] - a[SCORE_INDEX]);
+//       makeProductsTable()
+
+//       const milsec = new Date().getTime() - t1
+//       console.log("%c Sorted in " + milsec , "background:lightgreen" )
+//       console.log(words)
+
+//       } 
+//     }
 
     function doSearch() {
       let text = document.getElementById("search").value
       if( text !== undefined && text.length > 0 ) {
+        const t1 = new Date().getTime()
         text = text.toLowerCase();
         const words = text.split(/\W+/).filter(Boolean);
-        console.log( JSON.stringify(words , null, 2 ))
-
-        // products.forEach((product)=> { 
-        //   product.score = Math.random() 
-
-        // }) 
-        // for ( let k in products ) {
         for ( let i = 0 ; i < products.length; i++ ) {
-          products[i][SCORE_INDEX] = Math.random() 
-          // console.log( products[i].score  )
+          products[i].score = 0 
         }
-        products.sort((a, b) => a[SCORE_INDEX] - b[SCORE_INDEX]);
-      } 
+
+        products.forEach((product)=> { 
+          words.forEach((word) => { 
+            if ( product.desc.includes(word)) {
+              product.score += 1
+              if ( HIGH_VALUE_WORDS.includes(word)) {
+                product.score += 10
+              }
+            }
+          }) 
+        })
+      // products.sort((a, b) => b.score -  a.score );
+      products.sort((a, b) => b.score - a.score);
       makeProductsTable()
+
+      const milsec = new Date().getTime() - t1
+      console.log("%c Sorted in " + milsec , "background:lightgreen" )
+      console.log(words)
+
+      } 
     }
+
+
   </script>
 
 
   <script>
-    const UID = 0
-    const IMAGE = 1 
-    const DESCRIPTION = 2
+    // const UID = 0
+    // const IMAGE = 1 
+    // const DESCRIPTION = 2
 
-    function sortByInnerList(list, index) {
-      return list.sort((a, b) => a[index].localeCompare(b[index]));
-    }
+    // function sortByInnerList(list, index) {
+    //   return list.sort((a, b) => a[index].localeCompare(b[index]));
+    // }
 
-    function sortTheProducts(index) {
-      products = sortByInnerList(products, index)
-      makeProductsTable()
-    }
+    // function sortTheProducts(whatToSortOn) {
+
+    //   if ( whatToSortOn == UID ) { 
+
+    //   }
+
+
+    //   sortTheProducts
+
+    //   products = sortByInnerList(products, index)
+    //   makeProductsTable()
+    // }
 
     function makeProductsTable() {
 
@@ -71,18 +128,19 @@
 
 
       products.forEach((product) => {
-        table += "<tr>"
-        table += `<td class="theRight">${product[0]}</td>`
-        table += `<td class="theRight">${product[1]}</td>`
-        table += `<td class="theRight">${product[2]}</td>`
 
-        const img = product[3]
-        if (img === "#") {
+        table += "<tr>"
+        table += `<td class="theRight">${product.rowId}</td>`
+        table += `<td class="theRight">${product.uid}</td>`
+        table += `<td class="theRight">${product.desc}</td>`
+
+
+        if (product.img_path === "#") {
           table += `<td class="theCenter">TODO</td><td></td>`
         } else {
-          table += `<td class="theCenter"><img src="static/images/${img}"></img></td>`
+          table += `<td class="theCenter"><img src="static/images/${product.img_path}"></img></td>`
         }
-        table += `<td class="theRight">${product[SCORE_INDEX]}</td>`
+        table += `<td class="theRight">${product.score}</td>`
         table += "</tr>"
       })
       table += "</table>"
@@ -91,8 +149,8 @@
 
 
     let products = JSON.parse('{{ products | tojson }}')
-    
-    sortTheProducts(1)
+    makeProductsTable()
+   //  sortTheProducts(1)
         // makeProductsTable(products)
   </script>
   <!-- <script src="/static/bag_of_functions.js"></script> -->
