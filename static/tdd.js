@@ -275,6 +275,14 @@ function dataObject_getSpools_whichIsWhatIsSubmittedToBackend() {
     verify(actual, expected, "dataObject_getSpools_whichIsWhatIsSubmittedToBackend")
 }
 
+function split_string() { 
+    const string_from_input_field = "Mary    HAD a                  little\n lamb\n."
+    const text = string_from_input_field.toLowerCase() 
+    const actual = text.split(/\W+/).filter(Boolean);
+    const expected = [ 'mary', 'had', 'a', 'little', 'lamb' ]
+    verify(actual, expected, "split_string: " + actual)
+}
+
 /**
 * Test runner
 */
@@ -290,5 +298,6 @@ if (require.main === module) {
     dataObject_regex_oneLetterOneNumber_spoolId() 
     dataObject_harvest()
     dataObject_getSpools_whichIsWhatIsSubmittedToBackend()
+    split_string()
 }
 
