@@ -1,24 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <meta charset="UTF-8">
     <title>Dispense</title>
-<link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>AeroPay Payment Form</title>
+    <script src="https://checkout.aeropay.com/sdk/v1/checkout-sdk.js"></script>
+
+
 </head>
+
 <body>
     {% include "headers/notLoggedinHeader.html" %}
 
     <hr>
     <div id="content"></div>
     <script>
-    const information = JSON.parse('{{ information | tojson }}')  
+        const information = JSON.parse('{{ information | tojson }}')
 
-        document.getElementById("content").innerHTML = JSON.stringify( information )
+        document.getElementById("content").innerHTML = JSON.stringify(information)
 
+    </script>
+
+    <h1>AeroPay Payment Form</h1>
+    <form id="payment-form">
+        <div>
+            <label for="card-number">Card Number</label>
+            <input id="card-number" type="text">
+        </div>
+        <div>
+            <label for="card-expiry">Expiration Date</label>
+            <input id="card-expiry" type="text">
+        </div>
+        <div>
+            <label for="card-cvc">CVC</label>
+            <input id="card-cvc" type="text">
+        </div>
+        <div>
+            <label for="amount">Amount</label>
+            <input id="amount" type="text">
+        </div>
+        <button type="submit">Pay Now</button>
+    </form>
+    <script>
+        var checkout = AeroCheckout.configure({
+            apiKey: 'fd593cf1-bf48-4724-ba77-1bfdb00bb6b1',
+            env: 'a8fd3d67-9658-4dc3-b803-1378df47f873',
+            scope : 'merchant',
+            id : 1244
+        });
+        var paymentForm = document.getElementById('payment-form');
+        paymentForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            checkout.tokenizeCard({
+                cardNumber: document.getElementById('card-number').value,
+                expiryDate: document.getElementById('card-expiry').value,
+                cvc: document.getElementById('card-cvc').value,
+                billingDetails: {
+                    amount: document.getElementById('amount').value
+                }
+            }, function (result) {
+                console.log(result);
+                // Send the payment token to your server for processing
+            });
+        });
     </script>
 
 
 
+
+
 </body>
+
 </html>
