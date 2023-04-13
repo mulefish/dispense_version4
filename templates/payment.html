@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <meta charset="UTF-8">
+    <title>Dispense</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    {% include "headers/notLoggedinHeader.html" %}
+
+    <hr>
+    <div id="content"></div>
+    <script>
+    const information = JSON.parse('{{ information | tojson }}')  
+
+        document.getElementById("content").innerHTML = JSON.stringify( information )
+
+    </script>
+
+
+
+</body>
+</html>

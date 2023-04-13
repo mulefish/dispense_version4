@@ -182,6 +182,17 @@ def get_inventory():
 
 
 
+@app.route('/payment')
+def payment():
+    cyan("payment.html")
+    information = {
+        "hello":"world"
+    }
+    return render_template('payment.html', information=information )
+
+
+
+
 @app.route('/seeProducts')
 def seeProducts():
     cyan("seeProducts.html")
